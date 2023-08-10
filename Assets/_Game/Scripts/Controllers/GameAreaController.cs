@@ -10,9 +10,9 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
 {
     [field: SerializeField] private int Height { get; set; }
     [field: SerializeField] private int Width { get; set; }
+    
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
     [field: SerializeField] private ContentManager ContentManager { get; set; }
-
     [field: SerializeField] private TextMeshProUGUI Response { get; set; }
 
     private Grid<LetterController> Letters { get; set; }
