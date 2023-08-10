@@ -8,9 +8,9 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
 {
     private int Height { get; }
     private int Width { get; }
-    
+
     private Func<T> CellDataCreator { get; }
-    
+
     private Cell<T>[,] Cells { get; }
     private Dictionary<T, Cell<T>> DataToCell { get; }
 
@@ -39,41 +39,16 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
         var jClamped = Mathf.Clamp(j, 0, Width - 1);
         return Cells[iClamped, jClamped].Data;
     }
-    
+
     public bool AreNeighbours(T data, T otherData)
     {
         return GetCellsAroundNoDiagonals(data).Contains(otherData);
     }
-    
-    private List<T> GetCellsAround(T data)
-    {
-        var cell = DataToCell[data];
-        
-        var iMin = Mathf.Clamp(cell.I - 1, 0, Height - 1);
-        var iMax = Mathf.Clamp(cell.I + 1, 0, Height - 1);
 
-        var jMin = Mathf.Clamp(cell.J - 1, 0, Width - 1);
-        var jMax = Mathf.Clamp(cell.J + 1, 0, Width - 1);
-
-        var cellsAround = new List<Cell<T>>();
-
-        for (var i = iMin; i <= iMax; i++)
-        {
-            for (var j = jMin; j <= jMax; j++)
-            {
-                if (i == cell.I && j == cell.J) continue;
-                
-                cellsAround.Add(Cells[i, j]);
-            }
-        }
-
-        return cellsAround.Select(c => c.Data).ToList();
-    }
-    
     private List<T> GetCellsAroundNoDiagonals(T data)
     {
         var cell = DataToCell[data];
-        
+
         var iMin = Mathf.Clamp(cell.I - 1, 0, Height - 1);
         var iMax = Mathf.Clamp(cell.I + 1, 0, Height - 1);
 
@@ -87,27 +62,27 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
             if (i == cell.I) continue;
             cellsAround.Add(Cells[i, cell.J]);
         }
-        
+
         for (var j = jMin; j <= jMax; j++)
         {
             if (j == cell.J) continue;
-            cellsAround.Add(Cells[cell.I, j]);    
+            cellsAround.Add(Cells[cell.I, j]);
         }
-        
+
         return cellsAround.Select(c => c.Data).ToList();
     }
-    
+
     private Cell<T> GetCellAbove(Cell<T> cell)
     {
         while (cell.Empty)
         {
             var iAbove = Mathf.Clamp(cell.I - 1, 0, Height - 1);
             cell = Cells[iAbove, cell.J];
-            
-            if(cell.I == 0)
+
+            if (cell.I == 0)
                 break;
         }
-        
+
         return cell;
     }
 
@@ -121,7 +96,7 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
             cell.EmptyCell(true);
         }
     }
-    
+
     public IEnumerator SortEmpty()
     {
         for (var i = Height - 1; i >= 0; i--)
@@ -137,7 +112,7 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
             }
         }
     }
-    
+
     public void SwapCells(T data, T otherData)
     {
         var cell = DataToCell[data];
@@ -145,7 +120,7 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
 
         SwapCells(cell, otherCell);
     }
-    
+
     public IEnumerator FillNewData()
     {
         for (var i = Height - 1; i >= 0; i--)
@@ -161,28 +136,28 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
             }
         }
     }
-    
+
     private void SwapCells(Cell<T> cell, Cell<T> otherCell)
     {
         var data = cell.Data;
         var otherData = otherCell.Data;
-        
+
         var cellSiblingIndex = data.GetSiblingIndex();
         var otherCellSiblingIndex = otherData.GetSiblingIndex();
-        
+
         data.SetSiblingIndex(otherCellSiblingIndex);
         otherData.SetSiblingIndex(cellSiblingIndex);
 
         var empty = cell.Empty;
         var otherEmpty = otherCell.Empty;
-            
+
         cell.ChangeData(otherData, otherEmpty);
         otherCell.ChangeData(data, empty);
 
         DataToCell[cell.Data] = cell;
         DataToCell[otherCell.Data] = otherCell;
     }
-    
+
     public IEnumerator<Cell<T>> GetEnumerator()
     {
         foreach (var cell in Cells)
@@ -195,5 +170,4 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
     {
         return GetEnumerator();
     }
-
 }

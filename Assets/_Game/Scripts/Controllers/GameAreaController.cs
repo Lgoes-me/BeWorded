@@ -50,18 +50,13 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
 
         if (SelectedLetterController != null)
         {
-            if (Letters.AreNeighbours(SelectedLetterController, newSelected))
-            {
-                SelectedLetterController.ResetLetter();
-                newSelected.ResetLetter();
+            SelectedLetterController.ResetLetter();
+            newSelected.ResetLetter();
 
-                Letters.SwapCells(SelectedLetterController, newSelected);
+            Letters.SwapCells(SelectedLetterController, newSelected);
 
-                SelectedLetterController = null;
-                return;
-            }
-
-            SelectedLetterController.OnError();
+            SelectedLetterController = null;
+            return;
         }
 
         SelectedLetterController = newSelected;
@@ -71,6 +66,8 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
     {
         if (!CanInput)
             return;
+
+        SelectedLetterController = null;
 
         var newSelected = GetPointerCell(eventData);
 
@@ -112,7 +109,7 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
             CancelSelection();
             return;
         }
-        
+
         var response = string.Join("", SelectedLetterControllers.Select(s => s.Letter));
 
         if (ContentManager.IsValidWord(response))

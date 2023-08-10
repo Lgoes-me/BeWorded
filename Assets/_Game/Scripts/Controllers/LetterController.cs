@@ -17,7 +17,7 @@ public class LetterController : MonoBehaviour, ICellData
         CreateLetter = createLetter;
         Letter = createLetter();
         State = LetterState.Neutral;
-        
+
         Text.SetText(Letter);
         UpdateView();
 
@@ -31,10 +31,10 @@ public class LetterController : MonoBehaviour, ICellData
             LetterState.Clicked => LetterState.Neutral,
             _ => LetterState.Clicked
         };
-        
+
         UpdateView();
     }
-    
+
     public void OnDrag()
     {
         State = LetterState.Dragged;
@@ -43,15 +43,15 @@ public class LetterController : MonoBehaviour, ICellData
 
     public void OnError()
     {
-        if(State is LetterState.Neutral)
+        if (State is LetterState.Neutral)
             return;
-        
+
         State = LetterState.Error;
         UpdateView();
-        
+
         Invoke(nameof(ResetLetter), 0.1f);
     }
-    
+
     public void ResetLetter()
     {
         State = LetterState.Neutral;
@@ -69,7 +69,7 @@ public class LetterController : MonoBehaviour, ICellData
             _ => Color.grey
         };
     }
-    
+
     private enum LetterState
     {
         Neutral,
