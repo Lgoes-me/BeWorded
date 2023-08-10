@@ -14,12 +14,15 @@ public class GameplayController : MonoBehaviour
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
     [field: SerializeField] private TextMeshProUGUI Response { get; set; }
+    [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
     
     [field: SerializeField] private Button SwapButton { get; set; }
     [field: SerializeField] private Button BombButton { get; set; }
     
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameStateMachine StateMachine { get; private set; }
+    
+    private int Score { get; set; }
     
     private void Awake()
     {
@@ -63,15 +66,21 @@ public class GameplayController : MonoBehaviour
         return false;
     }
 
-    public void ClearSelection(List<LetterController> letterControllers)
+    public void ClearSelection(List<LetterController> letterControllers, bool getPoints = true)
     {
-        StartCoroutine(ClearSelectionCoroutine(letterControllers));
+        StartCoroutine(ClearSelectionCoroutine(letterControllers, getPoints));
     }
     
-    private IEnumerator ClearSelectionCoroutine(List<LetterController> letterControllers)
+    private IEnumerator ClearSelectionCoroutine(List<LetterController> letterControllers, bool getPoints)
     {
         StateMachine.ChangeState(new AnimatingState());
 
+        if (getPoints)
+        {
+            Score += letterControllers.Sum(l => l.Letter.Points);
+            ScoreText.SetText(Score.ToString());
+        }
+        
         LettersGrid.ClearCells(letterControllers);
 
         yield return LettersGrid.SortEmpty();

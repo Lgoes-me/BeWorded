@@ -12,7 +12,7 @@ public class SwapState : GameState
 
     public override void OnClick(PointerEventData pointerEventData, LetterController newSelected)
     {
-        newSelected.OnPointerClick();
+        newSelected.OnSelect();
 
         if (SelectedLetterController == null)
         {

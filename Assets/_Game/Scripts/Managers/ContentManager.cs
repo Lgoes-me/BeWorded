@@ -16,6 +16,11 @@ public class ContentManager : MonoBehaviour
         ('W', 0), ('X', 1), ('Y', 0), ('Z', 1)
     };
 
+    private List<int> Points => new()
+    {
+        10, 20, 50, 100, 500
+    };
+
     private void Awake()
     {
         //https://github.com/pythonprobr/palavras
@@ -23,9 +28,9 @@ public class ContentManager : MonoBehaviour
         Words = new List<string>(words).Select(RemoveAccents).ToArray();
     }
 
-    public string GetRandomLetter()
+    public Letter GetRandomLetter()
     {
-        var letters = new List<char> ();
+        var letters = new List<char>();
 
         foreach (var (letter, weight) in WeightedLetters)
         {
@@ -36,8 +41,8 @@ public class ContentManager : MonoBehaviour
                 count--;
             }
         }
-        
-        return letters[Random.Range(0, letters.Count)].ToString();
+
+        return new Letter(letters.RandomElement(), Points.RandomElement());
     }
 
     public bool IsValidWord(string word)

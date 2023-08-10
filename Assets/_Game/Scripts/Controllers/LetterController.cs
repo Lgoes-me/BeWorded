@@ -6,26 +6,27 @@ using UnityEngine.UI;
 public class LetterController : MonoBehaviour, ICellData
 {
     [field: SerializeField] public RectTransform Content { get; private set; }
+    [field: SerializeField] public Canvas Canvas { get; private set; }
     [field: SerializeField] private Image Background { get; set; }
     [field: SerializeField] private TextMeshProUGUI Text { get; set; }
 
-    private Func<string> CreateLetter { get; set; }
-    public string Letter { get; private set; }
+    private Func<Letter> CreateLetter { get; set; }
+    public Letter Letter { get; private set; }
     private LetterState State { get; set; }
 
-    public LetterController Init(Func<string> createLetter)
+    public LetterController Init(Func<Letter> createLetter)
     {
         CreateLetter = createLetter;
         Letter = createLetter();
         State = LetterState.Neutral;
 
-        Text.SetText(Letter);
+        Text.SetText(Letter.ToString());
         UpdateView();
 
         return this;
     }
 
-    public void OnPointerClick()
+    public void OnSelect()
     {
         State = State switch
         {
@@ -33,6 +34,7 @@ public class LetterController : MonoBehaviour, ICellData
             _ => LetterState.Clicked
         };
 
+        Canvas.overrideSorting = true;
         UpdateView();
     }
 
@@ -56,6 +58,7 @@ public class LetterController : MonoBehaviour, ICellData
     public void ResetLetter()
     {
         State = LetterState.Neutral;
+        Canvas.overrideSorting = false;
         UpdateView();
     }
 

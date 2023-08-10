@@ -19,7 +19,7 @@ public class SwapDragState : GameState
             return;  
         }
         
-        newSelected.OnPointerClick();
+        newSelected.OnSelect();
         SelectedLetterController = newSelected;
     }
 

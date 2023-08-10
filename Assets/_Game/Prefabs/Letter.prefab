@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Content>k__BackingField: {fileID: 3712940566741814916}
+  <Canvas>k__BackingField: {fileID: 1836939269}
   <Background>k__BackingField: {fileID: 2037900848725423610}
   <Text>k__BackingField: {fileID: 2037900849119609688}
 --- !u!223 &1836939269
@@ -74,7 +75,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &1836939268
 MonoBehaviour:
