@@ -42,7 +42,7 @@ public class ContentManager : MonoBehaviour
 
     public bool IsValidWord(string word)
     {
-        return Words.Contains(word.ToLower());
+        return word.Length >= 3 && Words.Contains(word.ToLower());
     }
 
     private string RemoveAccents(string text)
