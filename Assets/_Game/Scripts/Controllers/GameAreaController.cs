@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler,
-    IPointerExitHandler
+public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler
 {
     private int Height { get; set; }
     private int Width { get; set; }
@@ -22,24 +21,22 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Game.StateMachine.State.OnClick(eventData, GetPointerCell(eventData));
+        var selected = GetPointerCell(eventData);
+        Game.StateMachine.State.OnClick(eventData, selected);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Game.StateMachine.State.OnDrag(eventData, GetPointerCell(eventData));
+        var selected = GetPointerCell(eventData);
+        Game.StateMachine.State.OnDrag(eventData, selected);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Game.StateMachine.State.OnDragEnd(eventData, GetPointerCell(eventData));
+        var selected = GetPointerCell(eventData);
+        Game.StateMachine.State.OnDragEnd(eventData, selected);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        Game.StateMachine.State.OnPointerExit(eventData, GetPointerCell(eventData));
-    }
-    
     private LetterController GetPointerCell(PointerEventData eventData)
     {
         if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -52,6 +49,9 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
 
         var xPosition = Mathf.FloorToInt(Width * clickPosition.x / RectTransform.sizeDelta.x);
         var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / RectTransform.sizeDelta.y);
+
+        if (xPosition < 0 || xPosition >= Width || yPosition < 0 || yPosition >= Height)
+            return null;
 
         return Game.LettersGrid.Get(yPosition, xPosition);
     }

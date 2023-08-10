@@ -35,9 +35,7 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
 
     public T Get(int i, int j)
     {
-        var iClamped = Mathf.Clamp(i, 0, Height - 1);
-        var jClamped = Mathf.Clamp(j, 0, Width - 1);
-        return Cells[iClamped, jClamped].Data;
+        return Cells[i, j].Data;
     }
 
     public bool AreNeighbours(T data, T otherData)

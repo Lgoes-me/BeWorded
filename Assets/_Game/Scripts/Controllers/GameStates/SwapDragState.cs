@@ -34,7 +34,6 @@ public class SwapDragState : GameState
         SelectedLetterController = null;
 
         Game.StateMachine.ChangeState(new GameplayState(Game));
-        
     }
 
     public override void OnStateExit()

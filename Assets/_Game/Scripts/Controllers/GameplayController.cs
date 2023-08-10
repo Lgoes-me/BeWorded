@@ -16,6 +16,7 @@ public class GameplayController : MonoBehaviour
     [field: SerializeField] private TextMeshProUGUI Response { get; set; }
     
     [field: SerializeField] private Button SwapButton { get; set; }
+    [field: SerializeField] private Button BombButton { get; set; }
     
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameStateMachine StateMachine { get; private set; }
@@ -30,6 +31,11 @@ public class GameplayController : MonoBehaviour
         SwapButton.onClick.AddListener(() =>
         {
             StateMachine.ChangeState(new SwapDragState(this));
+        });
+        
+        BombButton.onClick.AddListener(() =>
+        {
+            StateMachine.ChangeState(new BombState(this));
         });
     }
     
@@ -50,14 +56,19 @@ public class GameplayController : MonoBehaviour
 
         if (ContentManager.IsValidWord(response))
         {
-            StartCoroutine(ClearSelection(letterControllers));
+            ClearSelection(letterControllers);
             return true;
         }
 
         return false;
     }
 
-    private IEnumerator ClearSelection(List<LetterController> letterControllers)
+    public void ClearSelection(List<LetterController> letterControllers)
+    {
+        StartCoroutine(ClearSelectionCoroutine(letterControllers));
+    }
+    
+    private IEnumerator ClearSelectionCoroutine(List<LetterController> letterControllers)
     {
         StateMachine.ChangeState(new AnimatingState());
 

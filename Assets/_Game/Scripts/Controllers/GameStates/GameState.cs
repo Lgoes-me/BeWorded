@@ -21,11 +21,6 @@ public abstract class GameState
     {
         
     }
-
-    public virtual void OnPointerExit(PointerEventData eventData, LetterController getPointerCell)
-    {
-        
-    }
     
     public virtual void OnStateExit()
     {

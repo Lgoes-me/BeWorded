@@ -5,6 +5,7 @@ public class GameplayState : GameState
 {
     private GameplayController Game { get; set; }
     private List<LetterController> SelectedLetterControllers { get; set; }
+    
 
     public GameplayState(GameplayController game)
     {
@@ -23,7 +24,7 @@ public class GameplayState : GameState
 
         if (SelectedLetterControllers.Contains(newSelected))
             return;
-
+        
         var lastLetter = SelectedLetterControllers[^1];
 
         if (Game.LettersGrid.AreNeighbours(lastLetter, newSelected))
@@ -38,11 +39,7 @@ public class GameplayState : GameState
     {
         OnCancel();
     }
-    public override void OnPointerExit(PointerEventData pointerEventData, LetterController letterController)
-    {
-        OnCancel();
-    }
-    
+
     private void OnCancel()
     {
         if (!Game.CheckResponse(SelectedLetterControllers))
