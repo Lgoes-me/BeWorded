@@ -7,53 +7,51 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
     private int Height { get; set; }
     private int Width { get; set; }
     private GameplayController Game { get; set; }
+    
+    private RectTransform RectTransform { get; set; }
 
     public void Init(GameplayController game, int height, int width)
     {
         Game = game;
         Height = height;
         Width = width;
-        
-        GetComponent<RectTransform>().sizeDelta = new Vector2(70 * Width, 70 * Height);
+        RectTransform = GetComponent<RectTransform>();
+            
+        RectTransform.sizeDelta = new Vector2(70 * Width, 70 * Height);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        var newSelected = GetPointerCell(eventData);
-        Game.StateMachine.State.OnClick(newSelected);
+        Game.StateMachine.State.OnClick(eventData, GetPointerCell(eventData));
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        var newSelected = GetPointerCell(eventData);
-        Game.StateMachine.State.OnDrag(newSelected);
+        Game.StateMachine.State.OnDrag(eventData, GetPointerCell(eventData));
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        var newSelected = GetPointerCell(eventData);
-        Game.StateMachine.State.OnCancel(newSelected);
+        Game.StateMachine.State.OnDragEnd(eventData, GetPointerCell(eventData));
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        var newSelected = GetPointerCell(eventData);
-        Game.StateMachine.State.OnCancel(newSelected);
+        Game.StateMachine.State.OnPointerExit(eventData, GetPointerCell(eventData));
     }
     
     private LetterController GetPointerCell(PointerEventData eventData)
     {
-        var rectTransform = GetComponent<RectTransform>();
         if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            rectTransform,
+            RectTransform,
             eventData.position,
             eventData.pressEventCamera,
             out var clickPosition))
 
             return null;
 
-        var xPosition = Mathf.FloorToInt(Width * clickPosition.x / rectTransform.sizeDelta.x);
-        var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / rectTransform.sizeDelta.y);
+        var xPosition = Mathf.FloorToInt(Width * clickPosition.x / RectTransform.sizeDelta.x);
+        var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / RectTransform.sizeDelta.y);
 
         return Game.LettersGrid.Get(yPosition, xPosition);
     }

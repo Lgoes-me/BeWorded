@@ -1,4 +1,6 @@
-﻿public class SwapState : GameState
+﻿using UnityEngine.EventSystems;
+
+public class SwapState : GameState
 {
     private GameplayController Game { get; set; }
     private LetterController SelectedLetterController { get; set; }
@@ -8,7 +10,7 @@
         Game = game;
     }
 
-    public override void OnClick(LetterController newSelected)
+    public override void OnClick(PointerEventData pointerEventData, LetterController newSelected)
     {
         newSelected.OnPointerClick();
 

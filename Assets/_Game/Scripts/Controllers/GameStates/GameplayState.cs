@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class GameplayState : GameState
 {
@@ -11,7 +12,7 @@ public class GameplayState : GameState
         Game = game;
     }
 
-    public override void OnDrag(LetterController newSelected)
+    public override void OnDrag(PointerEventData pointerEventData, LetterController newSelected)
     {
         if (SelectedLetterControllers.Count == 0)
         {
@@ -33,8 +34,16 @@ public class GameplayState : GameState
             Game.SetResponse(SelectedLetterControllers);
         }
     }
-
-    public override void OnCancel(LetterController letterController)
+    public override void OnDragEnd(PointerEventData pointerEventData, LetterController letterController)
+    {
+        OnCancel();
+    }
+    public override void OnPointerExit(PointerEventData pointerEventData, LetterController letterController)
+    {
+        OnCancel();
+    }
+    
+    private void OnCancel()
     {
         if (!Game.CheckResponse(SelectedLetterControllers))
         {

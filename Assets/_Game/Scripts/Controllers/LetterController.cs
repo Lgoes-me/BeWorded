@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class LetterController : MonoBehaviour, ICellData
 {
+    [field: SerializeField] public RectTransform Content { get; private set; }
     [field: SerializeField] private Image Background { get; set; }
     [field: SerializeField] private TextMeshProUGUI Text { get; set; }
 
@@ -80,13 +81,13 @@ public class LetterController : MonoBehaviour, ICellData
 
     public void Deactivate()
     {
-        transform.GetChild(0).gameObject.SetActive(false);
+        Content.gameObject.SetActive(false);
     }
 
     public void ResetData()
     {
         Init(CreateLetter);
-        transform.GetChild(0).gameObject.SetActive(true);
+        Content.gameObject.SetActive(true);
     }
 
     public int GetSiblingIndex()

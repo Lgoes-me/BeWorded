@@ -29,7 +29,7 @@ public class GameplayController : MonoBehaviour
         
         SwapButton.onClick.AddListener(() =>
         {
-            StateMachine.ChangeState(new SwapState(this));
+            StateMachine.ChangeState(new SwapDragState(this));
         });
     }
     
