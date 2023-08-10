@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class LetterController : MonoBehaviour, ICellData
 {
     [field: SerializeField] public RectTransform Content { get; private set; }
-    [field: SerializeField] public Canvas Canvas { get; private set; }
+    [field: SerializeField] private Canvas Canvas { get; set; }
     [field: SerializeField] private Image Background { get; set; }
     [field: SerializeField] private TextMeshProUGUI Text { get; set; }
+    [field: SerializeField] private TextMeshProUGUI PointsText { get; set; }
 
     private Func<Letter> CreateLetter { get; set; }
     public Letter Letter { get; private set; }
@@ -21,6 +22,7 @@ public class LetterController : MonoBehaviour, ICellData
         State = LetterState.Neutral;
 
         Text.SetText(Letter.ToString());
+        PointsText.SetText(Letter.Points.ToString());
         UpdateView();
 
         return this;

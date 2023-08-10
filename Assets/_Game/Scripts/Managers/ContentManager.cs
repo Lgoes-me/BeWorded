@@ -16,9 +16,9 @@ public class ContentManager : MonoBehaviour
         ('W', 0), ('X', 1), ('Y', 0), ('Z', 1)
     };
 
-    private List<int> Points => new()
+    private List<(int, int)> WeightedPoints => new()
     {
-        10, 20, 50, 100, 500
+        (10, 5), (20, 4), (50, 3), (100, 2), (500, 1)
     };
 
     private void Awake()
@@ -30,19 +30,10 @@ public class ContentManager : MonoBehaviour
 
     public Letter GetRandomLetter()
     {
-        var letters = new List<char>();
-
-        foreach (var (letter, weight) in WeightedLetters)
-        {
-            var count = weight;
-            while (count != 0)
-            {
-                letters.Add(letter);
-                count--;
-            }
-        }
-
-        return new Letter(letters.RandomElement(), Points.RandomElement());
+        var character = WeightedLetters.RandomWeightedElement();
+        var points = WeightedPoints.RandomWeightedElement();
+        
+        return new Letter(character, points);
     }
 
     public bool IsValidWord(string word)
