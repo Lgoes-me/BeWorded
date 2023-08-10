@@ -4,7 +4,9 @@ using UnityEngine.EventSystems;
 public class SwapDragState : GameState
 {
     private GameplayController Game { get; set; }
-    private LetterController SelectedLetterController { get; set; }
+    
+    private LetterController MainLetterController { get; set; }
+    private LetterController OtherLetterController { get; set; }
     
     public SwapDragState(GameplayController game)
     {
@@ -13,34 +15,48 @@ public class SwapDragState : GameState
 
     public override void OnDrag(PointerEventData pointerEventData, LetterController newSelected)
     {
-        if (SelectedLetterController != null)
+        if (MainLetterController != null)
         {
-            SelectedLetterController.Content.position = pointerEventData.position;
+            MainLetterController.Content.position = pointerEventData.position;
+            
+            if (OtherLetterController != null)
+            {
+                OtherLetterController.ResetLetter();
+                OtherLetterController = newSelected;
+                OtherLetterController.OnSelect(false);
+                return;  
+            }
+            else if(newSelected != MainLetterController)
+            {
+                OtherLetterController = newSelected;
+                OtherLetterController.OnSelect(false);
+                return;
+            }
             return;  
         }
         
         newSelected.OnSelect();
-        SelectedLetterController = newSelected;
+        MainLetterController = newSelected;
     }
 
     public override void OnDragEnd(PointerEventData pointerEventData, LetterController newSelected)
     {
-        SelectedLetterController.Content.anchoredPosition = Vector3.zero;
+        MainLetterController.Content.anchoredPosition = Vector3.zero;
 
-        SelectedLetterController.ResetLetter();
+        MainLetterController.ResetLetter();
         newSelected.ResetLetter();
 
-        Game.LettersGrid.SwapCells(SelectedLetterController, newSelected);
-        SelectedLetterController = null;
+        Game.LettersGrid.SwapCells(MainLetterController, newSelected);
+        MainLetterController = null;
 
         Game.StateMachine.ChangeState(new GameplayState(Game));
     }
 
     public override void OnStateExit()
     {
-        if (SelectedLetterController != null)
+        if (MainLetterController != null)
         {
-            SelectedLetterController.ResetLetter();
+            MainLetterController.ResetLetter();
         }
     }
 }

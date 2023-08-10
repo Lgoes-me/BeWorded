@@ -119,7 +119,7 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
         SwapCells(cell, otherCell);
     }
 
-    public IEnumerator FillNewData()
+    public void FillNewData()
     {
         for (var i = Height - 1; i >= 0; i--)
         for (var j = Width - 1; j >= 0; j--)
@@ -130,7 +130,7 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
             {
                 cell.Data.ResetData();
                 cell.EmptyCell(false);
-                yield return new WaitForSeconds(0.1f);
+                cell.Data.AnimateFall();
             }
         }
     }

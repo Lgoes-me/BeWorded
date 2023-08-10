@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +29,7 @@ public class LetterController : MonoBehaviour, ICellData
         return this;
     }
 
-    public void OnSelect()
+    public void OnSelect(bool overrideSorting = true)
     {
         State = State switch
         {
@@ -36,7 +37,7 @@ public class LetterController : MonoBehaviour, ICellData
             _ => LetterState.Clicked
         };
 
-        Canvas.overrideSorting = true;
+        Canvas.overrideSorting = overrideSorting;
         UpdateView();
     }
 
@@ -68,11 +69,11 @@ public class LetterController : MonoBehaviour, ICellData
     {
         Background.color = State switch
         {
-            LetterState.Neutral => Color.grey,
+            LetterState.Neutral => Color.white,
             LetterState.Error => Color.red,
             LetterState.Clicked => Color.cyan,
             LetterState.Dragged => Color.blue,
-            _ => Color.grey
+            _ => Color.white
         };
     }
 
@@ -103,5 +104,11 @@ public class LetterController : MonoBehaviour, ICellData
     public void SetSiblingIndex(int index)
     {
         transform.SetSiblingIndex(index);
+    }
+
+    public void AnimateFall()
+    {
+        Content.anchoredPosition = new Vector3(0, 45);
+        Content.DOMove(transform.position, 0.2f);
     }
 }

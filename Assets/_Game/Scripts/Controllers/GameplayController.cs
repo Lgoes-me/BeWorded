@@ -84,7 +84,8 @@ public class GameplayController : MonoBehaviour
         LettersGrid.ClearCells(letterControllers);
 
         yield return LettersGrid.SortEmpty();
-        yield return LettersGrid.FillNewData();
+        
+        LettersGrid.FillNewData();
 
         StateMachine.ChangeState(new GameplayState(this));
     }
