@@ -10,14 +10,16 @@ public class GameplayController : MonoBehaviour
     [field: SerializeField] private int Height { get; set; }
     [field: SerializeField] private int Width { get; set; }
     
-    [field: SerializeField] private ContentManager ContentManager { get; set; }
+    [field: SerializeField] public ContentManager ContentManager { get; private set; }
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
-    [field: SerializeField] private TextMeshProUGUI Response { get; set; }
+    [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
     [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
     
     [field: SerializeField] private Button SwapButton { get; set; }
     [field: SerializeField] private Button BombButton { get; set; }
+    [field: SerializeField] private Button HintButton { get; set; }
+    [field: SerializeField] private Button ShuffleButton { get; set; }
     
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameStateMachine StateMachine { get; private set; }
@@ -39,6 +41,16 @@ public class GameplayController : MonoBehaviour
         BombButton.onClick.AddListener(() =>
         {
             StateMachine.ChangeState(new BombState(this));
+        });
+        
+        HintButton.onClick.AddListener(() =>
+        {
+            StateMachine.ChangeState(new HintState(this));
+        });
+        
+        ShuffleButton.onClick.AddListener(() =>
+        {
+            StateMachine.ChangeState(new ShuffleState(this));
         });
     }
     

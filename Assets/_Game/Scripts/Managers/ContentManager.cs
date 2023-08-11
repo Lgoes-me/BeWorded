@@ -25,20 +25,32 @@ public class ContentManager : MonoBehaviour
     {
         //https://github.com/pythonprobr/palavras
         var words = WordsAsset.text.Split("\n");
-        Words = new List<string>(words).Select(RemoveAccents).ToArray();
+        Words = new List<string>(words).Select(s => RemoveAccents(s).ToUpper()).ToArray();
     }
 
     public Letter GetRandomLetter()
     {
         var character = WeightedLetters.RandomWeightedElement();
         var points = WeightedPoints.RandomWeightedElement();
-        
+
         return new Letter(character, points);
     }
 
     public bool IsValidWord(string word)
     {
-        return word.Length >= 3 && Words.Contains(word.ToLower());
+        return word.Length >= 3 && Words.Contains(word);
+    }
+
+    public string GetHint(List<char> letters)
+    {
+        var hints = Words
+            .AsParallel()
+            .Where(s => s.Except(letters).ToList().Count == 0)
+            .Where(s => s.Length >= 3)
+            .OrderBy(s => s.Length)
+            .ToList();
+
+        return hints.Count == 0 ? string.Empty : hints[0];
     }
 
     private string RemoveAccents(string text)
