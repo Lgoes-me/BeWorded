@@ -9,6 +9,10 @@ public class GameplayController : MonoBehaviour
 {
     [field: SerializeField] private int Height { get; set; }
     [field: SerializeField] private int Width { get; set; }
+    [field: SerializeField] private int Swaps { get; set; }
+    [field: SerializeField] private int Bombs { get; set; }
+    [field: SerializeField] private int Hints { get; set; }
+    [field: SerializeField] private int Shuffles { get; set; }
     
     [field: SerializeField] public ContentManager ContentManager { get; private set; }
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
@@ -16,10 +20,10 @@ public class GameplayController : MonoBehaviour
     [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
     [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
     
-    [field: SerializeField] private Button SwapButton { get; set; }
-    [field: SerializeField] private Button BombButton { get; set; }
-    [field: SerializeField] private Button HintButton { get; set; }
-    [field: SerializeField] private Button ShuffleButton { get; set; }
+    [field: SerializeField] private PowerUpController SwapButton { get; set; }
+    [field: SerializeField] private PowerUpController BombButton { get; set; }
+    [field: SerializeField] private PowerUpController HintButton { get; set; }
+    [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
     
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameStateMachine StateMachine { get; private set; }
@@ -33,22 +37,22 @@ public class GameplayController : MonoBehaviour
 
         GameAreaController.Init(this, Height, Width);
         
-        SwapButton.onClick.AddListener(() =>
+        SwapButton.Init(Swaps, () =>
         {
             StateMachine.ChangeState(new SwapDragState(this));
         });
         
-        BombButton.onClick.AddListener(() =>
+        BombButton.Init(Bombs,() =>
         {
             StateMachine.ChangeState(new BombState(this));
         });
         
-        HintButton.onClick.AddListener(() =>
+        HintButton.Init(Hints,() =>
         {
             StateMachine.ChangeState(new HintState(this));
         });
         
-        ShuffleButton.onClick.AddListener(() =>
+        ShuffleButton.Init(Shuffles,() =>
         {
             StateMachine.ChangeState(new ShuffleState(this));
         });

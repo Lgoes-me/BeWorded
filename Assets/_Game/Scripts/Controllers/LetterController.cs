@@ -12,6 +12,10 @@ public class LetterController : MonoBehaviour, ICellData
     [field: SerializeField] private TextMeshProUGUI Text { get; set; }
     [field: SerializeField] private TextMeshProUGUI PointsText { get; set; }
 
+    [field: SerializeField] private Color DefaultColor { get; set; }
+    [field: SerializeField] private Color HighlightedColor { get; set; }
+    [field: SerializeField] private Color SelectedColor { get; set; }
+    [field: SerializeField] private Color ErrorColor { get; set; }
     private Func<Letter> CreateLetter { get; set; }
     public Letter Letter { get; private set; }
     private LetterState State { get; set; }
@@ -55,7 +59,7 @@ public class LetterController : MonoBehaviour, ICellData
         State = LetterState.Error;
         UpdateView();
 
-        Invoke(nameof(ResetLetter), 0.1f);
+        Invoke(nameof(ResetLetter), 0.15f);
     }
 
     public void ResetLetter()
@@ -69,10 +73,10 @@ public class LetterController : MonoBehaviour, ICellData
     {
         Background.color = State switch
         {
-            LetterState.Neutral => Color.white,
-            LetterState.Error => Color.red,
-            LetterState.Clicked => Color.cyan,
-            LetterState.Dragged => Color.blue,
+            LetterState.Neutral => DefaultColor,
+            LetterState.Error => ErrorColor,
+            LetterState.Clicked => SelectedColor,
+            LetterState.Dragged => HighlightedColor,
             _ => Color.white
         };
     }

@@ -19,7 +19,7 @@ public class ContentManager : MonoBehaviour
 
     private List<(int, int)> WeightedPoints => new()
     {
-        (10, 5), (20, 4), (50, 3), (100, 2), (500, 1)
+        (10, 16), (20, 8), (50, 4), (100, 2), (250, 1)
     };
 
     private void Awake()
