@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using UnityEngine;
 public class ContentManager : MonoBehaviour
 {
     [field: SerializeField] private TextAsset WordsAsset { get; set; }
-    private string[] Words { get; set; }
+    private List<string> Words { get; set; }
 
     private List<(char, int)> WeightedLetters => new()
     {
@@ -25,7 +26,12 @@ public class ContentManager : MonoBehaviour
     {
         //https://github.com/pythonprobr/palavras
         var words = WordsAsset.text.Split("\n");
-        Words = new List<string>(words).Select(s => RemoveAccents(s).ToUpper()).ToArray();
+        Words = new List<string>(words)
+            .AsParallel()
+            .Select(s => RemoveAccents(s).ToUpper())
+            .Where(s => s.Length >= 3)
+            .OrderBy(s => s.Length)
+            .ToList();
     }
 
     public Letter GetRandomLetter()
@@ -43,14 +49,9 @@ public class ContentManager : MonoBehaviour
 
     public string GetHint(List<char> letters)
     {
-        var hints = Words
+        return Words
             .AsParallel()
-            .Where(s => s.Except(letters).ToList().Count == 0)
-            .Where(s => s.Length >= 3)
-            .OrderBy(s => s.Length)
-            .ToList();
-
-        return hints.Count == 0 ? string.Empty : hints[0];
+            .FirstOrDefault(s => !Enumerable.Except(s, letters).Any()) ?? String.Empty;
     }
 
     private string RemoveAccents(string text)
