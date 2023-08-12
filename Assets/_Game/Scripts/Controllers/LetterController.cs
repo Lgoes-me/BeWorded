@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -28,7 +29,11 @@ public class LetterController : MonoBehaviour, ICellData
         State = LetterState.Neutral;
 
         Text.SetText(Letter.ToString());
+        
+        PrizeText.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         PrizeText.SetText(Letter.Prize.ToString());
+        PrizeText.gameObject.SetActive(true);
+        
         UpdateView();
 
         return this;
@@ -67,6 +72,13 @@ public class LetterController : MonoBehaviour, ICellData
         Content.DOShakePosition(0.1f, 2);
     }
 
+    public IEnumerator AnimatePrize(Transform destination)
+    {
+        PrizeText.transform.DOMove(destination.position, 0.25f);
+        yield return new WaitForSeconds(0.25f);
+        PrizeText.gameObject.SetActive(false);
+    }
+    
     public void ResetLetter()
     {
         State = LetterState.Neutral;

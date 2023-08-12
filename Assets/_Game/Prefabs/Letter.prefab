@@ -61,7 +61,7 @@ MonoBehaviour:
   <HighlightedColor>k__BackingField: {r: 0.1882353, g: 0.15686275, b: 0.48235294, a: 1}
   <SelectedColor>k__BackingField: {r: 0.34509805, g: 0.6117647, b: 0.40007535, a: 1}
   <ErrorColor>k__BackingField: {r: 0.6509434, g: 0.3285422, b: 0.3285422, a: 1}
-  <CorrectColor>k__BackingField: {r: 0.9811321, g: 0.7655219, b: 0.28230685, a: 1}
+  <CorrectColor>k__BackingField: {r: 0.6415094, g: 0.5561617, b: 0.36009255, a: 1}
 --- !u!223 &1836939269
 Canvas:
   m_ObjectHideFlags: 0

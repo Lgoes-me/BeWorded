@@ -33,17 +33,13 @@ public class GameplayController : MonoBehaviour
     {
         LettersGrid = new Grid<LetterController>(Height, Width, CreateLetterController);
         
-
         GameAreaController.Init(this, Height, Width);
 
         SwapButton.Init(Swaps, () => { ChangeState(new SwapDragState(this)); });
-
         BombButton.Init(Bombs, () => { ChangeState(new BombState(this)); });
-
         HintButton.Init(Hints, () => { ChangeState(new HintState(this)); });
-
         ShuffleButton.Init(Shuffles, () => { ChangeState(new ShuffleState(this)); });
-        
+
         State = new GameplayState(this);
     }
 
@@ -58,7 +54,7 @@ public class GameplayController : MonoBehaviour
         State = state;
         State.OnStateEnter();
     }
-    
+
     public void SetResponse(List<LetterController> letterControllers)
     {
         var response = string.Join("", letterControllers.Select(s => s.Letter));
@@ -78,21 +74,23 @@ public class GameplayController : MonoBehaviour
         return false;
     }
 
-    public void ClearSelection(List<LetterController> letterControllers, bool getPoints = true)
+    public void ClearSelection(List<LetterController> letterControllers, bool getPrizes = true)
     {
-        StartCoroutine(ClearSelectionCoroutine(letterControllers, getPoints));
+        StartCoroutine(ClearSelectionCoroutine(letterControllers, getPrizes));
     }
 
     private IEnumerator ClearSelectionCoroutine(List<LetterController> letterControllers, bool getPrizes)
     {
         ChangeState(new AnimatingState());
 
-        yield return new WaitForSeconds(0.1f);
-        
+        yield return new WaitForSeconds(0.15f);
+
         if (getPrizes)
         {
-            GetPrizes(letterControllers.Select(l => l.Letter.Prize));
-            ScoreText.SetText(Score.ToString());
+            foreach (var letterController in letterControllers)
+            {
+                yield return GetPrizes(letterController);
+            }
         }
 
         LettersGrid.ClearCells(letterControllers);
@@ -104,33 +102,38 @@ public class GameplayController : MonoBehaviour
         ChangeState(new GameplayState(this));
     }
 
-    private void GetPrizes(IEnumerable<IPrize> prizes)
+    private IEnumerator GetPrizes(LetterController letterController)
     {
-        foreach (var prize in prizes)
+        var prize = letterController.Letter.Prize;
+
+        if (prize is ScorePrize scorePrize)
         {
-            if (prize is ScorePrize scorePrize)
+            yield return letterController.AnimatePrize(ScoreText.transform);
+            Score += scorePrize.Score;
+            ScoreText.SetText(Score.ToString());
+        }
+        else if (prize is PowerUpPrize powerUpPrize)
+        {
+            switch (powerUpPrize.PowerUp)
             {
-                Score += scorePrize.Score;
-            }
-            else if (prize is PowerUpPrize powerUpPrize)
-            {
-                switch (powerUpPrize.PowerUp)
-                {
-                    case PowerUp.Swap:
-                        SwapButton.GivePowerUpUse();
-                        break;
-                    case PowerUp.Bomb:
-                        BombButton.GivePowerUpUse();
-                        break;
-                    case PowerUp.Hint:
-                        HintButton.GivePowerUpUse();
-                        break;
-                    case PowerUp.Shuffle:
-                        ShuffleButton.GivePowerUpUse();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                case PowerUp.Swap:
+                    yield return letterController.AnimatePrize(SwapButton.transform);
+                    SwapButton.GivePowerUpUse();
+                    break;
+                case PowerUp.Bomb:
+                    yield return letterController.AnimatePrize(BombButton.transform);
+                    BombButton.GivePowerUpUse();
+                    break;
+                case PowerUp.Hint:
+                    yield return letterController.AnimatePrize(HintButton.transform);
+                    HintButton.GivePowerUpUse();
+                    break;
+                case PowerUp.Shuffle:
+                    yield return letterController.AnimatePrize(ShuffleButton.transform);
+                    ShuffleButton.GivePowerUpUse();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }
