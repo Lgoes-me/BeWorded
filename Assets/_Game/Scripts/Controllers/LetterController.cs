@@ -10,7 +10,7 @@ public class LetterController : MonoBehaviour, ICellData
     [field: SerializeField] private Canvas Canvas { get; set; }
     [field: SerializeField] private Image Background { get; set; }
     [field: SerializeField] private TextMeshProUGUI Text { get; set; }
-    [field: SerializeField] private TextMeshProUGUI PointsText { get; set; }
+    [field: SerializeField] private TextMeshProUGUI PrizeText { get; set; }
 
     [field: SerializeField] private Color DefaultColor { get; set; }
     [field: SerializeField] private Color HighlightedColor { get; set; }
@@ -27,7 +27,7 @@ public class LetterController : MonoBehaviour, ICellData
         State = LetterState.Neutral;
 
         Text.SetText(Letter.ToString());
-        PointsText.SetText(Letter.Points.ToString());
+        PrizeText.SetText(Letter.Prize.ToString());
         UpdateView();
 
         return this;

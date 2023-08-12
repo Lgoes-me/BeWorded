@@ -15,6 +15,9 @@ public class SwapDragState : GameState
 
     public override void OnDrag(PointerEventData pointerEventData, LetterController newSelected)
     {
+        if(newSelected == null)
+            return;
+        
         if (MainLetterController != null)
         {
             MainLetterController.Content.position = pointerEventData.position;
@@ -41,6 +44,9 @@ public class SwapDragState : GameState
 
     public override void OnDragEnd(PointerEventData pointerEventData, LetterController newSelected)
     {
+        if(newSelected == null)
+            return;
+        
         MainLetterController.Content.anchoredPosition = Vector3.zero;
 
         MainLetterController.ResetLetter();

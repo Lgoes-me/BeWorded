@@ -1,12 +1,14 @@
-﻿public class Letter
+﻿using UnityEngine.SocialPlatforms.Impl;
+
+public class Letter
 {
     public char Character { get; }
-    public int Points { get; }
+    public IPrize Prize { get; }
 
-    public Letter(char character, int points)
+    public Letter(char character, IPrize prize)
     {
         Character = character;
-        Points = points;
+        Prize = prize;
     }
 
     public override string ToString()

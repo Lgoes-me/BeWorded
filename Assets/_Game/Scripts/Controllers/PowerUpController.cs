@@ -27,6 +27,12 @@ public class PowerUpController : MonoBehaviour
         UpdateButton();
     }
 
+    public void GivePowerUpUse(int value = 1)
+    {
+        Uses += value;
+        UpdateButton();
+    }
+    
     private void UpdateButton()
     {
         PowerUpButton.interactable = Uses > 0;
