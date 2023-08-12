@@ -37,20 +37,24 @@ public class GameplayState : GameState
     }
     public override void OnDragEnd(PointerEventData pointerEventData, LetterController letterController)
     {
-        OnCancel();
+        CheckResponse();
     }
 
-    private void OnCancel()
+    private void CheckResponse()
     {
-        if (!Game.CheckResponse(SelectedLetterControllers))
+        var rightResponse = Game.CheckResponse(SelectedLetterControllers);
+        
+        foreach (var letter in SelectedLetterControllers)
         {
-            foreach (var letter in SelectedLetterControllers)
-            {
+            if (rightResponse)
+                letter.OnCorrect();
+            else
                 letter.OnError();
-            }
         }
 
+        if (rightResponse)
+            return;
+        
         SelectedLetterControllers.Clear();
-        Game.SetResponse(SelectedLetterControllers);
     }
 }

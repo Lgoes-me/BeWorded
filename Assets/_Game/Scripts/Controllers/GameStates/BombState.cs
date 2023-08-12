@@ -12,9 +12,9 @@ public class BombState : GameState
 
     public override void OnClick(PointerEventData pointerEventData, LetterController newSelected)
     {
-        newSelected.OnSelect();
-        Game.ClearSelection(new List<LetterController>() {newSelected}, false);
-        Game.StateMachine.ChangeState(new GameplayState(Game));
+        newSelected.OnError();
+        Game.ClearSelection(new List<LetterController> {newSelected}, false);
+        Game.ChangeState(new GameplayState(Game));
     }
 
     public override void OnStateExit()

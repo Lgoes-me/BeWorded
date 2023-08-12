@@ -7,7 +7,7 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
     private int Width { get; set; }
     private GameplayController Game { get; set; }
     private RectTransform RectTransform { get; set; }
-
+    
     public void Init(GameplayController game, int height, int width)
     {
         Game = game;
@@ -21,19 +21,19 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
     public void OnPointerClick(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.StateMachine.State.OnClick(eventData, selected);
+        Game.State.OnClick(eventData, selected);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.StateMachine.State.OnDrag(eventData, selected);
+        Game.State.OnDrag(eventData, selected);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.StateMachine.State.OnDragEnd(eventData, selected);
+        Game.State.OnDragEnd(eventData, selected);
     }
 
     private LetterController GetPointerCell(PointerEventData eventData)

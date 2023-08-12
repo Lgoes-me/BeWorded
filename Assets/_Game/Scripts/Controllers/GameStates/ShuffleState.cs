@@ -16,6 +16,6 @@ public class ShuffleState : GameState
         }
         
         Game.Response.SetText(string.Empty);
-        Game.StateMachine.ChangeState(new GameplayState(Game));
+        Game.ChangeState(new GameplayState(Game));
     }
 }

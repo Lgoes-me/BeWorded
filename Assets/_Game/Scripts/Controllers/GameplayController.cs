@@ -26,24 +26,25 @@ public class GameplayController : MonoBehaviour
     [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
-    public GameStateMachine StateMachine { get; private set; }
-
+    public GameState State { get; private set; }
     private int Score { get; set; }
 
     private void Awake()
     {
         LettersGrid = new Grid<LetterController>(Height, Width, CreateLetterController);
-        StateMachine = new GameStateMachine(this);
+        
 
         GameAreaController.Init(this, Height, Width);
 
-        SwapButton.Init(Swaps, () => { StateMachine.ChangeState(new SwapDragState(this)); });
+        SwapButton.Init(Swaps, () => { ChangeState(new SwapDragState(this)); });
 
-        BombButton.Init(Bombs, () => { StateMachine.ChangeState(new BombState(this)); });
+        BombButton.Init(Bombs, () => { ChangeState(new BombState(this)); });
 
-        HintButton.Init(Hints, () => { StateMachine.ChangeState(new HintState(this)); });
+        HintButton.Init(Hints, () => { ChangeState(new HintState(this)); });
 
-        ShuffleButton.Init(Shuffles, () => { StateMachine.ChangeState(new ShuffleState(this)); });
+        ShuffleButton.Init(Shuffles, () => { ChangeState(new ShuffleState(this)); });
+        
+        State = new GameplayState(this);
     }
 
     private LetterController CreateLetterController()
@@ -51,6 +52,13 @@ public class GameplayController : MonoBehaviour
         return Instantiate(LetterControllerPrefab, GameAreaController.transform).Init(ContentManager.GetRandomLetter);
     }
 
+    public void ChangeState(GameState state)
+    {
+        State.OnStateExit();
+        State = state;
+        State.OnStateEnter();
+    }
+    
     public void SetResponse(List<LetterController> letterControllers)
     {
         var response = string.Join("", letterControllers.Select(s => s.Letter));
@@ -77,8 +85,10 @@ public class GameplayController : MonoBehaviour
 
     private IEnumerator ClearSelectionCoroutine(List<LetterController> letterControllers, bool getPrizes)
     {
-        StateMachine.ChangeState(new AnimatingState());
+        ChangeState(new AnimatingState());
 
+        yield return new WaitForSeconds(0.1f);
+        
         if (getPrizes)
         {
             GetPrizes(letterControllers.Select(l => l.Letter.Prize));
@@ -91,7 +101,7 @@ public class GameplayController : MonoBehaviour
 
         LettersGrid.FillNewData();
 
-        StateMachine.ChangeState(new GameplayState(this));
+        ChangeState(new GameplayState(this));
     }
 
     private void GetPrizes(IEnumerable<IPrize> prizes)
@@ -123,6 +133,5 @@ public class GameplayController : MonoBehaviour
                 }
             }
         }
-
     }
 }

@@ -1,6 +1,4 @@
-﻿using UnityEngine.SocialPlatforms.Impl;
-
-public class Letter
+﻿public class Letter
 {
     public char Character { get; }
     public IPrize Prize { get; }

@@ -16,6 +16,7 @@ public class LetterController : MonoBehaviour, ICellData
     [field: SerializeField] private Color HighlightedColor { get; set; }
     [field: SerializeField] private Color SelectedColor { get; set; }
     [field: SerializeField] private Color ErrorColor { get; set; }
+    [field: SerializeField] private Color CorrectColor { get; set; }
     private Func<Letter> CreateLetter { get; set; }
     public Letter Letter { get; private set; }
     private LetterState State { get; set; }
@@ -53,13 +54,17 @@ public class LetterController : MonoBehaviour, ICellData
 
     public void OnError()
     {
-        if (State is LetterState.Neutral)
-            return;
-
         State = LetterState.Error;
         UpdateView();
-
+        Content.DOShakePosition(0.1f, 2);
         Invoke(nameof(ResetLetter), 0.15f);
+    }
+
+    public void OnCorrect()
+    {
+        State = LetterState.Correct;
+        UpdateView();
+        Content.DOShakePosition(0.1f, 2);
     }
 
     public void ResetLetter()
@@ -75,6 +80,7 @@ public class LetterController : MonoBehaviour, ICellData
         {
             LetterState.Neutral => DefaultColor,
             LetterState.Error => ErrorColor,
+            LetterState.Correct => CorrectColor,
             LetterState.Clicked => SelectedColor,
             LetterState.Dragged => HighlightedColor,
             _ => Color.white
@@ -85,6 +91,7 @@ public class LetterController : MonoBehaviour, ICellData
     {
         Neutral,
         Error,
+        Correct,
         Clicked,
         Dragged
     }

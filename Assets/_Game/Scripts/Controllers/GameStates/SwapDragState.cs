@@ -55,7 +55,7 @@ public class SwapDragState : GameState
         Game.LettersGrid.SwapCells(MainLetterController, newSelected);
         MainLetterController = null;
 
-        Game.StateMachine.ChangeState(new GameplayState(Game));
+        Game.ChangeState(new GameplayState(Game));
     }
 
     public override void OnStateExit()

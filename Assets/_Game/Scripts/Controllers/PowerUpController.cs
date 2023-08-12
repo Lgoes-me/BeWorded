@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class PowerUpController : MonoBehaviour
 {
-    [field: SerializeField] private Button PowerUpButton { get; set; } 
-    [field: SerializeField] private TextMeshProUGUI UsesText { get; set; } 
-       
+    [field: SerializeField] private Button PowerUpButton { get; set; }
+    [field: SerializeField] private TextMeshProUGUI UsesText { get; set; }
+
     private int Uses { get; set; }
 
     public void Init(int uses, Action powerUpAction)
@@ -16,9 +16,9 @@ public class PowerUpController : MonoBehaviour
 
         PowerUpButton.onClick.AddListener(() =>
         {
-            if(Uses <= 0)
+            if (Uses <= 0)
                 return;
-            
+
             Uses--;
             powerUpAction();
             UpdateButton();
@@ -32,7 +32,7 @@ public class PowerUpController : MonoBehaviour
         Uses += value;
         UpdateButton();
     }
-    
+
     private void UpdateButton()
     {
         PowerUpButton.interactable = Uses > 0;

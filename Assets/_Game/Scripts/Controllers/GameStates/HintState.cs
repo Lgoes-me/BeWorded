@@ -15,6 +15,6 @@ public class HintState : GameState
         var hint = Game.ContentManager.GetHint(letters);
         Game.Response.SetText(hint);
         
-        Game.StateMachine.ChangeState(new GameplayState(Game));
+        Game.ChangeState(new GameplayState(Game));
     }
 }
