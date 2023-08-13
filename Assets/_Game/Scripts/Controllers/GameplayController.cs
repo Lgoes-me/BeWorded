@@ -87,9 +87,10 @@ public class GameplayController : MonoBehaviour
 
         if (getPrizes)
         {
+            var multiplier = 1 + letterControllers.Count/5;
             foreach (var letterController in letterControllers)
             {
-                yield return GetPrizes(letterController);
+                yield return GetPrizes(letterController, multiplier);
             }
         }
 
@@ -102,14 +103,14 @@ public class GameplayController : MonoBehaviour
         ChangeState(new GameplayState(this));
     }
 
-    private IEnumerator GetPrizes(LetterController letterController)
+    private IEnumerator GetPrizes(LetterController letterController, int multiplier)
     {
         var prize = letterController.Letter.Prize;
 
         if (prize is ScorePrize scorePrize)
         {
             yield return letterController.AnimatePrize(ScoreText.transform);
-            Score += scorePrize.Score;
+            Score += scorePrize.Score * multiplier;
             ScoreText.SetText(Score.ToString());
         }
         else if (prize is PowerUpPrize powerUpPrize)
@@ -118,19 +119,19 @@ public class GameplayController : MonoBehaviour
             {
                 case PowerUp.Swap:
                     yield return letterController.AnimatePrize(SwapButton.transform);
-                    SwapButton.GivePowerUpUse();
+                    SwapButton.GivePowerUpUse(multiplier);
                     break;
                 case PowerUp.Bomb:
                     yield return letterController.AnimatePrize(BombButton.transform);
-                    BombButton.GivePowerUpUse();
+                    BombButton.GivePowerUpUse(multiplier);
                     break;
                 case PowerUp.Hint:
                     yield return letterController.AnimatePrize(HintButton.transform);
-                    HintButton.GivePowerUpUse();
+                    HintButton.GivePowerUpUse(multiplier);
                     break;
                 case PowerUp.Shuffle:
                     yield return letterController.AnimatePrize(ShuffleButton.transform);
-                    ShuffleButton.GivePowerUpUse();
+                    ShuffleButton.GivePowerUpUse(multiplier);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

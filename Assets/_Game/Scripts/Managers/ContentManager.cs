@@ -12,21 +12,21 @@ public class ContentManager : MonoBehaviour
 
     private List<(char, int)> WeightedLetters => new()
     {
-        ('A', 5), ('B', 3), ('C', 3), ('D', 3), ('E', 5), ('F', 3), ('G', 3), ('H', 1), ('I', 4), ('J', 2), ('K', 0),
-        ('L', 3), ('M', 3), ('N', 2), ('O', 5), ('P', 3), ('Q', 1), ('R', 3), ('S', 3), ('T', 3), ('U', 4), ('V', 2),
+        ('A', 7), ('B', 3), ('C', 3), ('D', 3), ('E', 5), ('F', 3), ('G', 3), ('H', 1), ('I', 4), ('J', 2), ('K', 0),
+        ('L', 3), ('M', 3), ('N', 2), ('O', 7), ('P', 3), ('Q', 1), ('R', 3), ('S', 3), ('T', 3), ('U', 4), ('V', 2),
         ('W', 0), ('X', 1), ('Y', 0), ('Z', 1)
     };
 
     private List<(IPrize, int)> WeightedPrizes => new()
     {
-        (new ScorePrize(10), 16),
-        (new ScorePrize(20), 8),
-        (new ScorePrize(50), 4),
-        (new ScorePrize(100), 2),
+        (new ScorePrize(10), 32),
+        (new ScorePrize(20), 16),
+        (new ScorePrize(50), 8),
+        (new ScorePrize(100), 4),
         (new ScorePrize(250), 1),
         (new PowerUpPrize(PowerUp.Swap), 2),
         (new PowerUpPrize(PowerUp.Bomb), 2),
-        (new PowerUpPrize(PowerUp.Hint), 1),
+        (new PowerUpPrize(PowerUp.Hint), 2),
         (new PowerUpPrize(PowerUp.Shuffle), 1)
     };
 

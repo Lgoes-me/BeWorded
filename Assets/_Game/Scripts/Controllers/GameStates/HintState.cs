@@ -11,10 +11,9 @@ public class HintState : GameState
 
     public override void OnStateEnter()
     {
-        var letters = Game.LettersGrid.Select(c => c.Data.Letter.Character).ToList();
+        var letters = Game.LettersGrid.Select(l => l.Letter.Character).ToList();
         var hint = Game.ContentManager.GetHint(letters);
         Game.Response.SetText(hint);
-        
         Game.ChangeState(new GameplayState(Game));
     }
 }

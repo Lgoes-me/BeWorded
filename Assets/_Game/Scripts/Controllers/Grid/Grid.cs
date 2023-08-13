@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
+public class Grid<T> : IEnumerable<T> where T : ICellData
 {
     private int Height { get; }
     private int Width { get; }
@@ -156,12 +156,9 @@ public class Grid<T> : IEnumerable<Cell<T>> where T : ICellData
         DataToCell[otherCell.Data] = otherCell;
     }
 
-    public IEnumerator<Cell<T>> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
-        foreach (var cell in Cells)
-        {
-            yield return cell;
-        }
+        return (from Cell<T> cell in Cells select cell.Data).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()

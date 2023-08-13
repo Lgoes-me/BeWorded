@@ -10,9 +10,9 @@ public class ShuffleState : GameState
 
     public override void OnStateEnter()
     {
-        foreach (var cell in Game.LettersGrid)
+        foreach (var letterController in Game.LettersGrid)
         {
-            cell.Data.ResetData();
+            letterController.ResetData();
         }
         
         Game.Response.SetText(string.Empty);

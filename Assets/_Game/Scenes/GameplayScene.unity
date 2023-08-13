@@ -2360,8 +2360,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: -182, y: -384}
+  m_AnchoredPosition: {x: 0, y: 38.9221}
+  m_SizeDelta: {x: -250, y: -400.1559}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1145932307
 GameObject:
@@ -4207,10 +4207,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Height>k__BackingField: 8
   <Width>k__BackingField: 5
-  <Swaps>k__BackingField: 10
-  <Bombs>k__BackingField: 7
-  <Hints>k__BackingField: 4
-  <Shuffles>k__BackingField: 2
+  <Swaps>k__BackingField: 8
+  <Bombs>k__BackingField: 4
+  <Hints>k__BackingField: 2
+  <Shuffles>k__BackingField: 1
   <ContentManager>k__BackingField: {fileID: 1527366028}
   <GameAreaController>k__BackingField: {fileID: 1659520738}
   <LetterControllerPrefab>k__BackingField: {fileID: 1947877333538245542, guid: 68a64359a50a8c6438244ed65f3409f5, type: 3}
@@ -4434,7 +4434,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -91, y: 370}
+  m_AnchoredPosition: {x: -125, y: 360}
   m_SizeDelta: {x: 178.5, y: 50}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &2061041078
