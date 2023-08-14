@@ -57,11 +57,11 @@ MonoBehaviour:
   <Background>k__BackingField: {fileID: 2037900848725423610}
   <Text>k__BackingField: {fileID: 2037900849119609688}
   <PrizeText>k__BackingField: {fileID: 6713804897152959435}
-  <DefaultColor>k__BackingField: {r: 0.34610996, g: 0.32156864, b: 0.3764706, a: 1}
-  <HighlightedColor>k__BackingField: {r: 0.1882353, g: 0.15686275, b: 0.48235294, a: 1}
-  <SelectedColor>k__BackingField: {r: 0.34509805, g: 0.6117647, b: 0.40007535, a: 1}
-  <ErrorColor>k__BackingField: {r: 0.6509434, g: 0.3285422, b: 0.3285422, a: 1}
-  <CorrectColor>k__BackingField: {r: 0.6415094, g: 0.5561617, b: 0.36009255, a: 1}
+  <DefaultColor>k__BackingField: {r: 1, g: 1, b: 1, a: 0}
+  <HighlightedColor>k__BackingField: {r: 0.8490566, g: 0.3724635, b: 0.59194726, a: 0.3137255}
+  <SelectedColor>k__BackingField: {r: 0.9150943, g: 0.5976333, b: 0.22877358, a: 0.3137255}
+  <ErrorColor>k__BackingField: {r: 0.9245283, g: 0.3009078, b: 0.3009078, a: 0.3137255}
+  <CorrectColor>k__BackingField: {r: 0.33725494, g: 0.67114717, b: 0.98039216, a: 0.3137255}
 --- !u!223 &1836939269
 Canvas:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7482667652216324306, guid: bffac1ddeffb2244683c76c04a5d44d6, type: 3}
+  m_Sprite: {fileID: 1743588106, guid: 054c89a722836f942b0f7925d49542ab, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -253,8 +253,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4292925396
-  m_fontColor: {r: 0.83183515, g: 0.8442506, b: 0.8773585, a: 1}
+    rgba: 4283572551
+  m_fontColor: {r: 0.2784314, g: 0.12941177, b: 0.32156864, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -389,8 +389,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4292925396
-  m_fontColor: {r: 0.83183515, g: 0.8442506, b: 0.8773585, a: 1}
+    rgba: 4283572551
+  m_fontColor: {r: 0.2784314, g: 0.12941177, b: 0.32156864, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

@@ -43,7 +43,11 @@ PlayerSettings:
   - logo: {fileID: 10404, guid: 0000000000000000f000000000000000, type: 0}
     duration: 2
   - logo: {fileID: 21300000, guid: 0633130af3502094597518763a936f28, type: 3}
-    duration: 4
+    duration: 3
+  - logo: {fileID: 21300000, guid: 0e3bda6f70df0df4daa74589a0ffbf87, type: 3}
+    duration: 3
+  - logo: {fileID: 21300000, guid: 68fa32b75f904a548afb2af57215a6b2, type: 3}
+    duration: 3
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1920
@@ -678,7 +682,7 @@ PlayerSettings:
   suppressCommonWarnings: 1
   allowUnsafeCode: 0
   useDeterministicCompilation: 1
-  selectedPlatform: 3
+  selectedPlatform: 0
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 1
