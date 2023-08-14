@@ -14,26 +14,24 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
         Height = height;
         Width = width;
         RectTransform = GetComponent<RectTransform>();
-            
-        RectTransform.sizeDelta = new Vector2(70 * Width, 70 * Height);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.State.OnClick(eventData, selected);
+        //Game.State.OnClick(eventData, selected);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.State.OnDrag(eventData, selected);
+        //Game.State.OnDrag(eventData, selected);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.State.OnDragEnd(eventData, selected);
+        //Game.State.OnDragEnd(eventData, selected);
     }
 
     private LetterController GetPointerCell(PointerEventData eventData)
@@ -43,15 +41,21 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
             eventData.position,
             eventData.pressEventCamera,
             out var clickPosition))
-
+        {
             return null;
+        }
 
-        var xPosition = Mathf.FloorToInt(Width * clickPosition.x / RectTransform.sizeDelta.x);
+        Debug.Log($"something {clickPosition}" );
+
+        return null;
+        // return null;
+
+        /*var xPosition = Mathf.FloorToInt(Width * clickPosition.x / RectTransform.sizeDelta.x);
         var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / RectTransform.sizeDelta.y);
 
         if (xPosition < 0 || xPosition >= Width || yPosition < 0 || yPosition >= Height)
             return null;
 
-        return Game.LettersGrid.Get(yPosition, xPosition);
+        return Game.LettersGrid.Get(yPosition, xPosition);*/
     }
 }
