@@ -19,19 +19,19 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
     public void OnPointerClick(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        //Game.State.OnClick(eventData, selected);
+        Game.State.OnClick(eventData, selected);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        //Game.State.OnDrag(eventData, selected);
+        Game.State.OnDrag(eventData, selected);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        //Game.State.OnDragEnd(eventData, selected);
+        Game.State.OnDragEnd(eventData, selected);
     }
 
     private LetterController GetPointerCell(PointerEventData eventData)
@@ -45,17 +45,19 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
             return null;
         }
 
-        Debug.Log($"something {clickPosition}" );
+        Vector3 click = new Vector3(clickPosition.x, clickPosition.y, 0f);
+        
+        Vector3[] localCorners = new Vector3[4];
+        RectTransform.GetLocalCorners(localCorners);
+        
+        click -= localCorners[0];
 
-        return null;
-        // return null;
-
-        /*var xPosition = Mathf.FloorToInt(Width * clickPosition.x / RectTransform.sizeDelta.x);
-        var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / RectTransform.sizeDelta.y);
+        var xPosition = Mathf.FloorToInt(Width * -1 * click.x / (localCorners[1].x + localCorners[0].x));
+        var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / (localCorners[2].y - localCorners[0].y) + 4);
 
         if (xPosition < 0 || xPosition >= Width || yPosition < 0 || yPosition >= Height)
             return null;
 
-        return Game.LettersGrid.Get(yPosition, xPosition);*/
+        return Game.LettersGrid.Get(yPosition, xPosition);
     }
 }

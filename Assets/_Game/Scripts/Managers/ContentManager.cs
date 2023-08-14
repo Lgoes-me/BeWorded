@@ -36,7 +36,7 @@ public class ContentManager : MonoBehaviour
         var words = WordsAsset.text.Split("\n");
         Words = new List<string>(words)
             .AsParallel()
-            .Select(s => RemoveAccents(s).ToUpper())
+            .Select(s => RemoveAccents(s).ToUpper().Replace("\r", ""))
             .Where(s => s.Length >= 3)
             .OrderBy(s => s.Length)
             .ToList();

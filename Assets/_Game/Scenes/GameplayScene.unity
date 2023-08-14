@@ -1117,7 +1117,7 @@ MonoBehaviour:
   fitType: 3
   rows: 8
   columns: 5
-  cellSize: {x: 158, y: 196.25003}
+  cellSize: {x: 158.00003, y: 172.8956}
   spacing: {x: 10, y: 10}
   fitX: 1
   fitY: 1
@@ -1813,7 +1813,7 @@ MonoBehaviour:
   fitType: 4
   rows: 1
   columns: 4
-  cellSize: {x: 183.75, y: 157.93}
+  cellSize: {x: 183.75003, y: 157.93}
   spacing: {x: 25, y: 10}
   fitX: 1
   fitY: 1
@@ -2179,7 +2179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TESTE
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 09829edb0f7f64a4ba587aabbcab173b, type: 2}
   m_sharedMaterial: {fileID: 6301852594332281309, guid: 09829edb0f7f64a4ba587aabbcab173b, type: 2}
@@ -2206,7 +2206,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3788,7 +3788,7 @@ MonoBehaviour:
   fitType: 3
   rows: 8
   columns: 0
-  cellSize: {x: NaN, y: 196.25003}
+  cellSize: {x: NaN, y: 172.8956}
   spacing: {x: 10, y: 10}
   fitX: 1
   fitY: 1
@@ -4451,7 +4451,7 @@ Canvas:
   m_GameObject: {fileID: 2041356279}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -4544,7 +4544,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 162a0fbccb6a34c468029e607e05eeb5, type: 2}
   m_sharedMaterial: {fileID: -2842465839563651271, guid: 162a0fbccb6a34c468029e607e05eeb5, type: 2}
@@ -4571,7 +4571,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
