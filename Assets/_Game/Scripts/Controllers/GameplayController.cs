@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameplayController : MonoBehaviour
 {
@@ -24,6 +26,7 @@ public class GameplayController : MonoBehaviour
     [field: SerializeField] private PowerUpController BombButton { get; set; }
     [field: SerializeField] private PowerUpController HintButton { get; set; }
     [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
+    [field: SerializeField] private Button ResetButton { get; set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
@@ -40,7 +43,13 @@ public class GameplayController : MonoBehaviour
         HintButton.Init(Hints, () => { ChangeState(new HintState(this)); });
         ShuffleButton.Init(Shuffles, () => { ChangeState(new ShuffleState(this)); });
 
+        ResetButton.onClick.AddListener(ResetGame);
         State = new GameplayState(this);
+    }
+
+    private void ResetGame()
+    {
+        SceneManager.LoadScene(0);
     }
 
     private LetterController CreateLetterController()
@@ -117,19 +126,19 @@ public class GameplayController : MonoBehaviour
         {
             switch (powerUpPrize.PowerUp)
             {
-                case PowerUp.Swap:
+                case PowerUp.Troca:
                     yield return letterController.AnimatePrize(SwapButton.transform);
                     SwapButton.GivePowerUpUse(multiplier);
                     break;
-                case PowerUp.Bomb:
+                case PowerUp.Bomba:
                     yield return letterController.AnimatePrize(BombButton.transform);
                     BombButton.GivePowerUpUse(multiplier);
                     break;
-                case PowerUp.Hint:
+                case PowerUp.Dica:
                     yield return letterController.AnimatePrize(HintButton.transform);
                     HintButton.GivePowerUpUse(multiplier);
                     break;
-                case PowerUp.Shuffle:
+                case PowerUp.Misturar:
                     yield return letterController.AnimatePrize(ShuffleButton.transform);
                     ShuffleButton.GivePowerUpUse(multiplier);
                     break;

@@ -35,8 +35,8 @@ public class PowerUpPrize : IPrize
 
 public enum PowerUp
 {
-    Swap,
-    Bomb,
-    Hint,
-    Shuffle
+    Troca,
+    Bomba,
+    Dica,
+    Misturar
 }
