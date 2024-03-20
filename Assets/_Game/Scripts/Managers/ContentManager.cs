@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class ContentManager : MonoBehaviour
 {
-    [field: SerializeField] private TextAsset WordsAsset { get; set; }
+    [field: SerializeField] private List<TextAssetByLanguage> Texts { get; set; }
     private List<string> Words { get; set; }
+    
+    private GameConfig GameConfig { get; set; }
 
     private List<(char, int)> WeightedLetters => new()
     {
@@ -30,10 +32,13 @@ public class ContentManager : MonoBehaviour
         (new PowerUpPrize(PowerUp.Misturar), 1)
     };
 
-    private void Awake()
+    public void Init(GameConfig gameConfig)
     {
+        GameConfig = gameConfig;
+        
         //https://github.com/pythonprobr/palavras
-        var words = WordsAsset.text.Split("\n");
+        var words = Texts.First(x => x.Language == gameConfig.GameLanguage).WordsAsset.text.Split("\n");
+        
         Words = new List<string>(words)
             .AsParallel()
             .Select(s => RemoveAccents(s).ToUpper().Replace("\r", ""))
@@ -52,7 +57,7 @@ public class ContentManager : MonoBehaviour
 
     public bool IsValidWord(string word)
     {
-        return word.Length >= 3 && Words.Contains(word);
+        return word.Length >= GameConfig.MinimumWordSize && Words.Contains(word);
     }
 
     public string GetHint(List<char> letters)

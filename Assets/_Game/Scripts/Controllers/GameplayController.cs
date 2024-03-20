@@ -9,13 +9,6 @@ using UnityEngine.UI;
 
 public class GameplayController : MonoBehaviour
 {
-    [field: SerializeField] private int Height { get; set; }
-    [field: SerializeField] private int Width { get; set; }
-    [field: SerializeField] private int Swaps { get; set; }
-    [field: SerializeField] private int Bombs { get; set; }
-    [field: SerializeField] private int Hints { get; set; }
-    [field: SerializeField] private int Shuffles { get; set; }
-
     [field: SerializeField] public ContentManager ContentManager { get; private set; }
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
@@ -31,17 +24,25 @@ public class GameplayController : MonoBehaviour
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
     private int Score { get; set; }
+    
+    private GameConfig GameConfig { get; set; }
+    private Player Player { get; set; }
 
     private void Awake()
     {
-        LettersGrid = new Grid<LetterController>(Height, Width, CreateLetterController);
-        
-        GameAreaController.Init(this, Height, Width);
+        GameConfig = new GameConfig();
+        Player = new Player();
 
-        SwapButton.Init(Swaps, () => { ChangeState(new SwapDragState(this)); });
-        BombButton.Init(Bombs, () => { ChangeState(new BombState(this)); });
-        HintButton.Init(Hints, () => { ChangeState(new HintState(this)); });
-        ShuffleButton.Init(Shuffles, () => { ChangeState(new ShuffleState(this)); });
+        ContentManager.Init(GameConfig);
+        
+        LettersGrid = new Grid<LetterController>(GameConfig.Height, GameConfig.Width, CreateLetterController);
+        
+        GameAreaController.Init(this, GameConfig.Height, GameConfig.Width);
+
+        SwapButton.Init(Player.Swaps, () => { ChangeState(new SwapDragState(this)); });
+        BombButton.Init(Player.Bombs, () => { ChangeState(new BombState(this)); });
+        HintButton.Init(Player.Hints, () => { ChangeState(new HintState(this)); });
+        ShuffleButton.Init(Player.Shuffles, () => { ChangeState(new ShuffleState(this)); });
 
         ResetButton.onClick.AddListener(ResetGame);
         State = new GameplayState(this);
@@ -96,10 +97,9 @@ public class GameplayController : MonoBehaviour
 
         if (getPrizes)
         {
-            var multiplier = 1 + letterControllers.Count/5;
             foreach (var letterController in letterControllers)
             {
-                yield return GetPrizes(letterController, multiplier);
+                yield return GetPrizes(letterController, letterControllers.Count);
             }
         }
 

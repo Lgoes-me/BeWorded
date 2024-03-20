@@ -4234,7 +4234,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115acf75b09e459eac4c2ad47dee8c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <WordsAsset>k__BackingField: {fileID: 4900000, guid: a516f3f87da44732b3a5a352b912b68d, type: 3}
+  <Texts>k__BackingField:
+  - <WordsAsset>k__BackingField: {fileID: 4900000, guid: a516f3f87da44732b3a5a352b912b68d, type: 3}
+    <Language>k__BackingField: 0
+  - <WordsAsset>k__BackingField: {fileID: 4900000, guid: 9c47531b20b1ac449a64d89412ac3465, type: 3}
+    <Language>k__BackingField: 1
 --- !u!4 &1527366029
 Transform:
   m_ObjectHideFlags: 0
@@ -5010,12 +5014,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05fdff712d524b2484b2d48824999338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Height>k__BackingField: 8
-  <Width>k__BackingField: 5
-  <Swaps>k__BackingField: 8
-  <Bombs>k__BackingField: 4
-  <Hints>k__BackingField: 2
-  <Shuffles>k__BackingField: 1
   <ContentManager>k__BackingField: {fileID: 1527366028}
   <GameAreaController>k__BackingField: {fileID: 1659520738}
   <LetterControllerPrefab>k__BackingField: {fileID: 1512483143877194891, guid: 68a64359a50a8c6438244ed65f3409f5, type: 3}
