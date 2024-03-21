@@ -6,7 +6,6 @@ public class GameplayState : GameState
     private GameplayController Game { get; set; }
     private List<LetterController> SelectedLetterControllers { get; set; }
     
-
     public GameplayState(GameplayController game)
     {
         SelectedLetterControllers = new List<LetterController>();

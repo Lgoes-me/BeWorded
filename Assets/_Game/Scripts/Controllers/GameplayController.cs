@@ -19,18 +19,20 @@ public class GameplayController : MonoBehaviour
     [field: SerializeField] private PowerUpController BombButton { get; set; }
     [field: SerializeField] private PowerUpController HintButton { get; set; }
     [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
-    [field: SerializeField] private Button ResetButton { get; set; }
+    [field: SerializeField] public Button ResetButton { get; private set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
     private int Score { get; set; }
     
     private GameConfig GameConfig { get; set; }
+    private LevelConfig LevelConfig { get; set; }
     private Player Player { get; set; }
 
     private void Awake()
     {
         GameConfig = new GameConfig();
+        LevelConfig = new LevelConfig();
         Player = new Player();
 
         ContentManager.Init(GameConfig);
@@ -109,7 +111,14 @@ public class GameplayController : MonoBehaviour
 
         LettersGrid.FillNewData();
 
-        ChangeState(new GameplayState(this));
+        if (Score >= LevelConfig.Score)
+        {
+            ChangeState(new CompletedLevelState(this));  
+        }
+        else
+        {
+            ChangeState(new GameplayState(this));
+        }
     }
 
     private IEnumerator GetPrizes(LetterController letterController, int multiplier)
@@ -128,19 +137,19 @@ public class GameplayController : MonoBehaviour
             {
                 case PowerUp.Troca:
                     yield return letterController.AnimatePrize(SwapButton.transform);
-                    SwapButton.GivePowerUpUse(multiplier);
+                    SwapButton.GivePowerUpUse();
                     break;
                 case PowerUp.Bomba:
                     yield return letterController.AnimatePrize(BombButton.transform);
-                    BombButton.GivePowerUpUse(multiplier);
+                    BombButton.GivePowerUpUse();
                     break;
                 case PowerUp.Dica:
                     yield return letterController.AnimatePrize(HintButton.transform);
-                    HintButton.GivePowerUpUse(multiplier);
+                    HintButton.GivePowerUpUse();
                     break;
                 case PowerUp.Misturar:
                     yield return letterController.AnimatePrize(ShuffleButton.transform);
-                    ShuffleButton.GivePowerUpUse(multiplier);
+                    ShuffleButton.GivePowerUpUse();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
