@@ -6,7 +6,7 @@ public class LevelConfig
 
     public LevelConfig()
     {
-        Score = UnityEngine.Random.Range(300, 10000);
+        Score = UnityEngine.Random.Range(300, 1000);
         Debug.Log($"Score: {Score}");
     }
 }

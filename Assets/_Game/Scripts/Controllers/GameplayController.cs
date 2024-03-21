@@ -17,7 +17,6 @@ public class GameplayController : MonoBehaviour
 
     [field: SerializeField] private PowerUpController SwapButton { get; set; }
     [field: SerializeField] private PowerUpController BombButton { get; set; }
-    [field: SerializeField] private PowerUpController HintButton { get; set; }
     [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
     [field: SerializeField] public Button ResetButton { get; private set; }
 
@@ -43,16 +42,15 @@ public class GameplayController : MonoBehaviour
 
         SwapButton.Init(Player.Swaps, () => { ChangeState(new SwapDragState(this)); });
         BombButton.Init(Player.Bombs, () => { ChangeState(new BombState(this)); });
-        HintButton.Init(Player.Hints, () => { ChangeState(new HintState(this)); });
         ShuffleButton.Init(Player.Shuffles, () => { ChangeState(new ShuffleState(this)); });
 
         ResetButton.onClick.AddListener(ResetGame);
         State = new GameplayState(this);
     }
 
-    private void ResetGame()
+    public void ResetGame()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     private LetterController CreateLetterController()
@@ -142,10 +140,6 @@ public class GameplayController : MonoBehaviour
                 case PowerUp.Bomba:
                     yield return letterController.AnimatePrize(BombButton.transform);
                     BombButton.GivePowerUpUse();
-                    break;
-                case PowerUp.Dica:
-                    yield return letterController.AnimatePrize(HintButton.transform);
-                    HintButton.GivePowerUpUse();
                     break;
                 case PowerUp.Misturar:
                     yield return letterController.AnimatePrize(ShuffleButton.transform);

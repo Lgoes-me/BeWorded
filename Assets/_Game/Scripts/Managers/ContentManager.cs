@@ -39,13 +39,6 @@ public class ContentManager : MonoBehaviour
         return word.Length >= GameConfig.MinimumWordSize && Words.Contains(word);
     }
 
-    public string GetHint(List<char> letters)
-    {
-        return Words
-            .AsParallel()
-            .FirstOrDefault(s => !Enumerable.Except(s, letters).Any()) ?? String.Empty;
-    }
-
     private string RemoveAccents(string text)
     {
         StringBuilder sbReturn = new StringBuilder();

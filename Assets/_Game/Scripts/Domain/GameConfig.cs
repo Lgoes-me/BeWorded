@@ -23,7 +23,6 @@ public class GameConfig
         (new ScorePrize(250), 1),
         (new PowerUpPrize(PowerUp.Troca), 4),
         (new PowerUpPrize(PowerUp.Bomba), 2),
-        (new PowerUpPrize(PowerUp.Dica), 2),
         (new PowerUpPrize(PowerUp.Misturar), 1)
     };
 

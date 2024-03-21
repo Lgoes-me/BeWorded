@@ -9,6 +9,6 @@
 
     public override void OnStateEnter()
     {
-        Game.ResetButton.gameObject.SetActive(true);
+        Game.ResetGame();
     }
 }
