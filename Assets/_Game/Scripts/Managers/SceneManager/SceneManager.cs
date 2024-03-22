@@ -8,6 +8,7 @@ public class SceneManager : BaseManager
 
     public void ChangeMainScene(BaseSceneData data)
     {
+        data.Init(Application);
         UnitySceneManager.LoadScene(data.SceneName, LoadSceneMode.Single);
     }
     

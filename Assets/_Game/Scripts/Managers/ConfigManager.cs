@@ -9,12 +9,12 @@ public class ConfigManager : BaseManager
         GameConfig = new GameConfig();
     }
 
-    public LevelConfig GetNextLevelConfig(Player player)
+    public Level GetNextLevelConfig(Player player)
     {
         player.PlayLevel();
         var score = GameConfig.Scores[player.Level];
 
-        return new LevelConfig(score);
+        return new Level(score);
     }
 
     public async Task GetOrSetLanguage()

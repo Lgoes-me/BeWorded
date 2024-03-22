@@ -20,12 +20,13 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
-    private int Score { get; set; }
+    private Level Level { get; set; }
 
     private void Start()
     {
         var gameConfig = Application.ConfigManager.GameConfig;
         var player = SceneData.Player;
+        Level = Application.ConfigManager.GetNextLevelConfig(player);
 
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
         GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
@@ -100,10 +101,9 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
         LettersGrid.FillNewData();
 
-        if (Score >= SceneData.LevelConfig.Score)
+        if (Level.CurrentScore >= Level.Score)
         {
             yield return new WaitForSeconds(1f);
-            SceneData.PrepareNextLevel();
             ChangeState(new CompletedLevelState(this));
         }
         else
@@ -119,8 +119,8 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         if (prize is ScorePrize scorePrize)
         {
             yield return letterController.AnimatePrize(ScoreText.transform);
-            Score += scorePrize.Score * multiplier;
-            ScoreText.SetText(Score.ToString());
+            Level.GiveScore(scorePrize.Score * multiplier);
+            ScoreText.SetText(Level.CurrentScore.ToString());
         }
         else if (prize is PowerUpPrize powerUpPrize)
         {
