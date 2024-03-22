@@ -4,12 +4,11 @@ public abstract class BaseScene : MonoBehaviour
 {
     protected abstract BaseSceneData BaseSceneData { get; }
     
-    protected SceneManager SceneManager => BaseSceneData.Application.SceneManager;
-    protected ContentManager ContentManager => BaseSceneData.Application.ContentManager;
+    protected Application Application => BaseSceneData.Application;
     
     private void Awake()
     {
-        SceneManager.SetScene(this);
+        Application.SceneManager.SetScene(this);
     }
 }
 

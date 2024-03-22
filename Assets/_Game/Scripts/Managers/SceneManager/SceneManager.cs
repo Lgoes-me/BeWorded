@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-public class SceneManager : MonoBehaviour
+public class SceneManager : BaseManager
 {
     private BaseScene MainScene { get; set; }
 

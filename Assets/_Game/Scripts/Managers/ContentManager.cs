@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class ContentManager : MonoBehaviour
+public class ContentManager : BaseManager
 {
     [field: SerializeField] private List<TextAssetByLanguage> Texts { get; set; }
     
     private List<string> Words { get; set; }
     private GameConfig GameConfig { get; set; }
 
-    public void Init(GameConfig gameConfig)
+    public void Init()
     {
-        GameConfig = gameConfig;
+        GameConfig = Application.ConfigManager.GameConfig;
         
         //https://github.com/pythonprobr/palavras
         //https://github.com/dwyl/english-words
-        var words = Texts.First(x => x.Language == gameConfig.Language).WordsAsset.text.Split("\n");
+        var words = Texts.First(x => x.Language == GameConfig.Language).WordsAsset.text.Split("\n");
         
         Words = new List<string>(words)
             .AsParallel()

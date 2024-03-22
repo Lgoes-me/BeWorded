@@ -25,6 +25,19 @@ public class GameConfig
         (new PowerUpPrize(PowerUp.Bomba), 2),
         (new PowerUpPrize(PowerUp.Misturar), 1)
     };
+    
+    public List<int> Scores => new()
+    {
+        300,
+        500,
+        1000,
+        1250,
+        1600,
+        2400,
+        2800,
+        3500,
+        7000
+    };
 
     public GameConfig()
     {

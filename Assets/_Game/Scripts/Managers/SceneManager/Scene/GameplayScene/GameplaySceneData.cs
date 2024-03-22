@@ -4,11 +4,19 @@
 public class GameplaySceneData : BaseSceneData
 {
     public override string SceneName => "GameplayScene";
-    public GameConfig GameConfig { get; private set; }
+    public Player Player { get; private set; }
+    public LevelConfig LevelConfig { get; private set; }
 
-    public void Init(Application application, GameConfig gameConfig)
+    public void Init(Application application, Player player)
     {
         base.Init(application);
-        GameConfig = gameConfig;
+        Player = player;
+        
+        PrepareNextLevel();
+    }
+
+    public void PrepareNextLevel()
+    {
+        LevelConfig = Application.ConfigManager.GetNextLevelConfig(Player);
     }
 }

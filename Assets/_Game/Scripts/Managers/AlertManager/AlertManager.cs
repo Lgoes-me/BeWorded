@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 
-public class AlertManager : MonoBehaviour
+public class AlertManager : BaseManager
 {
     [field: SerializeField] private LanguageSelectionAlertController LanguageSelectionAlertController { get; set; }
     

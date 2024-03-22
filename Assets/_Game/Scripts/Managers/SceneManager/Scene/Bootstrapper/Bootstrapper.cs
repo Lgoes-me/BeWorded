@@ -4,8 +4,8 @@ public class Bootstrapper : MonoBehaviour
 {
     [field: SerializeField] private Application Application { get; set; }
     [field: SerializeField] private GameplaySceneData GameplaySceneData { get; set; }
-    
-    private GameConfig GameConfig { get; set; }
+
+    private Player Player { get; set; }
     
     private void Awake()
     {
@@ -14,17 +14,16 @@ public class Bootstrapper : MonoBehaviour
 
     private async void Boot()
     {
-        GameConfig = new GameConfig();
+        Player = new Player();
+        
+        Application.Init();
+        
+        Application.ConfigManager.Init();
+        await Application.ConfigManager.GetOrSetLanguage();
 
-        if (GameConfig.Language is LanguageType.Unknown)
-        {
-            var language = await Application.AlertManager.ShowLanguageSelectionAlertController();
-            GameConfig.SetLanguage(language);
-        }
+        Application.ContentManager.Init();
         
-        Application.ContentManager.Init(GameConfig);
-        
-        GameplaySceneData.Init(Application, GameConfig);
+        GameplaySceneData.Init(Application, Player);
         Application.SceneManager.ChangeMainScene(GameplaySceneData);
     }
 }

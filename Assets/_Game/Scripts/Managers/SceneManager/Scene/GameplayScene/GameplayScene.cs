@@ -21,17 +21,16 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
     private int Score { get; set; }
-    
-    private LevelConfig LevelConfig { get; set; }
+
     private Player Player { get; set; }
 
     private void Start()
     {
-        LevelConfig = new LevelConfig();
+        var gameConfig = Application.ConfigManager.GameConfig;
         Player = new Player();
 
-        LettersGrid = new Grid<LetterController>(SceneData.GameConfig.Height, SceneData.GameConfig.Width, CreateLetterController);
-        GameAreaController.Init(this, SceneData.GameConfig.Height, SceneData.GameConfig.Width);
+        LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
+        GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
 
         SwapButton.Init(Player.Swaps, () => { ChangeState(new SwapDragState(this)); });
         BombButton.Init(Player.Bombs, () => { ChangeState(new BombState(this)); });
@@ -43,12 +42,13 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
     public void ResetGame()
     {
-        SceneManager.ChangeMainScene(SceneData);
+        Application.SceneManager.ChangeMainScene(SceneData);
     }
 
     private LetterController CreateLetterController()
     {
-        return Instantiate(LetterControllerPrefab, GameAreaController.transform).Init(ContentManager.GetRandomLetter);
+        return Instantiate(LetterControllerPrefab, GameAreaController.transform)
+            .Init(Application.ContentManager.GetRandomLetter);
     }
 
     public void ChangeState(GameState state)
@@ -68,7 +68,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     {
         var response = string.Join("", letterControllers.Select(s => s.Letter));
 
-        if (ContentManager.IsValidWord(response))
+        if (Application.ContentManager.IsValidWord(response))
         {
             ClearSelection(letterControllers);
             return true;
@@ -102,10 +102,11 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
         LettersGrid.FillNewData();
 
-        if (Score >= LevelConfig.Score)
+        if (Score >= SceneData.LevelConfig.Score)
         {
             yield return new WaitForSeconds(1f);
-            ChangeState(new CompletedLevelState(this));  
+            SceneData.PrepareNextLevel();
+            ChangeState(new CompletedLevelState(this));
         }
         else
         {

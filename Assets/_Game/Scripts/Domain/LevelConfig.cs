@@ -4,9 +4,9 @@ public class LevelConfig
 {
     public int Score { get; private set; }
 
-    public LevelConfig()
+    public LevelConfig(int score)
     {
-        Score = UnityEngine.Random.Range(300, 1000);
+        Score = score;
         Debug.Log($"Score: {Score}");
     }
 }
