@@ -16,25 +16,23 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     [field: SerializeField] private PowerUpController SwapButton { get; set; }
     [field: SerializeField] private PowerUpController BombButton { get; set; }
     [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
-    [field: SerializeField] public Button ResetButton { get; private set; }
+    [field: SerializeField] private Button ResetButton { get; set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
     private int Score { get; set; }
 
-    private Player Player { get; set; }
-
     private void Start()
     {
         var gameConfig = Application.ConfigManager.GameConfig;
-        Player = new Player();
+        var player = SceneData.Player;
 
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
         GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
 
-        SwapButton.Init(Player.Swaps, () => { ChangeState(new SwapDragState(this)); });
-        BombButton.Init(Player.Bombs, () => { ChangeState(new BombState(this)); });
-        ShuffleButton.Init(Player.Shuffles, () => { ChangeState(new ShuffleState(this)); });
+        SwapButton.Init(player.Swaps, () => { ChangeState(new SwapDragState(this)); });
+        BombButton.Init(player.Bombs, () => { ChangeState(new BombState(this)); });
+        ShuffleButton.Init(player.Shuffles, () => { ChangeState(new ShuffleState(this)); });
 
         ResetButton.onClick.AddListener(ResetGame);
         State = new GameplayState(this);
@@ -128,15 +126,15 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         {
             switch (powerUpPrize.PowerUp)
             {
-                case PowerUp.Troca:
+                case PowerUpType.Troca:
                     yield return letterController.AnimatePrize(SwapButton.transform);
                     SwapButton.GivePowerUpUse();
                     break;
-                case PowerUp.Bomba:
+                case PowerUpType.Bomba:
                     yield return letterController.AnimatePrize(BombButton.transform);
                     BombButton.GivePowerUpUse();
                     break;
-                case PowerUp.Misturar:
+                case PowerUpType.Misturar:
                     yield return letterController.AnimatePrize(ShuffleButton.transform);
                     ShuffleButton.GivePowerUpUse();
                     break;

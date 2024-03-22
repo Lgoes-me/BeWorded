@@ -21,9 +21,9 @@ public class GameConfig
         (new ScorePrize(50), 8),
         (new ScorePrize(100), 4),
         (new ScorePrize(250), 1),
-        (new PowerUpPrize(PowerUp.Troca), 4),
-        (new PowerUpPrize(PowerUp.Bomba), 2),
-        (new PowerUpPrize(PowerUp.Misturar), 1)
+        (new PowerUpPrize(PowerUpType.Troca), 4),
+        (new PowerUpPrize(PowerUpType.Bomba), 2),
+        (new PowerUpPrize(PowerUpType.Misturar), 1)
     };
     
     public List<int> Scores => new()

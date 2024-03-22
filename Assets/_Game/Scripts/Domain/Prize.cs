@@ -20,9 +20,9 @@ public class ScorePrize : IPrize
 
 public class PowerUpPrize : IPrize
 {
-    public PowerUp PowerUp  { get; }
+    public PowerUpType PowerUp  { get; }
 
-    public PowerUpPrize(PowerUp powerUp)
+    public PowerUpPrize(PowerUpType powerUp)
     {
         PowerUp = powerUp;
     }
@@ -31,12 +31,4 @@ public class PowerUpPrize : IPrize
     {
         return PowerUp.ToString();
     }
-}
-
-public enum PowerUp
-{
-    Troca,
-    Bomba,
-    Dica,
-    Misturar
 }

@@ -8,34 +8,33 @@ public class PowerUpController : MonoBehaviour
     [field: SerializeField] private Button PowerUpButton { get; set; }
     [field: SerializeField] private TextMeshProUGUI UsesText { get; set; }
 
-    private int Uses { get; set; }
+    private PowerUp PowerUp { get; set; }
 
-    public void Init(int uses, Action powerUpAction)
+    public void Init(PowerUp powerUp, Action powerUpAction)
     {
-        Uses = uses;
+        PowerUp = powerUp;
 
         PowerUpButton.onClick.AddListener(() =>
         {
-            if (Uses <= 0)
-                return;
-
-            Uses--;
-            powerUpAction();
-            UpdateButton();
+            if (PowerUp.TryUse())
+            {
+                powerUpAction();
+                UpdateButton();
+            }
         });
 
         UpdateButton();
     }
 
-    public void GivePowerUpUse(int value = 1)
+    public void GivePowerUpUse()
     {
-        Uses += value;
+        PowerUp.Gain();
         UpdateButton();
     }
 
     private void UpdateButton()
     {
-        PowerUpButton.interactable = Uses > 0;
-        UsesText.SetText(Uses.ToString());
+        PowerUpButton.interactable = PowerUp.Uses > 0;
+        UsesText.SetText(PowerUp.Uses.ToString());
     }
 }
