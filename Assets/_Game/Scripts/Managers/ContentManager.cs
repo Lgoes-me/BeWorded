@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -8,20 +7,17 @@ using UnityEngine;
 public class ContentManager : MonoBehaviour
 {
     [field: SerializeField] private List<TextAssetByLanguage> Texts { get; set; }
+    
     private List<string> Words { get; set; }
     private GameConfig GameConfig { get; set; }
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-    }
-    
     public void Init(GameConfig gameConfig)
     {
         GameConfig = gameConfig;
         
         //https://github.com/pythonprobr/palavras
-        var words = Texts.First(x => x.Language == gameConfig.GameLanguage).WordsAsset.text.Split("\n");
+        //https://github.com/dwyl/english-words
+        var words = Texts.First(x => x.Language == gameConfig.Language).WordsAsset.text.Split("\n");
         
         Words = new List<string>(words)
             .AsParallel()

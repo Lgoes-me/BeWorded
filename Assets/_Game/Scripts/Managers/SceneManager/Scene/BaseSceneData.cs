@@ -3,10 +3,10 @@ using UnityEngine;
 public abstract class BaseSceneData : ScriptableObject
 {
     public abstract string SceneName { get; }
-    public SceneManager SceneManager { get; private set; }
+    public Application Application { get; private set; }
 
-    protected void Init(SceneManager sceneManager)
+    protected void Init(Application application)
     {
-        SceneManager = sceneManager;
+        Application = application;
     }
 }

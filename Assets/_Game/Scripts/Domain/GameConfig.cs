@@ -5,7 +5,7 @@ public class GameConfig
     public int Height { get; private set; }
     public int Width { get; private set; } 
     public int MinimumWordSize { get; private set; } 
-    public Language GameLanguage { get; private set; }
+    public LanguageType Language { get; private set; }
     
     public List<(char, int)> WeightedLetters => new()
     {
@@ -30,13 +30,19 @@ public class GameConfig
     {
         Height = 8;
         Width = 5;
-        MinimumWordSize = 4;
-        GameLanguage = Language.pt;
+        MinimumWordSize = 3;
+        Language = LanguageType.Unknown;
     }
 
-    public enum Language
+    public void SetLanguage(LanguageType language)
     {
-        pt,
-        en
+        Language = language;
     }
+}
+
+public enum LanguageType
+{
+    Unknown,
+    Pt,
+    En
 }

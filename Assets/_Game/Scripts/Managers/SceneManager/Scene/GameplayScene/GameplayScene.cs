@@ -43,13 +43,12 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
     public void ResetGame()
     {
-        SceneData.SceneManager.ChangeMainScene(SceneData);
+        SceneManager.ChangeMainScene(SceneData);
     }
 
     private LetterController CreateLetterController()
     {
-        return Instantiate(LetterControllerPrefab, GameAreaController.transform)
-            .Init(SceneData.ContentManager.GetRandomLetter);
+        return Instantiate(LetterControllerPrefab, GameAreaController.transform).Init(ContentManager.GetRandomLetter);
     }
 
     public void ChangeState(GameState state)
@@ -69,7 +68,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     {
         var response = string.Join("", letterControllers.Select(s => s.Letter));
 
-        if (SceneData.ContentManager.IsValidWord(response))
+        if (ContentManager.IsValidWord(response))
         {
             ClearSelection(letterControllers);
             return true;
@@ -105,6 +104,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
         if (Score >= LevelConfig.Score)
         {
+            yield return new WaitForSeconds(1f);
             ChangeState(new CompletedLevelState(this));  
         }
         else
