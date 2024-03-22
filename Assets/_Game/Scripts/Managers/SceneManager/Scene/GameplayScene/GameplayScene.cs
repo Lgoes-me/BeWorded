@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameplayController : MonoBehaviour
+public class GameplayScene : BaseScene<GameplaySceneData>
 {
-    [field: SerializeField] public ContentManager ContentManager { get; private set; }
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
     [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
@@ -24,21 +22,16 @@ public class GameplayController : MonoBehaviour
     public GameState State { get; private set; }
     private int Score { get; set; }
     
-    private GameConfig GameConfig { get; set; }
     private LevelConfig LevelConfig { get; set; }
     private Player Player { get; set; }
 
-    private void Awake()
+    private void Start()
     {
-        GameConfig = new GameConfig();
         LevelConfig = new LevelConfig();
         Player = new Player();
 
-        ContentManager.Init(GameConfig);
-        
-        LettersGrid = new Grid<LetterController>(GameConfig.Height, GameConfig.Width, CreateLetterController);
-        
-        GameAreaController.Init(this, GameConfig.Height, GameConfig.Width);
+        LettersGrid = new Grid<LetterController>(SceneData.GameConfig.Height, SceneData.GameConfig.Width, CreateLetterController);
+        GameAreaController.Init(this, SceneData.GameConfig.Height, SceneData.GameConfig.Width);
 
         SwapButton.Init(Player.Swaps, () => { ChangeState(new SwapDragState(this)); });
         BombButton.Init(Player.Bombs, () => { ChangeState(new BombState(this)); });
@@ -50,12 +43,13 @@ public class GameplayController : MonoBehaviour
 
     public void ResetGame()
     {
-        SceneManager.LoadScene(1);
+        SceneData.SceneManager.ChangeMainScene(SceneData);
     }
 
     private LetterController CreateLetterController()
     {
-        return Instantiate(LetterControllerPrefab, GameAreaController.transform).Init(ContentManager.GetRandomLetter);
+        return Instantiate(LetterControllerPrefab, GameAreaController.transform)
+            .Init(SceneData.ContentManager.GetRandomLetter);
     }
 
     public void ChangeState(GameState state)
@@ -75,7 +69,7 @@ public class GameplayController : MonoBehaviour
     {
         var response = string.Join("", letterControllers.Select(s => s.Letter));
 
-        if (ContentManager.IsValidWord(response))
+        if (SceneData.ContentManager.IsValidWord(response))
         {
             ClearSelection(letterControllers);
             return true;

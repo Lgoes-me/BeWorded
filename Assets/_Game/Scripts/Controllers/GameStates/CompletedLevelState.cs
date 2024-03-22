@@ -1,8 +1,8 @@
 ﻿public class CompletedLevelState : GameState
 {
-    private GameplayController Game { get; set; }
+    private GameplayScene Game { get; set; }
         
-    public CompletedLevelState(GameplayController game)
+    public CompletedLevelState(GameplayScene game)
     {
         Game = game;
     }

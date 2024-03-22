@@ -3,10 +3,10 @@ using UnityEngine.EventSystems;
 
 public class GameplayState : GameState
 {
-    private GameplayController Game { get; set; }
+    private GameplayScene Game { get; set; }
     private List<LetterController> SelectedLetterControllers { get; set; }
     
-    public GameplayState(GameplayController game)
+    public GameplayState(GameplayScene game)
     {
         SelectedLetterControllers = new List<LetterController>();
         Game = game;

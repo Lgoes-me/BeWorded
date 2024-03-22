@@ -11,6 +11,11 @@ public class ContentManager : MonoBehaviour
     private List<string> Words { get; set; }
     private GameConfig GameConfig { get; set; }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+    
     public void Init(GameConfig gameConfig)
     {
         GameConfig = gameConfig;

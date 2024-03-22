@@ -3,12 +3,12 @@ using UnityEngine.EventSystems;
 
 public class SwapDragState : GameState
 {
-    private GameplayController Game { get; set; }
+    private GameplayScene Game { get; set; }
     
     private LetterController MainLetterController { get; set; }
     private LetterController OtherLetterController { get; set; }
     
-    public SwapDragState(GameplayController game)
+    public SwapDragState(GameplayScene game)
     {
         Game = game;
     }

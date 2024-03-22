@@ -5,10 +5,10 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
 {
     private int Height { get; set; }
     private int Width { get; set; }
-    private GameplayController Game { get; set; }
+    private GameplayScene Game { get; set; }
     private RectTransform RectTransform { get; set; }
     
-    public void Init(GameplayController game, int height, int width)
+    public void Init(GameplayScene game, int height, int width)
     {
         Game = game;
         Height = height;

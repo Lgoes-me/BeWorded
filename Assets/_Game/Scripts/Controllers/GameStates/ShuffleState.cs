@@ -1,9 +1,9 @@
 ﻿
 public class ShuffleState : GameState
 {
-    private GameplayController Game { get; set; }
+    private GameplayScene Game { get; set; }
 
-    public ShuffleState(GameplayController game)
+    public ShuffleState(GameplayScene game)
     {
         Game = game;
     }

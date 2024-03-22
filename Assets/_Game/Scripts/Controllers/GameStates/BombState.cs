@@ -3,9 +3,9 @@ using UnityEngine.EventSystems;
 
 public class BombState : GameState
 {
-    private GameplayController Game { get; set; }
+    private GameplayScene Game { get; set; }
 
-    public BombState(GameplayController game)
+    public BombState(GameplayScene game)
     {
         Game = game;
     }

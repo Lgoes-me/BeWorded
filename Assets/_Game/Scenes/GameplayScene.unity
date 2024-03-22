@@ -4065,56 +4065,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1527366027
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1527366029}
-  - component: {fileID: 1527366028}
-  m_Layer: 0
-  m_Name: ContentManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1527366028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1527366027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 115acf75b09e459eac4c2ad47dee8c52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Texts>k__BackingField:
-  - <WordsAsset>k__BackingField: {fileID: 4900000, guid: a516f3f87da44732b3a5a352b912b68d, type: 3}
-    <Language>k__BackingField: 0
-  - <WordsAsset>k__BackingField: {fileID: 4900000, guid: 9c47531b20b1ac449a64d89412ac3465, type: 3}
-    <Language>k__BackingField: 1
---- !u!4 &1527366029
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1527366027}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1562737546 stripped
 RectTransform:
@@ -4843,7 +4794,7 @@ GameObject:
   - component: {fileID: 2020116021}
   - component: {fileID: 2020116022}
   m_Layer: 0
-  m_Name: GameplayController
+  m_Name: GameplayScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4862,7 +4813,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2020116022
 MonoBehaviour:
@@ -4876,7 +4827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05fdff712d524b2484b2d48824999338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ContentManager>k__BackingField: {fileID: 1527366028}
+  <SceneData>k__BackingField: {fileID: 11400000, guid: 472321421489872448cb662cebc7930e, type: 2}
   <GameAreaController>k__BackingField: {fileID: 1659520738}
   <LetterControllerPrefab>k__BackingField: {fileID: 1512483143877194891, guid: 68a64359a50a8c6438244ed65f3409f5, type: 3}
   <Response>k__BackingField: {fileID: 827711579}
@@ -4981,7 +4932,7 @@ RectTransform:
   m_Children:
   - {fileID: 1186251228}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
