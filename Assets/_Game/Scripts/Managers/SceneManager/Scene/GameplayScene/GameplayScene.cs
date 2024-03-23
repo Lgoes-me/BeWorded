@@ -16,7 +16,6 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     [field: SerializeField] private PowerUpController SwapButton { get; set; }
     [field: SerializeField] private PowerUpController BombButton { get; set; }
     [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
-    [field: SerializeField] private Button ResetButton { get; set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
@@ -35,7 +34,6 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         BombButton.Init(player.Bombs, () => { ChangeState(new BombState(this)); });
         ShuffleButton.Init(player.Shuffles, () => { ChangeState(new ShuffleState(this)); });
 
-        ResetButton.onClick.AddListener(ResetGame);
         State = new GameplayState(this);
     }
 

@@ -18,4 +18,11 @@ public class Application : MonoBehaviour
         ConfigManager.Application = this;
         SaveManager.Application = this;
     }
+
+
+    public void Reset()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        Destroy(this.gameObject);
+    }
 }
