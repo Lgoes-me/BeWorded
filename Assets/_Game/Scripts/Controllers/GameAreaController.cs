@@ -53,7 +53,7 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
         click -= localCorners[0];
 
         var xPosition = Mathf.FloorToInt(Width * -1 * click.x / (localCorners[1].x + localCorners[0].x));
-        var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / (localCorners[2].y - localCorners[0].y) + 4);
+        var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / (localCorners[2].y - localCorners[0].y) + (float) Height / 2);
 
         if (xPosition < 0 || xPosition >= Width || yPosition < 0 || yPosition >= Height)
             return null;

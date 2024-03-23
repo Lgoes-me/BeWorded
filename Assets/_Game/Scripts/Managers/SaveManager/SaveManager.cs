@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Diagnostics;
+using UnityEditor;
 
 public class SaveManager : BaseManager
 {
-    private string Pasta => UnityEngine.Application.persistentDataPath;
-    private string BaseSavePath => Path.Combine(Pasta, "Save");
+    private static string Pasta => UnityEngine.Application.persistentDataPath;
+    private static string BaseSavePath => Path.Combine(Pasta, "Save");
 
     public void Init()
     {
@@ -109,10 +110,13 @@ public class SaveManager : BaseManager
         Process.Start(FilePath<T>(loadable.Id));
     }
     
-    //ClearDirectory
-    public void Clear()
+    //Clear Directory
+#if UNITY_EDITOR
+    [MenuItem("Window/Clear Folder")]
+#endif
+    public static void Clear()
     {
-        Directory.Delete(BaseSavePath);
+        Directory.Delete(BaseSavePath, true);
         Directory.CreateDirectory(BaseSavePath);
     }
 

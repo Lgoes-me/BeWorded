@@ -133,7 +133,7 @@ MonoBehaviour:
   <Background>k__BackingField: {fileID: 2588749387903863581}
   <Text>k__BackingField: {fileID: 6602296024524903791}
   <PrizeText>k__BackingField: {fileID: 3481022399300524577}
-  <DefaultColor>k__BackingField: {r: 1, g: 1, b: 1, a: 0}
+  <DefaultColor>k__BackingField: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
   <HighlightedColor>k__BackingField: {r: 0.8773585, g: 0.56697226, b: 0.7094446, a: 0.56078434}
   <SelectedColor>k__BackingField: {r: 0.9150943, g: 0.7892257, b: 0.64315593, a: 0.6666667}
   <ErrorColor>k__BackingField: {r: 0.9245283, g: 0.5974546, b: 0.5974546, a: 0.62352943}

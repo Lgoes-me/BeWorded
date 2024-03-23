@@ -1,14 +1,17 @@
 ﻿public class CompletedLevelState : GameState
 {
     private GameplayScene Game { get; set; }
+    private AlertManager ApplicationAlertManager { get; set; }
         
-    public CompletedLevelState(GameplayScene game)
+    public CompletedLevelState(GameplayScene game, AlertManager applicationAlertManager)
     {
         Game = game;
+        ApplicationAlertManager = applicationAlertManager;
     }
 
-    public override void OnStateEnter()
+    public override async void OnStateEnter()
     {
-        Game.ResetGame();
+        await ApplicationAlertManager.ShowLevelVictoryAlertController();
+        Game.GoToShop();
     }
 }

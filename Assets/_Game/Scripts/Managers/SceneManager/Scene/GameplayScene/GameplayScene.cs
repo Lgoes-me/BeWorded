@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class GameplayScene : BaseScene<GameplaySceneData>
 {
+    [field: SerializeField] private ShopSceneData ShopSceneData { get; set; }
+    
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
     [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
@@ -23,6 +25,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
     private void Start()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         var gameConfig = Application.ConfigManager.GameConfig;
         var player = SceneData.Player;
         
@@ -41,9 +44,10 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         State = new GameplayState(this);
     }
 
-    public void ResetGame()
+    public void GoToShop()
     {
-        Application.SceneManager.ChangeMainScene(SceneData);
+        ShopSceneData.Init(SceneData.Player);
+        Application.SceneManager.ChangeMainScene(ShopSceneData);
     }
 
     private LetterController CreateLetterController()
@@ -106,7 +110,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         if (Level.CurrentScore >= Level.Score)
         {
             yield return new WaitForSeconds(1f);
-            ChangeState(new CompletedLevelState(this));
+            ChangeState(new CompletedLevelState(this, Application.AlertManager));
         }
         else
         {

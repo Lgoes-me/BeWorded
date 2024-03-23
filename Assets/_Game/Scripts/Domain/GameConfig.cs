@@ -53,7 +53,7 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
     public GameConfig()
     {
         Id = "GameConfig.bin";
-        Height = 8;
+        Height = 6;
         Width = 5;
         MinimumWordSize = 3;
         Language = LanguageType.Unknown;
