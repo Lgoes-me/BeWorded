@@ -1,6 +1,6 @@
 ﻿public class PowerUp
 {
-    public PowerUpType Type  { get; }
+    private PowerUpType Type  { get; set; }
     public int Uses  { get; private set; }
 
     public PowerUp(PowerUpType type, int uses)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Diagnostics;
@@ -35,8 +34,8 @@ public class SaveManager : BaseManager
             return;
 
         loadable.LoadData(data);
-    } 
-    
+    }
+
     public void LoadData<T>(ILoadable<T> loadable, string fileName) where T : class
     {
         var data = LoadFile<T>(fileName);
@@ -44,7 +43,6 @@ public class SaveManager : BaseManager
         if (data == null)
             return;
 
-        loadable.Id = fileName;
         loadable.LoadData(data);
     }
 
@@ -54,9 +52,31 @@ public class SaveManager : BaseManager
         return saveSystem?.LoadFile(FilePath<T>(fileName));
     }
 
-    public List<string> LoadFilesList<T>() where T : class
+    public List<string> LoadFilesNames<T>() where T : class
     {
         return Directory.GetFiles(FolderPath<T>()).ToList();
+    }
+
+    public List<T2> LoadFilesList<T, T2>() 
+        where T : class
+        where T2 : ILoadable<T>, new()  
+    {
+        var filesList = new List<T2>();
+        
+        foreach (var fileName in LoadFilesNames<T>())
+        {
+            var data = LoadFile<T>(fileName);
+            
+            if (data == null)
+                continue;
+
+            var newT = new T2();
+            newT.LoadData(data);
+
+            filesList.Add(newT);
+        }
+
+        return filesList;
     }
 
     public void DeleteData<T>(string fileName) where T : class
@@ -91,7 +111,7 @@ public class SaveManager : BaseManager
     {
         var path = FilePath<T>(fileName);
         var extension = Path.GetExtension(path);
-        
+
         return extension switch
         {
             ".xml" => new XmlSaveSystem<T>(),

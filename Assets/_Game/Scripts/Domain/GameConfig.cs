@@ -17,12 +17,12 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
 
     public List<(IPrize, int)> WeightedPrizes => new()
     {
-        (new ScorePrize(10), 32),
-        (new ScorePrize(20), 16),
-        (new ScorePrize(50), 8),
-        (new ScorePrize(100), 4),
-        (new ScorePrize(250), 1),
-        (new PowerUpPrize(PowerUpType.Troca), 4),
+        (new ScorePrize(5), 32),
+        (new ScorePrize(10), 16),
+        (new ScorePrize(25), 8),
+        (new ScorePrize(50), 4),
+        (new ScorePrize(100), 1),
+        (new PowerUpPrize(PowerUpType.Troca), 2),
         (new PowerUpPrize(PowerUpType.Bomba), 2),
         (new PowerUpPrize(PowerUpType.Misturar), 1)
     };
@@ -32,12 +32,22 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
         300,
         500,
         1000,
+        //
         1250,
         1600,
         2400,
+        //
         2800,
         3500,
-        7000
+        7000,
+        //
+        8500,
+        9500,
+        16000,
+        //
+        20000,
+        30000,
+        150000
     };
 
     public GameConfig()

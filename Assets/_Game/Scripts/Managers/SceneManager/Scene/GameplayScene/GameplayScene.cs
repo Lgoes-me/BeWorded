@@ -25,6 +25,8 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     {
         var gameConfig = Application.ConfigManager.GameConfig;
         var player = SceneData.Player;
+        
+        Application.SaveManager.SaveData(player);
         Level = Application.ConfigManager.GetNextLevelConfig(player);
 
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
