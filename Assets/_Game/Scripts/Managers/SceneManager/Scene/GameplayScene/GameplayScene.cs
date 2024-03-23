@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameplayScene : BaseScene<GameplaySceneData>
 {
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
     [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
+    [field: SerializeField] private TextMeshProUGUI ScoreToBeatText { get; set; }
     [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
 
     [field: SerializeField] private PowerUpController SwapButton { get; set; }
@@ -28,6 +28,8 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         
         Application.SaveManager.SaveData(player);
         Level = Application.ConfigManager.GetNextLevelConfig(player);
+        
+        ScoreToBeatText.SetText(Level.Score.ToString());
 
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
         GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
