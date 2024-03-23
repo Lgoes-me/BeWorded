@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 
-public class GameConfig
+public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
 {
-    public int Height { get; private set; }
-    public int Width { get; private set; } 
-    public int MinimumWordSize { get; private set; } 
+    public string Id { get; set; }
+    public int Height { get; }
+    public int Width { get; } 
+    public int MinimumWordSize { get; } 
     public LanguageType Language { get; private set; }
     
     public List<(char, int)> WeightedLetters => new()
@@ -41,6 +42,7 @@ public class GameConfig
 
     public GameConfig()
     {
+        Id = "GameConfig.json";
         Height = 8;
         Width = 5;
         MinimumWordSize = 3;
@@ -48,6 +50,26 @@ public class GameConfig
     }
 
     public void SetLanguage(LanguageType language)
+    {
+        Language = language;
+    }
+
+    public void LoadData(GameConfigModel data)
+    {
+        Language = data.Language;
+    }
+    
+    public GameConfigModel SaveData()
+    {
+        return new GameConfigModel(Language);
+    }
+}
+
+public class GameConfigModel
+{
+    public LanguageType Language { get; private set; }
+
+    public GameConfigModel(LanguageType language)
     {
         Language = language;
     }

@@ -19,10 +19,14 @@ public class ConfigManager : BaseManager
 
     public async Task GetOrSetLanguage()
     {
+        Application.SaveManager.LoadData(GameConfig);
+        
         if (GameConfig.Language is not LanguageType.Unknown)
             return;
 
         var language = await Application.AlertManager.ShowLanguageSelectionAlertController();
         GameConfig.SetLanguage(language);
+        
+        Application.SaveManager.SaveData(GameConfig);
     }
 }

@@ -13,6 +13,7 @@ public class Bootstrapper : MonoBehaviour
     private async void Boot()
     {
         Application.Init();
+        Application.SaveManager.Init();
         
         Application.ConfigManager.Init();
         await Application.ConfigManager.GetOrSetLanguage();

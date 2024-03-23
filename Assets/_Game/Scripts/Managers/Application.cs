@@ -6,6 +6,7 @@ public class Application : MonoBehaviour
     [field: SerializeField] public SceneManager SceneManager { get; private set; }
     [field: SerializeField] public AlertManager AlertManager { get; private set; }
     [field: SerializeField] public ConfigManager ConfigManager { get; private set; }
+    [field: SerializeField] public SaveManager SaveManager { get; private set; }
 
     public void Init()
     {
@@ -15,5 +16,6 @@ public class Application : MonoBehaviour
         SceneManager.Application = this;
         AlertManager.Application = this;
         ConfigManager.Application = this;
+        SaveManager.Application = this;
     }
 }
