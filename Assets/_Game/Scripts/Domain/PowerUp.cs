@@ -1,4 +1,7 @@
-﻿public class PowerUp
+﻿using System;
+
+[Serializable]
+public class PowerUp
 {
     private PowerUpType Type  { get; set; }
     public int Uses  { get; private set; }

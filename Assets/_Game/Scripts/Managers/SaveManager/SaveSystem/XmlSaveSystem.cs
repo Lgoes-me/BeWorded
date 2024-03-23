@@ -4,11 +4,9 @@ using System.Xml.Serialization;
 
 public class XmlSaveSystem<T> : SaveSystem<T> where T : class
 {
-    public override string FileExtension => ".xml";
-    
     public override void SaveFile(string path, T state)
     {
-        using (var stream = File.Create(path))
+        using (var stream = File.Open(path, FileMode.Create))
         using (var streamWriter = new StreamWriter(stream))
         {
             var serializer = new XmlSerializer(typeof(T));

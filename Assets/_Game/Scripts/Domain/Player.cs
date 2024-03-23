@@ -8,7 +8,7 @@
 
     public Player()
     {
-        Id = "Player.json";
+        Id = "Player.bin";
         Level = -1;
         Swaps = new PowerUp(PowerUpType.Troca, 8);
         Bombs = new PowerUp(PowerUpType.Bomba, 4);
@@ -31,20 +31,5 @@
     public PlayerModel SaveData()
     {
         return new PlayerModel(Level, Swaps, Bombs, Shuffles);
-    }
-}
-public class PlayerModel
-{
-    public int Level { get; private set; }
-    public PowerUp Swaps { get; private set; }
-    public PowerUp Bombs { get; private set; }
-    public PowerUp Shuffles { get; private set; }
-
-    public PlayerModel(int level, PowerUp swaps, PowerUp bombs, PowerUp shuffles)
-    {
-        Level = level;
-        Swaps = swaps;
-        Bombs = bombs;
-        Shuffles = shuffles;
     }
 }

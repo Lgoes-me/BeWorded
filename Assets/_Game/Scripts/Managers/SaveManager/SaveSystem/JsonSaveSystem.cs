@@ -3,11 +3,9 @@ using Newtonsoft.Json;
 
 public class JsonSaveSystem<T> : SaveSystem<T> where T : class
 {
-    public override string FileExtension => ".json";
-    
     public override void SaveFile(string path, T state)
     {
-        using (var stream = File.Create(path))
+        using (var stream = File.Open(path, FileMode.Create))
         using (var streamWriter = new StreamWriter(stream))
         {
             var serializer = new JsonSerializer();

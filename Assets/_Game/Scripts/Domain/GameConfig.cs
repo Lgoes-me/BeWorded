@@ -52,7 +52,7 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
 
     public GameConfig()
     {
-        Id = "GameConfig.json";
+        Id = "GameConfig.bin";
         Height = 8;
         Width = 5;
         MinimumWordSize = 3;
@@ -72,16 +72,6 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
     public GameConfigModel SaveData()
     {
         return new GameConfigModel(Language);
-    }
-}
-
-public class GameConfigModel
-{
-    public LanguageType Language { get; private set; }
-
-    public GameConfigModel(LanguageType language)
-    {
-        Language = language;
     }
 }
 
