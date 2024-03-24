@@ -39,6 +39,12 @@ public class GameplayState : GameState
         CheckResponse();
     }
 
+    public override void OnStateExit()
+    {
+        Game.Response.SetText(string.Empty);
+        Game.ResponseScore.SetText(string.Empty);
+    }
+
     private void CheckResponse()
     {
         var rightResponse = Game.CheckResponse(SelectedLetterControllers);
@@ -54,6 +60,8 @@ public class GameplayState : GameState
         if (rightResponse)
             return;
         
+        Game.Response.SetText(string.Empty);
+        Game.ResponseScore.SetText(string.Empty);
         SelectedLetterControllers.Clear();
     }
 }

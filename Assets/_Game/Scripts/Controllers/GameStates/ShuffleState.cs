@@ -16,6 +16,7 @@ public class ShuffleState : GameState
         }
         
         Game.Response.SetText(string.Empty);
+        Game.ResponseScore.SetText(string.Empty);
         Game.ChangeState(new GameplayState(Game));
     }
 }

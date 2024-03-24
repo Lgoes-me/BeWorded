@@ -13,8 +13,9 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
 
-    [field: SerializeField] public TextMeshProUGUI Tentativas { get; private set; }
+    [field: SerializeField] private TextMeshProUGUI Tentativas { get; set; }
     [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
+    [field: SerializeField] public TextMeshProUGUI ResponseScore { get; private set; }
     [field: SerializeField] private TextMeshProUGUI ScoreToBeatText { get; set; }
     [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
 
@@ -76,6 +77,18 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     {
         var response = string.Join("", letterControllers.Select(s => s.Letter));
         Response.SetText(response);
+        
+        var soma = 0;
+
+        foreach (var prize in letterControllers.Select(s => s.Letter.Prize))
+        {
+            if (prize is not ScorePrize scorePrize)
+                continue;
+
+            soma += scorePrize.Score;
+        }
+        
+        ResponseScore.SetText($"{soma}x{letterControllers.Count}");
     }
 
     public bool CheckResponse(List<LetterController> letterControllers)
