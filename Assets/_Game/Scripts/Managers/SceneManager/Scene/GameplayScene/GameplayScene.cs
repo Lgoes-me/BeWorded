@@ -8,9 +8,12 @@ using UnityEngine;
 public class GameplayScene : BaseScene<GameplaySceneData>
 {
     [field: SerializeField] private ShopSceneData ShopSceneData { get; set; }
-    
+    [field: SerializeField] private MenuSceneData MenuSceneData { get; set; }
+
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
+
+    [field: SerializeField] public TextMeshProUGUI Tentativas { get; private set; }
     [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
     [field: SerializeField] private TextMeshProUGUI ScoreToBeatText { get; set; }
     [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
@@ -28,12 +31,13 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         var gameConfig = Application.ConfigManager.GameConfig;
         var player = SceneData.Player;
-        
+
         Application.SaveManager.SaveData(player);
         Level = Application.ConfigManager.GetNextLevelConfig(player);
-        
-        ScoreToBeatText.SetText(Level.Score.ToString());
 
+        ScoreToBeatText.SetText(Level.Score.ToString());
+        Tentativas.SetText(Level.Tentativas.ToString());
+        
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
         GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
 
@@ -48,6 +52,11 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     {
         ShopSceneData.Init(SceneData.Player);
         Application.SceneManager.ChangeMainScene(ShopSceneData);
+    }
+
+    public void GoToMainMenu()
+    {
+        Application.SceneManager.ChangeMainScene(MenuSceneData);
     }
 
     private LetterController CreateLetterController()
@@ -75,6 +84,8 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
         if (Application.ContentManager.IsValidWord(response))
         {
+            Level.UsarTentativa();
+            Tentativas.SetText(Level.Tentativas.ToString());
             ClearSelection(letterControllers);
             return true;
         }
@@ -110,7 +121,22 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         if (Level.CurrentScore >= Level.Score)
         {
             yield return new WaitForSeconds(1f);
-            ChangeState(new CompletedLevelState(this, Application.AlertManager));
+
+            if (Level.IsFinalLevel)
+            {
+                ChangeState(new GameOverState(this, true, SceneData.Player, Application.SaveManager,
+                    Application.AlertManager));
+            }
+            else
+            {
+                ChangeState(new CompletedLevelState(this, Application.AlertManager));
+            }
+        }
+        else if (Level.Tentativas == 0)
+        {
+            yield return new WaitForSeconds(1f);
+            ChangeState(new GameOverState(this, false, SceneData.Player, Application.SaveManager,
+                Application.AlertManager));
         }
         else
         {

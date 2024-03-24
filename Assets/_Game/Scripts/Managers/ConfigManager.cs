@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 public class ConfigManager : BaseManager
 {
@@ -12,9 +13,11 @@ public class ConfigManager : BaseManager
     public Level GetNextLevelConfig(Player player)
     {
         player.PlayLevel();
-        var score = GameConfig.Scores[player.Level];
 
-        return new Level(score);
+        if (player.Level > GameConfig.Scores.Count) throw new InvalidOperationException();
+        
+        var score = GameConfig.Scores[player.Level];
+        return new Level(score, player.Level == GameConfig.Scores.Count);
     }
 
     public async Task GetOrSetLanguage()

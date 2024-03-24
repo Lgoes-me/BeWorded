@@ -440,6 +440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LanguageSelectionAlertController>k__BackingField: {fileID: 7282550979605267153, guid: 0a7a40bb216612149a48e193e3f9e6b7, type: 3}
   <LevelVictoryAlertController>k__BackingField: {fileID: 5564873490713953472, guid: afaca3f5e1276c64e8ee6baf34290073, type: 3}
+  <GameOverAlertController>k__BackingField: {fileID: 2442131640315293314, guid: 8f96279a5fdef4246a87151d83ec27f7, type: 3}
 --- !u!1 &1527366027
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ public abstract class AlertController<T> : MonoBehaviour
 {
     private TaskCompletionSource<T> CompletionSource { get; set; }
     
-    public virtual async Task<T> Show()
+    protected async Task<T> InternalShow()
     {
         CompletionSource = new TaskCompletionSource<T>();
         return await CompletionSource.Task;

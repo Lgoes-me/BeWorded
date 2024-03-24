@@ -6,9 +6,9 @@ public class LevelVictoryAlertController : AlertController<bool>
 {
     [field: SerializeField] private Button ContinueButton { get; set; }
 
-    public override Task<bool> Show()
+    public Task<bool> Show()
     {
         ContinueButton.onClick.AddListener(() => Close(true));
-        return base.Show();
+        return InternalShow();
     }
 }

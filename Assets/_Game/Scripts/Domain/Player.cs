@@ -19,7 +19,7 @@
     {
         Level++;
     }
-
+    
     public void LoadData(PlayerModel data)
     {
         Level = data.Level;
