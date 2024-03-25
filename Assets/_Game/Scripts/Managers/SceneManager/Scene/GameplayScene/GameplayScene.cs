@@ -142,7 +142,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
             }
             else
             {
-                ChangeState(new CompletedLevelState(this, Application.AlertManager));
+                ChangeState(new CompletedLevelState(this,SceneData.Player, Level, Application.AlertManager));
             }
         }
         else if (Level.Tentativas == 0)

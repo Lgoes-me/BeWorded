@@ -22,32 +22,32 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
         (new ScorePrize(25), 8),
         (new ScorePrize(50), 4),
         (new ScorePrize(100), 1),
-        (new PowerUpPrize(PowerUpType.Troca), 2),
-        (new PowerUpPrize(PowerUpType.Bomba), 2),
-        (new PowerUpPrize(PowerUpType.Misturar), 1)
+        (new PowerUpPrize(PowerUpType.Troca), 4),
+        (new PowerUpPrize(PowerUpType.Bomba), 4),
+        (new PowerUpPrize(PowerUpType.Misturar), 2)
     };
     
-    public List<int> Scores => new()
+    public List<Level> Levels => new()
     {
-        300,
-        500,
-        1000,
+        new Level(300, 3, false),
+        new Level(500, 5, false),
+        new Level(1000, 8, false),
         //
-        1250,
-        1600,
-        2400,
+        new Level(1250, 4, false),
+        new Level(1600, 6, false),
+        new Level(2400, 10, false),
         //
-        2800,
-        3500,
-        7000,
+        new Level(2800, 5, false),
+        new Level(3500, 7, false),
+        new Level(7000, 12, false),
         //
-        8500,
-        9500,
-        16000,
+        new Level(8500, 10, false),
+        new Level(9500, 12, false),
+        new Level(16000, 20, false),
         //
-        20000,
-        30000,
-        150000
+        new Level(20000, 25, false),
+        new Level(30000, 35, false),
+        new Level(150000, 50, true)
     };
 
     public GameConfig()

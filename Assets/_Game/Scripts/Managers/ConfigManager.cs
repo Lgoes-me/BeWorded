@@ -14,10 +14,9 @@ public class ConfigManager : BaseManager
     {
         player.PlayLevel();
 
-        if (player.Level > GameConfig.Scores.Count) throw new InvalidOperationException();
+        if (player.Level > GameConfig.Levels.Count) throw new InvalidOperationException();
         
-        var score = GameConfig.Scores[player.Level];
-        return new Level(score, player.Level == GameConfig.Scores.Count);
+        return GameConfig.Levels[player.Level];
     }
 
     public async Task GetOrSetLanguage()
