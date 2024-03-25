@@ -14,9 +14,7 @@ public class ShuffleState : GameState
         {
             letterController.ResetData();
         }
-        
-        Game.Response.SetText(string.Empty);
-        Game.ResponseScore.SetText(string.Empty);
+        Game.ClearResponseText();
         Game.ChangeState(new GameplayState(Game));
     }
 }

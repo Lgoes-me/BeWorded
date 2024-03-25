@@ -10,15 +10,15 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
 
-    [field: SerializeField] public TextMeshProUGUI Tentativas { get; private set; }
-    [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
-    [field: SerializeField] public TextMeshProUGUI ResponseScore { get; private set; }
+    [field: SerializeField] private TextMeshProUGUI Tentativas { get; set; }
+    [field: SerializeField] private TextMeshProUGUI Response { get; set; }
+    [field: SerializeField] private TextMeshProUGUI ResponseScore { get; set; }
     [field: SerializeField] private TextMeshProUGUI ScoreToBeatText { get; set; }
-    [field: SerializeField] public TextMeshProUGUI ScoreText { get; set; }
+    [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
 
     [field: SerializeField] private PowerUpController SwapButton { get; set; }
     [field: SerializeField] private PowerUpController BombButton { get; set; }
-    [field: SerializeField] public PowerUpController ShuffleButton { get; set; }
+    [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
@@ -59,14 +59,21 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         State.OnStateEnter();
     }
 
+    public void ClearResponseText()
+    {
+        Response.SetText(string.Empty);
+        ResponseScore.SetText(string.Empty);
+    }
+
     public void SetResponse(List<LetterController> letterControllers)
     {
-        var response = string.Join("", letterControllers.Select(s => s.Letter));
+        var letters = letterControllers.Select(l => l.Letter).ToList();
+        var response = string.Join("", letters);
         Response.SetText(response);
         
         var soma = 0;
 
-        foreach (var prize in letterControllers.Select(s => s.Letter.Prize))
+        foreach (var prize in letters.Select(l => l.Prize))
         {
             if (prize is not ScorePrize scorePrize)
                 continue;
@@ -74,18 +81,18 @@ public class GameplayScene : BaseScene<GameplaySceneData>
             soma += scorePrize.Score;
         }
         
-        ResponseScore.SetText($"{soma}x{letterControllers.Count}");
+        ResponseScore.SetText($"{soma}x{letters.Count}");
     }
 
     public bool CheckResponse(List<LetterController> letterControllers)
     {
-        var response = string.Join("", letterControllers.Select(s => s.Letter));
+        var letters = letterControllers.Select(l => l.Letter).ToList();
+        var response = string.Join("", letters);
 
         if (Application.ContentManager.IsValidWord(response))
         {
             Level.UsarTentativa();
             Tentativas.SetText(Level.Tentativas.ToString());
-            ClearSelection(letterControllers);
             return true;
         }
 
@@ -101,16 +108,9 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     {
         ChangeState(new AnimatingState());
 
-        yield return new WaitForSeconds(0.15f);
-
-        if (getPrizes)
-        {
-            foreach (var letterController in letterControllers)
-            {
-                yield return GetPrizes(letterController, letterControllers.Count);
-            }
-        }
-
+        if(getPrizes)
+            GetPrizes(letterControllers);
+        
         LettersGrid.ClearCells(letterControllers);
 
         yield return LettersGrid.SortEmpty();
@@ -119,8 +119,6 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
         if (Level.CurrentScore >= Level.Score)
         {
-            yield return new WaitForSeconds(1f);
-
             if (Level.IsFinalLevel)
             {
                 ChangeState(new GameOverState(true, SceneData.Player, Application));
@@ -132,43 +130,44 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         }
         else if (Level.Tentativas == 0)
         {
-            yield return new WaitForSeconds(1f);
             ChangeState(new GameOverState(false, SceneData.Player, Application));
         }
         else
         {
             ChangeState(new GameplayState(this));
-        }
+        }      
     }
 
-    private IEnumerator GetPrizes(LetterController letterController, int multiplier)
+    private void GetPrizes(List<LetterController> letterControllers)
     {
-        var prize = letterController.Letter.Prize;
+        foreach (var letterController in letterControllers)
+        {
+            var prize = letterController.Letter.Prize;
 
-        if (prize is ScorePrize scorePrize)
-        {
-            yield return letterController.AnimatePrize(ScoreText.transform);
-            Level.GiveScore(scorePrize.Score * multiplier);
-            ScoreText.SetText(Level.CurrentScore.ToString());
-        }
-        else if (prize is PowerUpPrize powerUpPrize)
-        {
-            switch (powerUpPrize.PowerUp)
+            if (prize is ScorePrize scorePrize)
             {
-                case PowerUpType.Troca:
-                    yield return letterController.AnimatePrize(SwapButton.transform);
-                    SwapButton.GivePowerUpUse();
-                    break;
-                case PowerUpType.Bomba:
-                    yield return letterController.AnimatePrize(BombButton.transform);
-                    BombButton.GivePowerUpUse();
-                    break;
-                case PowerUpType.Misturar:
-                    yield return letterController.AnimatePrize(ShuffleButton.transform);
-                    ShuffleButton.GivePowerUpUse();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                letterController.AnimatePrize(ScoreText.transform, () =>
+                {
+                    Level.GiveScore(scorePrize.Score * letterControllers.Count);
+                    ScoreText.SetText(Level.CurrentScore.ToString());
+                });
+            }
+            else if (prize is PowerUpPrize powerUpPrize)
+            {
+                switch (powerUpPrize.PowerUp)
+                {
+                    case PowerUpType.Troca:
+                        letterController.AnimatePrize(SwapButton.transform, SwapButton.GivePowerUpUse);
+                        break;
+                    case PowerUpType.Bomba:
+                        letterController.AnimatePrize(BombButton.transform, BombButton.GivePowerUpUse);
+                        break;
+                    case PowerUpType.Misturar:
+                        letterController.AnimatePrize(ShuffleButton.transform, ShuffleButton.GivePowerUpUse);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
     }

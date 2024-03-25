@@ -72,11 +72,13 @@ public class LetterController : MonoBehaviour, ICellData
         Content.DOShakePosition(0.1f, 2);
     }
 
-    public IEnumerator AnimatePrize(Transform destination)
+    public void AnimatePrize(Transform destination, Action onComplete)
     {
-        PrizeText.transform.DOMove(destination.position, 0.25f);
-        yield return new WaitForSeconds(0.25f);
-        PrizeText.gameObject.SetActive(false);
+        PrizeText.transform.DOMove(destination.position, 0.25f).onComplete = () =>
+        {
+            PrizeText.gameObject.SetActive(false);
+            onComplete();
+        };
     }
     
     public void ResetLetter()
