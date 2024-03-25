@@ -1,21 +1,24 @@
 ﻿public class CompletedLevelState : GameState
 {
-    private GameplayScene Game { get; set; }
     private Player Player { get; set; }
     private Level Level { get; set; }
-    private AlertManager ApplicationAlertManager { get; set; }
+    private AlertManager AlertManager { get; set; }
+    private SceneManager SceneManager { get; set; }
         
-    public CompletedLevelState(GameplayScene game, Player player, Level level, AlertManager applicationAlertManager)
+    public CompletedLevelState(
+        Player player, 
+        Level level, 
+        Application application)
     {
-        Game = game;
         Player = player;
         Level = level;
-        ApplicationAlertManager = applicationAlertManager;
+        AlertManager = application.AlertManager;
+        SceneManager = application.SceneManager;
     }
 
     public override async void OnStateEnter()
     {
-        await ApplicationAlertManager.ShowLevelVictoryAlertController();
-        Game.GoToShop();
+        await AlertManager.ShowLevelVictoryAlertController();
+        SceneManager.GoToShop(Player);
     }
 }

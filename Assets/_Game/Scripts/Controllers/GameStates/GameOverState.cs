@@ -1,24 +1,27 @@
 ﻿public class GameOverState : GameState
 {
-    private GameplayScene Game { get; set; }
     private bool DidWin { get; set; }
     private Player Player { get; set; }
     private SaveManager SaveManager { get; set; }
-    private AlertManager ApplicationAlertManager { get; set; }
+    private AlertManager AlertManager { get; set; }
+    private SceneManager SceneManager { get; set; }
 
-    public GameOverState(GameplayScene game, bool didWin, Player player, SaveManager saveManager, AlertManager applicationAlertManager)
+    public GameOverState(
+        bool didWin, 
+        Player player, 
+        Application application)
     {
-        Game = game;
         DidWin = didWin;
         Player = player;
-        SaveManager = saveManager;
-        ApplicationAlertManager = applicationAlertManager;
+        SaveManager = application.SaveManager;
+        AlertManager = application.AlertManager;
+        SceneManager = application.SceneManager;
     }
 
     public override async void OnStateEnter()
     {
         SaveManager.DeleteData(Player);
-        await ApplicationAlertManager.ShowGameOverAlertController(DidWin);
-        Game.GoToMainMenu();
+        await AlertManager.ShowGameOverAlertController(DidWin);
+        SceneManager.GoToMainMenu();
     }
 }

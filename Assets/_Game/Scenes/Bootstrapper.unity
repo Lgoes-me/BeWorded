@@ -167,6 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84adb09b7f82cbc4681aa00c83456291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GameplaySceneData>k__BackingField: {fileID: 11400000, guid: 472321421489872448cb662cebc7930e, type: 2}
+  <ShopSceneData>k__BackingField: {fileID: 11400000, guid: ef8b34d8d5db937468ebf969ff0b6350, type: 2}
+  <MenuSceneData>k__BackingField: {fileID: 11400000, guid: 607237d1c61233c48bad25399c438fe0, type: 2}
 --- !u!1 &543878964
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +259,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Application>k__BackingField: {fileID: 1795365373}
-  <MenuSceneData>k__BackingField: {fileID: 11400000, guid: 607237d1c61233c48bad25399c438fe0, type: 2}
 --- !u!1 &674159058
 GameObject:
   m_ObjectHideFlags: 0

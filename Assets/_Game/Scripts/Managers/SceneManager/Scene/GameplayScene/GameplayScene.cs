@@ -7,21 +7,18 @@ using UnityEngine;
 
 public class GameplayScene : BaseScene<GameplaySceneData>
 {
-    [field: SerializeField] private ShopSceneData ShopSceneData { get; set; }
-    [field: SerializeField] private MenuSceneData MenuSceneData { get; set; }
-
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
 
-    [field: SerializeField] private TextMeshProUGUI Tentativas { get; set; }
+    [field: SerializeField] public TextMeshProUGUI Tentativas { get; private set; }
     [field: SerializeField] public TextMeshProUGUI Response { get; private set; }
     [field: SerializeField] public TextMeshProUGUI ResponseScore { get; private set; }
     [field: SerializeField] private TextMeshProUGUI ScoreToBeatText { get; set; }
-    [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
+    [field: SerializeField] public TextMeshProUGUI ScoreText { get; set; }
 
     [field: SerializeField] private PowerUpController SwapButton { get; set; }
     [field: SerializeField] private PowerUpController BombButton { get; set; }
-    [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
+    [field: SerializeField] public PowerUpController ShuffleButton { get; set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
@@ -47,17 +44,6 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         ShuffleButton.Init(player.Shuffles, () => { ChangeState(new ShuffleState(this)); });
 
         State = new GameplayState(this);
-    }
-
-    public void GoToShop()
-    {
-        ShopSceneData.Init(SceneData.Player);
-        Application.SceneManager.ChangeMainScene(ShopSceneData);
-    }
-
-    public void GoToMainMenu()
-    {
-        Application.SceneManager.ChangeMainScene(MenuSceneData);
     }
 
     private LetterController CreateLetterController()
@@ -137,19 +123,17 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
             if (Level.IsFinalLevel)
             {
-                ChangeState(new GameOverState(this, true, SceneData.Player, Application.SaveManager,
-                    Application.AlertManager));
+                ChangeState(new GameOverState(true, SceneData.Player, Application));
             }
             else
             {
-                ChangeState(new CompletedLevelState(this,SceneData.Player, Level, Application.AlertManager));
+                ChangeState(new CompletedLevelState(SceneData.Player, Level, Application));
             }
         }
         else if (Level.Tentativas == 0)
         {
             yield return new WaitForSeconds(1f);
-            ChangeState(new GameOverState(this, false, SceneData.Player, Application.SaveManager,
-                Application.AlertManager));
+            ChangeState(new GameOverState(false, SceneData.Player, Application));
         }
         else
         {

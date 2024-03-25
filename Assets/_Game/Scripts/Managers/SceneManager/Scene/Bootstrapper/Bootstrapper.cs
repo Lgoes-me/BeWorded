@@ -3,7 +3,6 @@ using UnityEngine;
 public class Bootstrapper : MonoBehaviour
 {
     [field: SerializeField] private Application Application { get; set; }
-    [field: SerializeField] private MenuSceneData MenuSceneData { get; set; }
     
     private void Awake()
     {
@@ -19,6 +18,6 @@ public class Bootstrapper : MonoBehaviour
         await Application.ConfigManager.GetOrSetLanguage();
 
         Application.ContentManager.Init();
-        Application.SceneManager.ChangeMainScene(MenuSceneData);
+        Application.SceneManager.GoToMainMenu();
     }
 }

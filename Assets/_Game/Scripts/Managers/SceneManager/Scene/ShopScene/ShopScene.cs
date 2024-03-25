@@ -16,12 +16,6 @@ public class ShopScene : BaseScene<ShopSceneData>
     
     private void Start()
     {
-        Continue.onClick.AddListener(ContinueGame);
-    }
-
-    private void ContinueGame()
-    {
-        GameplaySceneData.Init(SceneData.Player);
-        Application.SceneManager.ChangeMainScene(GameplaySceneData);
+        Continue.onClick.AddListener(() => Application.SceneManager.OpenGameplayScene(SceneData.Player));
     }
 }
