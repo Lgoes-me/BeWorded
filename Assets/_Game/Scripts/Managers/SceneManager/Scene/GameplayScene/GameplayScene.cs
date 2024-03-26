@@ -87,7 +87,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
     public bool CheckResponse(List<LetterController> letterControllers)
     {
-        var letters = letterControllers.Select(l => l.Letter).ToList();
+        var letters = letterControllers.Select(l => l.Letter);
         var response = string.Join("", letters);
 
         if (Application.ContentManager.IsValidWord(response))
@@ -141,6 +141,9 @@ public class GameplayScene : BaseScene<GameplaySceneData>
             basePrize += await AnimatePrize(letterController.Letter.Prize, letterController);
             SceneData.Player.OnLetterPrizeCredited(ref basePrize, ref baseMultiplier, letterController.Letter);
         }
+        
+        var word = string.Join("", letterControllers.Select(l => l.Letter));
+        SceneData.Player.OnWordCredited(ref basePrize, ref baseMultiplier, word);
         
         Level.GiveScore(basePrize * baseMultiplier);
         ScoreText.SetText(Level.CurrentScore.ToString());

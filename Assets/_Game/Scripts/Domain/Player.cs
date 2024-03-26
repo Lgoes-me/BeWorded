@@ -33,10 +33,21 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     {
         foreach (var joker in Jokers)
         {
-            if(joker is not IOnLetterPrizeCreditedJoker basePrizeJoker)
+            if(joker is not IOnLetterPrizeCreditedJoker letterPrizeCreditedJoker)
                 continue;
 
-            basePrizeJoker.OnLetterPrizeCredited(ref basePrize, ref baseMultiplier, letter, this);
+            letterPrizeCreditedJoker.OnLetterPrizeCredited(ref basePrize, ref baseMultiplier, letter);
+        }
+    }
+    
+    public void OnWordCredited(ref int basePrize, ref int baseMultiplier, string word)
+    {
+        foreach (var joker in Jokers)
+        {
+            if(joker is not IOnWordCreditedJoker wordCreditedJoker)
+                continue;
+
+            wordCreditedJoker.OnWordCredited(ref basePrize, ref baseMultiplier, word);
         }
     }
     

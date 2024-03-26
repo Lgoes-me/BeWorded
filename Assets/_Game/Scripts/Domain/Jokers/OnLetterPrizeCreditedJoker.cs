@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public interface IOnLetterPrizeCreditedJoker : IJoker
 {
-    void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter, Player player);
+    void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter);
 }
 
 public class ExtraPrizeCreditedPerCharacterJoker : IOnLetterPrizeCreditedJoker
@@ -17,7 +17,7 @@ public class ExtraPrizeCreditedPerCharacterJoker : IOnLetterPrizeCreditedJoker
         ExtraPrize = extraPrize;
     }
     
-    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter, Player player)
+    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
         if (!Characters.Contains(letter.Character))
             return;
@@ -37,7 +37,7 @@ public class ExtraMultiplierPerCharacterCreditedJoker : IOnLetterPrizeCreditedJo
         ExtraMultiplier = extraMultiplier;
     }
     
-    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter, Player player)
+    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
         if (!Characters.Contains(letter.Character))
             return;
@@ -48,38 +48,42 @@ public class ExtraMultiplierPerCharacterCreditedJoker : IOnLetterPrizeCreditedJo
 
 public class MoneyPerCharacterCreditedJoker : IOnLetterPrizeCreditedJoker
 {
+    private Player Player { get; set; }
     private List<char> Characters { get; set; }
     private int Money { get; set; }
     
-    public MoneyPerCharacterCreditedJoker(List<char> characters, int money)
+    public MoneyPerCharacterCreditedJoker(Player player, List<char> characters, int money)
     {
+        Player = player;
         Characters = characters;
         Money = money;
     }
     
-    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter, Player player)
+    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
         if (!Characters.Contains(letter.Character))
             return;
         
-        player.GivePrize(Money);
+        Player.GivePrize(Money);
     }
 }
 
 public class PowerUpPerCharacterCreditedJoker : IOnLetterPrizeCreditedJoker
 {
+    private Player Player { get; set; }
     private List<char> Characters { get; set; }
     private PowerUpType PowerUpType { get; set; }
     private int Quantity { get; set; }
     
-    public PowerUpPerCharacterCreditedJoker(List<char> characters, PowerUpType powerUpType, int quantity = 1)
+    public PowerUpPerCharacterCreditedJoker(Player player, List<char> characters, PowerUpType powerUpType, int quantity = 1)
     {
+        Player = player;
         Characters = characters;
         PowerUpType = powerUpType;
         Quantity = quantity;
     }
     
-    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter, Player player)
+    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
         if (!Characters.Contains(letter.Character))
             return;
@@ -87,13 +91,13 @@ public class PowerUpPerCharacterCreditedJoker : IOnLetterPrizeCreditedJoker
         switch (PowerUpType)
         {
             case PowerUpType.Troca:
-                player.Swaps.Gain(Quantity);
+                Player.Swaps.Gain(Quantity);
                 break;
             case PowerUpType.Bomba:
-                player.Bombs.Gain(Quantity);
+                Player.Bombs.Gain(Quantity);
                 break;
             case PowerUpType.Misturar:
-                player.Shuffles.Gain(Quantity);
+                Player.Shuffles.Gain(Quantity);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
