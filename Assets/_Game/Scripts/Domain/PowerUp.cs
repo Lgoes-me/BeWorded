@@ -3,8 +3,8 @@
 [Serializable]
 public class PowerUp
 {
-    private PowerUpType Type  { get; set; }
-    public int Uses  { get; private set; }
+    private PowerUpType Type { get; set; }
+    public int Uses { get; private set; }
 
     public PowerUp(PowerUpType type, int uses)
     {
@@ -16,14 +16,14 @@ public class PowerUp
     {
         if (Uses <= 0)
             return false;
-        
+
         Uses--;
         return true;
     }
 
-    public void Gain()
+    public void Gain(int quantity = 1)
     {
-        Uses++;
+        Uses += quantity;
     }
 }
 

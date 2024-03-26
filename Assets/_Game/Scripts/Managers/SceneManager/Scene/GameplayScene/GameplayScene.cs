@@ -27,6 +27,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     private void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        
         var gameConfig = Application.ConfigManager.GameConfig;
         var player = SceneData.Player;
 
@@ -99,19 +100,16 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         return false;
     }
 
-    public async Task ClearSelection(List<LetterController> letterControllers, bool getPrizes = true)
+    public async Task ClearSelection(List<LetterController> letterControllers)
     {
         ChangeState(new AnimatingState());
-
-        if (getPrizes)
-            GetPrizes(letterControllers);
-
         LettersGrid.ClearCells(letterControllers);
-
         await LettersGrid.SortEmpty();
-
         LettersGrid.FillNewData();
+    }
 
+    public void CheckIfGameEnded()
+    {
         if (Level.CurrentScore >= Level.Score)
         {
             if (Level.IsFinalLevel)
@@ -133,42 +131,50 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         }
     }
 
-    private async void GetPrizes(List<LetterController> letterControllers)
+    public async Task GetPrizes(List<LetterController> letterControllers)
     {
         var basePrize = 0;
+        var baseMultiplier = letterControllers.Count;
         
         foreach (var letterController in letterControllers)
         {
-            var prize = letterController.Letter.Prize;
+            basePrize += await AnimatePrize(letterController.Letter.Prize, letterController);
+            SceneData.Player.OnLetterPrizeCredited(ref basePrize, ref baseMultiplier, letterController.Letter);
+        }
+        
+        Level.GiveScore(basePrize * baseMultiplier);
+        ScoreText.SetText(Level.CurrentScore.ToString());
+    }
 
-            if (prize is ScorePrize scorePrize)
+    private async Task<int> AnimatePrize(IPrize prize, LetterController letterController)
+    {
+        if (prize is ScorePrize scorePrize)
+        {
+            await letterController.AnimatePrize(ScoreText.transform.position);
+            return scorePrize.Score;
+        }
+
+        if (prize is PowerUpPrize powerUpPrize)
+        {
+            switch (powerUpPrize.PowerUp)
             {
-                await letterController.AnimatePrize(ScoreText.transform.position);
-                basePrize += scorePrize.Score;
-            }
-            else if (prize is PowerUpPrize powerUpPrize)
-            {
-                switch (powerUpPrize.PowerUp)
-                {
-                    case PowerUpType.Troca:
-                        await letterController.AnimatePrize(SwapButton.transform.position);
-                        SwapButton.GivePowerUpUse();
-                        break;
-                    case PowerUpType.Bomba:
-                        await letterController.AnimatePrize(BombButton.transform.position);
-                        BombButton.GivePowerUpUse();
-                        break;
-                    case PowerUpType.Misturar:
-                        await letterController.AnimatePrize(ShuffleButton.transform.position);
-                        ShuffleButton.GivePowerUpUse();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                case PowerUpType.Troca:
+                    await letterController.AnimatePrize(SwapButton.transform.position);
+                    SwapButton.GivePowerUpUse();
+                    break;
+                case PowerUpType.Bomba:
+                    await letterController.AnimatePrize(BombButton.transform.position);
+                    BombButton.GivePowerUpUse();
+                    break;
+                case PowerUpType.Misturar:
+                    await letterController.AnimatePrize(ShuffleButton.transform.position);
+                    ShuffleButton.GivePowerUpUse();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
         
-        Level.GiveScore(basePrize * letterControllers.Count);
-        ScoreText.SetText(Level.CurrentScore.ToString());
+        return 0;
     }
 }

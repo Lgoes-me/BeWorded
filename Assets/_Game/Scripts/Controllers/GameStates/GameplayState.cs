@@ -44,7 +44,7 @@ public class GameplayState : GameState
         Game.ClearResponseText();
     }
 
-    private void CheckResponse()
+    private async void CheckResponse()
     {
         var rightResponse = Game.CheckResponse(SelectedLetterControllers);
         
@@ -58,7 +58,9 @@ public class GameplayState : GameState
 
         if (rightResponse)
         {
-            Game.ClearSelection(SelectedLetterControllers);
+            await Game.GetPrizes(SelectedLetterControllers);
+            await Game.ClearSelection(SelectedLetterControllers);
+            Game.CheckIfGameEnded();
         }
         else
         {

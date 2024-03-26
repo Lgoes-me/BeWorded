@@ -18,7 +18,7 @@
 
     public override async void OnStateEnter()
     {
-        Player.GivePrize(Level);
+        Player.GivePrize(Level.Prize);
         await AlertManager.ShowLevelVictoryAlertController();
         SceneManager.GoToShop(Player);
     }

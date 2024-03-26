@@ -9,6 +9,8 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     public PowerUp Swaps { get; private set; }
     public PowerUp Bombs { get; private set; }
     public PowerUp Shuffles { get; private set; }
+    
+    public List<IJoker> Jokers { get; private set; }
 
     public Player()
     {
@@ -19,16 +21,33 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
         Swaps = new PowerUp(PowerUpType.Troca, 8);
         Bombs = new PowerUp(PowerUpType.Bomba, 4);
         Shuffles = new PowerUp(PowerUpType.Misturar, 1);
+
+        Jokers = new List<IJoker>()
+        {
+            new ExtraPrizeCreditedPerCharacterJoker(new List<char> {'A'}, 50),
+            new ExtraMultiplierPerCharacterCreditedJoker(new List<char> {'M'}, 10),
+        };
     }
 
+    public void OnLetterPrizeCredited(ref int basePrize, ref int baseMultiplier, Letter letter)
+    {
+        foreach (var joker in Jokers)
+        {
+            if(joker is not IOnLetterPrizeCreditedJoker basePrizeJoker)
+                continue;
+
+            basePrizeJoker.OnLetterPrizeCredited(ref basePrize, ref baseMultiplier, letter, this);
+        }
+    }
+    
     public void PlayLevel()
     {
         Level++;
     }
     
-    public void GivePrize(Level level)
+    public void GivePrize(int prize)
     {
-        Money += level.Prize;
+        Money += prize;
     }
     
     public void LoadData(PlayerModel data)
