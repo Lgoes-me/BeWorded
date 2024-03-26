@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Diagnostics;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class SaveManager : BaseManager
 {
@@ -110,9 +113,18 @@ public class SaveManager : BaseManager
         Process.Start(FilePath<T>(loadable.Id));
     }
     
+    //Open folder
+#if UNITY_EDITOR
+    [MenuItem("Window/Save/Open Folder")]
+#endif
+    public static void OpenFolder()
+    {
+        Process.Start(BaseSavePath);
+    }
+
     //Clear Directory
 #if UNITY_EDITOR
-    [MenuItem("Window/Clear Folder")]
+    [MenuItem("Window/Save/Clear Folder")]
 #endif
     public static void Clear()
     {

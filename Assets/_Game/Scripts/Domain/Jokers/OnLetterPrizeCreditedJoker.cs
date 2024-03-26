@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public interface IOnLetterPrizeCreditedJoker : IJoker
+public abstract class BaseOnLetterPrizeCreditedJoker : BaseJoker
 {
-    void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter);
+    public abstract void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter);
+
+    protected BaseOnLetterPrizeCreditedJoker(string id) : base(id)
+    {
+        
+    }
 }
 
-public class ExtraPrizeCreditedPerCharacterJoker : IOnLetterPrizeCreditedJoker
+public class ExtraPrizeCreditedPerCharacterJoker : BaseOnLetterPrizeCreditedJoker
 {
     private List<char> Characters { get; set; }
     private int ExtraPrize { get; set; }
-    
-    public ExtraPrizeCreditedPerCharacterJoker(List<char> characters, int extraPrize)
+
+    public ExtraPrizeCreditedPerCharacterJoker(string id, List<char> characters, int extraPrize) : base(id)
     {
         Characters = characters;
         ExtraPrize = extraPrize;
     }
     
-    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
+    public override void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
         if (!Characters.Contains(letter.Character))
             return;
@@ -26,18 +31,18 @@ public class ExtraPrizeCreditedPerCharacterJoker : IOnLetterPrizeCreditedJoker
     }
 }
 
-public class ExtraMultiplierPerCharacterCreditedJoker : IOnLetterPrizeCreditedJoker
+public class ExtraMultiplierPerCharacterCreditedJoker : BaseOnLetterPrizeCreditedJoker
 {
     private List<char> Characters { get; set; }
     private int ExtraMultiplier { get; set; }
     
-    public ExtraMultiplierPerCharacterCreditedJoker(List<char> characters, int extraMultiplier)
+    public ExtraMultiplierPerCharacterCreditedJoker(string id, List<char> characters, int extraMultiplier) : base(id)
     {
         Characters = characters;
         ExtraMultiplier = extraMultiplier;
     }
     
-    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
+    public override void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
         if (!Characters.Contains(letter.Character))
             return;
@@ -46,20 +51,20 @@ public class ExtraMultiplierPerCharacterCreditedJoker : IOnLetterPrizeCreditedJo
     }
 }
 
-public class MoneyPerCharacterCreditedJoker : IOnLetterPrizeCreditedJoker
+public class MoneyPerCharacterCreditedJoker : BaseOnLetterPrizeCreditedJoker
 {
     private Player Player { get; set; }
     private List<char> Characters { get; set; }
     private int Money { get; set; }
     
-    public MoneyPerCharacterCreditedJoker(Player player, List<char> characters, int money)
+    public MoneyPerCharacterCreditedJoker(string id, Player player, List<char> characters, int money) : base(id)
     {
         Player = player;
         Characters = characters;
         Money = money;
     }
     
-    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
+    public override void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
         if (!Characters.Contains(letter.Character))
             return;
@@ -68,14 +73,15 @@ public class MoneyPerCharacterCreditedJoker : IOnLetterPrizeCreditedJoker
     }
 }
 
-public class PowerUpPerCharacterCreditedJoker : IOnLetterPrizeCreditedJoker
+public class PowerUpPerCharacterCreditedJoker : BaseOnLetterPrizeCreditedJoker
 {
     private Player Player { get; set; }
     private List<char> Characters { get; set; }
     private PowerUpType PowerUpType { get; set; }
     private int Quantity { get; set; }
     
-    public PowerUpPerCharacterCreditedJoker(Player player, List<char> characters, PowerUpType powerUpType, int quantity = 1)
+    public PowerUpPerCharacterCreditedJoker
+        (string id, Player player, List<char> characters, PowerUpType powerUpType, int quantity = 1) : base(id)
     {
         Player = player;
         Characters = characters;
@@ -83,7 +89,7 @@ public class PowerUpPerCharacterCreditedJoker : IOnLetterPrizeCreditedJoker
         Quantity = quantity;
     }
     
-    public void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
+    public override void OnLetterPrizeCredited(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
         if (!Characters.Contains(letter.Character))
             return;

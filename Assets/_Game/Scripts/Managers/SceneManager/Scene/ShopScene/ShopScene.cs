@@ -11,7 +11,9 @@ public class ShopScene : BaseScene<ShopSceneData>
     {
         new PowerUpProduct(2, PowerUpType.Troca),
         new PowerUpProduct(2, PowerUpType.Bomba),
-        new PowerUpProduct(3, PowerUpType.Misturar)
+        new PowerUpProduct(3, PowerUpType.Misturar),
+        new JokerProduct(3, "BaseA"),
+        new JokerProduct(5, "BaseVogal"),
     };
     
     private void Start()

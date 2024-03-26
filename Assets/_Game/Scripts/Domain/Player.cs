@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 {
@@ -10,11 +11,12 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     public PowerUp Bombs { get; private set; }
     public PowerUp Shuffles { get; private set; }
     
-    public List<IJoker> Jokers { get; private set; }
+    public List<BaseJoker> Jokers { get; private set; }
+    public int QuantidadeJokers { get; private set; }
 
     public Player()
     {
-        Id = "Player.bin";
+        Id = "Player.json";
         Level = -1;
         Money = 4;
         
@@ -22,18 +24,15 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
         Bombs = new PowerUp(PowerUpType.Bomba, 4);
         Shuffles = new PowerUp(PowerUpType.Misturar, 1);
 
-        Jokers = new List<IJoker>()
-        {
-            new ExtraPrizeCreditedPerCharacterJoker(new List<char> {'A'}, 50),
-            new ExtraMultiplierPerCharacterCreditedJoker(new List<char> {'M'}, 10),
-        };
+        Jokers = new List<BaseJoker>() { };
+        QuantidadeJokers = 5;
     }
 
     public void OnLetterPrizeCredited(ref int basePrize, ref int baseMultiplier, Letter letter)
     {
         foreach (var joker in Jokers)
         {
-            if(joker is not IOnLetterPrizeCreditedJoker letterPrizeCreditedJoker)
+            if(joker is not BaseOnLetterPrizeCreditedJoker letterPrizeCreditedJoker)
                 continue;
 
             letterPrizeCreditedJoker.OnLetterPrizeCredited(ref basePrize, ref baseMultiplier, letter);
@@ -44,7 +43,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     {
         foreach (var joker in Jokers)
         {
-            if(joker is not IOnWordCreditedJoker wordCreditedJoker)
+            if(joker is not BaseOnWordCreditedJoker wordCreditedJoker)
                 continue;
 
             wordCreditedJoker.OnWordCredited(ref basePrize, ref baseMultiplier, word);
@@ -71,6 +70,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 
     public PlayerModel SaveData()
     {
-        return new PlayerModel(Level, Money, Swaps, Bombs, Shuffles);
+        var jokers = Jokers.Select(j => j.SaveData()).ToList();
+        return new PlayerModel(Level, Money, Swaps, Bombs, Shuffles, jokers, QuantidadeJokers);
     }
 }
