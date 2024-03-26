@@ -33,5 +33,5 @@ public interface ICellData
 
     int GetSiblingIndex();
     void SetSiblingIndex(int index);
-    void AnimateFall();
+    void AnimateFall(Action onComplete);
 }

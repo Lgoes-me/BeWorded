@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Grid<T> : IEnumerable<T> where T : ICellData
@@ -95,7 +96,7 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
         }
     }
 
-    public IEnumerator SortEmpty()
+    public async Task SortEmpty()
     {
         for (var i = Height - 1; i >= 0; i--)
         for (var j = Width - 1; j >= 0; j--)
@@ -106,7 +107,7 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
             if (cell.Empty)
             {
                 SwapCells(cell, cellAbove);
-                yield return new WaitForSeconds(0.1f);
+                await Task.Delay(100);
             }
         }
     }
@@ -130,7 +131,7 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
             {
                 cell.Data.ResetData();
                 cell.EmptyCell(false);
-                cell.Data.AnimateFall();
+                cell.Data.AnimateFall(() => { });
             }
         }
     }

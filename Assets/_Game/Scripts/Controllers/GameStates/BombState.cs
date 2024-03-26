@@ -14,7 +14,6 @@ public class BombState : GameState
     {
         newSelected.OnError();
         Game.ClearSelection(new List<LetterController> {newSelected}, false);
-        Game.ChangeState(new GameplayState(Game));
     }
 
     public override void OnStateExit()

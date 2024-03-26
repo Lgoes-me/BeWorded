@@ -58,7 +58,6 @@ public class GameplayState : GameState
 
         if (rightResponse)
         {
-            
             Game.ClearSelection(SelectedLetterControllers);
         }
         else

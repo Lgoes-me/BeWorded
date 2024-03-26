@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -35,7 +35,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
         ScoreToBeatText.SetText(Level.Score.ToString());
         Tentativas.SetText(Level.Tentativas.ToString());
-        
+
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
         GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
 
@@ -70,7 +70,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         var letters = letterControllers.Select(l => l.Letter).ToList();
         var response = string.Join("", letters);
         Response.SetText(response);
-        
+
         var soma = 0;
 
         foreach (var prize in letters.Select(l => l.Prize))
@@ -80,7 +80,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
             soma += scorePrize.Score;
         }
-        
+
         ResponseScore.SetText($"{soma}x{letters.Count}");
     }
 
@@ -99,21 +99,16 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         return false;
     }
 
-    public void ClearSelection(List<LetterController> letterControllers, bool getPrizes = true)
-    {
-        StartCoroutine(ClearSelectionCoroutine(letterControllers, getPrizes));
-    }
-
-    private IEnumerator ClearSelectionCoroutine(List<LetterController> letterControllers, bool getPrizes)
+    public async Task ClearSelection(List<LetterController> letterControllers, bool getPrizes = true)
     {
         ChangeState(new AnimatingState());
 
-        if(getPrizes)
+        if (getPrizes)
             GetPrizes(letterControllers);
-        
+
         LettersGrid.ClearCells(letterControllers);
 
-        yield return LettersGrid.SortEmpty();
+        await LettersGrid.SortEmpty();
 
         LettersGrid.FillNewData();
 
@@ -135,40 +130,45 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         else
         {
             ChangeState(new GameplayState(this));
-        }      
+        }
     }
 
-    private void GetPrizes(List<LetterController> letterControllers)
+    private async void GetPrizes(List<LetterController> letterControllers)
     {
+        var basePrize = 0;
+        
         foreach (var letterController in letterControllers)
         {
             var prize = letterController.Letter.Prize;
 
             if (prize is ScorePrize scorePrize)
             {
-                letterController.AnimatePrize(ScoreText.transform, () =>
-                {
-                    Level.GiveScore(scorePrize.Score * letterControllers.Count);
-                    ScoreText.SetText(Level.CurrentScore.ToString());
-                });
+                await letterController.AnimatePrize(ScoreText.transform.position);
+                basePrize += scorePrize.Score;
             }
             else if (prize is PowerUpPrize powerUpPrize)
             {
                 switch (powerUpPrize.PowerUp)
                 {
                     case PowerUpType.Troca:
-                        letterController.AnimatePrize(SwapButton.transform, SwapButton.GivePowerUpUse);
+                        await letterController.AnimatePrize(SwapButton.transform.position);
+                        SwapButton.GivePowerUpUse();
                         break;
                     case PowerUpType.Bomba:
-                        letterController.AnimatePrize(BombButton.transform, BombButton.GivePowerUpUse);
+                        await letterController.AnimatePrize(BombButton.transform.position);
+                        BombButton.GivePowerUpUse();
                         break;
                     case PowerUpType.Misturar:
-                        letterController.AnimatePrize(ShuffleButton.transform, ShuffleButton.GivePowerUpUse);
+                        await letterController.AnimatePrize(ShuffleButton.transform.position);
+                        ShuffleButton.GivePowerUpUse();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
         }
+        
+        Level.GiveScore(basePrize * letterControllers.Count);
+        ScoreText.SetText(Level.CurrentScore.ToString());
     }
 }

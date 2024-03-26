@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -72,13 +72,17 @@ public class LetterController : MonoBehaviour, ICellData
         Content.DOShakePosition(0.1f, 2);
     }
 
-    public void AnimatePrize(Transform destination, Action onComplete)
+    public Task AnimatePrize(Vector3 destination)
     {
-        PrizeText.transform.DOMove(destination.position, 0.25f).onComplete = () =>
+        var tcs = new TaskCompletionSource<bool>();
+        
+        PrizeText.transform.DOMove(destination, 0.25f).onComplete = () =>
         {
             PrizeText.gameObject.SetActive(false);
-            onComplete();
+            tcs.SetResult(true);
         };
+
+        return tcs.Task;
     }
     
     public void ResetLetter()
@@ -131,9 +135,9 @@ public class LetterController : MonoBehaviour, ICellData
         transform.SetSiblingIndex(index);
     }
 
-    public void AnimateFall()
+    public void AnimateFall(Action onComplete)
     {
         Content.anchoredPosition = new Vector3(0, 45);
-        Content.DOMove(transform.position, 0.2f);
+        Content.DOMove(transform.position, 0.2f).onComplete = () => onComplete();
     }
 }
