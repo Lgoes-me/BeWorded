@@ -1,10 +1,11 @@
 ﻿public abstract class BaseJoker : ISavable<JokerModel>
 {
-    public string Id { get; private set; }
-
-    protected BaseJoker(string id)
+    public string Id => Identifier.ToString();
+    private JokerIdentifier Identifier { get; }
+    
+    protected BaseJoker(JokerIdentifier identifier)
     {
-        Id = id;
+        Identifier = identifier;
     }
 
     public JokerModel SaveData()

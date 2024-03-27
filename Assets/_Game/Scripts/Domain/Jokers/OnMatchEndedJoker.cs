@@ -1,6 +1,6 @@
 ﻿public abstract class OnMatchEndedJoker: BaseJoker
 {
-    protected OnMatchEndedJoker(string id) : base(id)
+    protected OnMatchEndedJoker(JokerIdentifier id) : base(id)
     {
         
     }

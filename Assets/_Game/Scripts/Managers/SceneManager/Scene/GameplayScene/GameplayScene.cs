@@ -139,11 +139,11 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         foreach (var letterController in letterControllers)
         {
             basePrize += await AnimatePrize(letterController.Letter.Prize, letterController);
-            SceneData.Player.OnLetterPrizeCredited(ref basePrize, ref baseMultiplier, letterController.Letter);
+            SceneData.Player.OnLetterScored(ref basePrize, ref baseMultiplier, letterController.Letter);
         }
         
         var word = string.Join("", letterControllers.Select(l => l.Letter));
-        SceneData.Player.OnWordCredited(ref basePrize, ref baseMultiplier, word);
+        SceneData.Player.OnWordScored(ref basePrize, ref baseMultiplier, word);
         
         Level.GiveScore(basePrize * baseMultiplier);
         ScoreText.SetText(Level.CurrentScore.ToString());

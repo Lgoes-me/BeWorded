@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
@@ -10,7 +11,8 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     public PowerUp Swaps { get; private set; }
     public PowerUp Bombs { get; private set; }
     public PowerUp Shuffles { get; private set; }
-    
+
+    private JokerFactory JokerFactory { get; }
     public List<BaseJoker> Jokers { get; private set; }
     public int QuantidadeJokers { get; private set; }
 
@@ -19,53 +21,70 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
         Id = "Player.json";
         Level = -1;
         Money = 4;
-        
+
         Swaps = new PowerUp(PowerUpType.Troca, 8);
         Bombs = new PowerUp(PowerUpType.Bomba, 4);
         Shuffles = new PowerUp(PowerUpType.Misturar, 1);
 
-        Jokers = new List<BaseJoker>() { };
+        JokerFactory = new JokerFactory(this);
+        
+        Jokers = new List<BaseJoker>()
+        {
+            JokerFactory.CreateJokerFromIdentifier(JokerIdentifier.BaseA),
+            JokerFactory.CreateJokerFromIdentifier(JokerIdentifier.MultM),
+        };
         QuantidadeJokers = 5;
     }
 
-    public void OnLetterPrizeCredited(ref int basePrize, ref int baseMultiplier, Letter letter)
+    public void OnLetterScored(ref int basePrize, ref int baseMultiplier, Letter letter)
     {
         foreach (var joker in Jokers)
         {
-            if(joker is not BaseOnLetterPrizeCreditedJoker letterPrizeCreditedJoker)
+            if (joker is not OnLetterScoredJoker letterScoredJoker)
                 continue;
 
-            letterPrizeCreditedJoker.OnLetterPrizeCredited(ref basePrize, ref baseMultiplier, letter);
+            letterScoredJoker.OnLetterScored(ref basePrize, ref baseMultiplier, letter);
         }
     }
-    
-    public void OnWordCredited(ref int basePrize, ref int baseMultiplier, string word)
+
+    public void OnWordScored(ref int basePrize, ref int baseMultiplier, string word)
     {
         foreach (var joker in Jokers)
         {
-            if(joker is not BaseOnWordCreditedJoker wordCreditedJoker)
+            if (joker is not OnWordScoredJoker wordScoredJoker)
                 continue;
 
-            wordCreditedJoker.OnWordCredited(ref basePrize, ref baseMultiplier, word);
+            wordScoredJoker.OnWordScored(ref basePrize, ref baseMultiplier, word);
         }
     }
-    
+
     public void PlayLevel()
     {
         Level++;
     }
-    
+
     public void GivePrize(int prize)
     {
         Money += prize;
     }
-    
+
     public void LoadData(PlayerModel data)
     {
         Level = data.Level;
         Swaps = data.Swaps;
         Bombs = data.Bombs;
         Shuffles = data.Shuffles;
+
+        foreach (var jokerModel in data.Jokers)
+        {
+            if (!Enum.TryParse(jokerModel.Identifier, out JokerIdentifier identifier)) 
+                continue;
+            
+            var joker = JokerFactory.CreateJokerFromIdentifier(identifier);
+            Jokers.Add(joker);
+        }
+
+        QuantidadeJokers = data.QuantidadeJokers;
     }
 
     public PlayerModel SaveData()
