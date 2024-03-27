@@ -49,6 +49,19 @@ public class JokerFactory
                     .WithContainsCharacterValidator(new List<char> {'B'})
                     .WithPowerUpModifier(Player, PowerUpType.Bomba, 1)
                     .Build(id),
+            
+            JokerIdentifier.MultSimpleWord => 
+                new OnWordScoredJokerBuilder()
+                    .WithNoValidator()
+                    .WithExtraMultiplierModifier(10)
+                    .Build(id),
+
+            JokerIdentifier.MultiplySimpleWord => 
+                new OnWordScoredJokerBuilder()
+                    .WithNoValidator()
+                    .WithMultiplyMultiplierModifier(2)
+                    .Build(id),
+
 
             _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
         };
@@ -62,5 +75,7 @@ public enum JokerIdentifier
     MultM,
     MultiplyZ,
     MoneyS,
-    PowerUpBombB
+    PowerUpBombB,
+    MultSimpleWord,
+    MultiplySimpleWord,
 }

@@ -18,9 +18,9 @@ public class PowerUpProduct : IProduct
 public class JokerProduct : IProduct
 {
     public int Price { get; }
-    public string Identifier { get; }
+    public JokerIdentifier Identifier { get; }
 
-    public JokerProduct(int price, string identifier)
+    public JokerProduct(int price, JokerIdentifier identifier)
     {
         Price = price;
         Identifier = identifier;
