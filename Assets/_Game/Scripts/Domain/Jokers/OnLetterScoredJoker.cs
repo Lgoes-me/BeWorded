@@ -1,75 +1,88 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 public class OnLetterScoredJoker : BaseJoker
 {
-    private LetterValidator Validator { get; set; }
-    private ScoreModifier Modifier { get; set; }
+    private List<LetterValidator> Validators { get; set; }
+    private List<ScoreModifier> Modifiers { get; set; }
 
-    internal OnLetterScoredJoker(JokerIdentifier id, LetterValidator validator, ScoreModifier modifier) :
+    internal OnLetterScoredJoker(
+        JokerIdentifier id, 
+        List<LetterValidator> validators, 
+        List<ScoreModifier> modifiers) :
         base(id)
     {
-        Validator = validator;
-        Modifier = modifier;
+        Validators = validators;
+        Modifiers = modifiers;
     }
 
     public void OnLetterScored(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
-        if (!Validator.Validate(letter))
+        if (Validators.Any(validator => validator.Validate(letter)))
             return;
 
-        Modifier.DoModification(ref basePrice, ref baseMultiplier);
+        foreach (var modifier in Modifiers)
+        {
+            modifier.DoModification(ref basePrice, ref baseMultiplier);
+        }
     }
 }
 
 public class OnLetterScoredJokerBuilder
 {
-    private LetterValidator Validator { get; set; }
-    private ScoreModifier Modifier { get; set; }
+    private List<LetterValidator> Validators { get; set; }
+    private List<ScoreModifier> Modifiers { get; set; }
+
+    public OnLetterScoredJokerBuilder()
+    {
+        Validators = new List<LetterValidator>();
+        Modifiers = new List<ScoreModifier>();
+    }
 
     public OnLetterScoredJokerBuilder WithContainsCharacterValidator(List<char> characters)
     {
-        Validator = new ContainsCharacterLetterValidator(characters);
+        Validators.Add(new ContainsCharacterLetterValidator(characters));
         return this;
     }
 
     public OnLetterScoredJokerBuilder WithIsPrizeOnValidator(IPrize prize)
     {
-        Validator = new IsPrizeLetterValidator(prize);
+        Validators.Add(new IsPrizeLetterValidator(prize));
         return this;
     }
 
     public OnLetterScoredJokerBuilder WithExtraPrizeModifier(int bonus)
     {
-        Modifier = new ExtraPrizeScoreModifier(bonus);
+        Modifiers.Add(new ExtraPrizeScoreModifier(bonus));
         return this;
     }
 
     public OnLetterScoredJokerBuilder WithExtraMultiplierModifier(int bonus)
     {
-        Modifier = new ExtraMultiplierScoreModifier(bonus);
+        Modifiers.Add(new ExtraMultiplierScoreModifier(bonus));
         return this;
     }
 
     public OnLetterScoredJokerBuilder WithMultiplyMultiplierModifier(int bonus)
     {
-        Modifier = new MultiplyMultiplierScoreModifier(bonus);
+        Modifiers.Add(new MultiplyMultiplierScoreModifier(bonus));
         return this;
     }
 
     public OnLetterScoredJokerBuilder WithMoneyModifier(Player player, int bonus)
     {
-        Modifier = new MoneyPerCharacterScoreModifier(player, bonus);
+        Modifiers.Add(new MoneyPerCharacterScoreModifier(player, bonus));
         return this;
     }
     
     public OnLetterScoredJokerBuilder WithPowerUpModifier(Player player, PowerUpType powerUpType, int bonus)
     {
-        Modifier = new PowerUpPerScoreModifier(player, powerUpType, bonus);
+        Modifiers.Add(new PowerUpPerScoreModifier(player, powerUpType, bonus));
         return this;
     }
 
     public OnLetterScoredJoker Build(JokerIdentifier id)
     {
-        return new OnLetterScoredJoker(id, Validator, Modifier);
+        return new OnLetterScoredJoker(id, Validators, Modifiers);
     }
 }

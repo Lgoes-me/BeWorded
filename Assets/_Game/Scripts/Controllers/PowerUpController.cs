@@ -25,14 +25,8 @@ public class PowerUpController : MonoBehaviour
 
         UpdateButton();
     }
-
-    public void GivePowerUpUse()
-    {
-        PowerUp.Gain();
-        UpdateButton();
-    }
-
-    private void UpdateButton()
+    
+    public void UpdateButton()
     {
         PowerUpButton.interactable = PowerUp.Uses > 0;
         UsesText.SetText(PowerUp.Uses.ToString());

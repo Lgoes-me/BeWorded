@@ -139,29 +139,32 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         }
     }
 
-    public async Task GetPrizes(List<LetterController> letterControllers)
+    public void GetPrizes(List<LetterController> letterControllers)
     {
         var basePrize = 0;
         var baseMultiplier = letterControllers.Count;
         
         foreach (var letterController in letterControllers)
         {
-            basePrize += await AnimatePrize(letterController.Letter.Prize, letterController);
+            basePrize += GetScore(letterController.Letter.Prize, letterController);
             SceneData.Player.OnLetterScored(ref basePrize, ref baseMultiplier, letterController.Letter);
         }
         
         var word = string.Join("", letterControllers.Select(l => l.Letter));
         SceneData.Player.OnWordScored(ref basePrize, ref baseMultiplier, word);
         
+        SwapButton.UpdateButton();
+        BombButton.UpdateButton();
+        ShuffleButton.UpdateButton();
+        
         Level.GiveScore(basePrize * baseMultiplier);
         ScoreText.SetText(Level.CurrentScore.ToString());
     }
 
-    private async Task<int> AnimatePrize(IPrize prize, LetterController letterController)
+    private int GetScore(IPrize prize, LetterController letterController)
     {
         if (prize is ScorePrize scorePrize)
         {
-            await letterController.AnimatePrize(ScoreText.transform.position);
             return scorePrize.Score;
         }
 
@@ -170,16 +173,13 @@ public class GameplayScene : BaseScene<GameplaySceneData>
             switch (powerUpPrize.PowerUp)
             {
                 case PowerUpType.Troca:
-                    await letterController.AnimatePrize(SwapButton.transform.position);
-                    SwapButton.GivePowerUpUse();
+                    SceneData.Player.Swaps.Gain();
                     break;
                 case PowerUpType.Bomba:
-                    await letterController.AnimatePrize(BombButton.transform.position);
-                    BombButton.GivePowerUpUse();
+                    SceneData.Player.Bombs.Gain();
                     break;
                 case PowerUpType.Misturar:
-                    await letterController.AnimatePrize(ShuffleButton.transform.position);
-                    ShuffleButton.GivePowerUpUse();
+                    SceneData.Player.Shuffles.Gain();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

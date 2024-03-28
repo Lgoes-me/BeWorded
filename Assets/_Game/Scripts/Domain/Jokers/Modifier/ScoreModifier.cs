@@ -1,6 +1,6 @@
 ﻿using System;
 
-public abstract class ScoreModifier : BaseModifier
+public abstract class ScoreModifier
 {
     public abstract void DoModification(ref int basePrize, ref int baseMultiplier);
 }

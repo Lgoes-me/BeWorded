@@ -2,7 +2,7 @@
 {
     public string Id => Identifier.ToString();
     private JokerIdentifier Identifier { get; }
-    
+
     protected BaseJoker(JokerIdentifier identifier)
     {
         Identifier = identifier;

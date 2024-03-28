@@ -71,19 +71,6 @@ public class LetterController : MonoBehaviour, ICellData
         UpdateView();
         Content.DOShakePosition(0.1f, 2);
     }
-
-    public Task AnimatePrize(Vector3 destination)
-    {
-        var tcs = new TaskCompletionSource<bool>();
-        
-        PrizeText.transform.DOMove(destination, 0.25f).onComplete = () =>
-        {
-            PrizeText.gameObject.SetActive(false);
-            tcs.SetResult(true);
-        };
-
-        return tcs.Task;
-    }
     
     public void ResetLetter()
     {
