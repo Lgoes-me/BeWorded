@@ -9,7 +9,10 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 {
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
-
+    
+    [field: SerializeField] private Transform JokersContent { get; set; }
+    [field: SerializeField] private JokerCardController JokerCardControllerPrefab { get; set; }
+    
     [field: SerializeField] private TextMeshProUGUI Tentativas { get; set; }
     [field: SerializeField] private TextMeshProUGUI Response { get; set; }
     [field: SerializeField] private TextMeshProUGUI ResponseScore { get; set; }
@@ -44,6 +47,11 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         BombButton.Init(player.Bombs, () => { ChangeState(new BombState(this)); });
         ShuffleButton.Init(player.Shuffles, () => { ChangeState(new ShuffleState(this)); });
 
+        foreach (var joker in player.Jokers)
+        {
+            Instantiate(JokerCardControllerPrefab, JokersContent).Init(joker);
+        }
+        
         State = new GameplayState(this);
     }
 

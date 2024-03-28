@@ -1,10 +1,12 @@
 ﻿public interface IProduct
 {
+    string ProductName { get; }
     int Price { get; }
 }
 
 public class PowerUpProduct : IProduct
 {
+    public string ProductName => PowerUp.ToString();
     public int Price { get; }
     public PowerUpType PowerUp { get; }
 
@@ -17,12 +19,13 @@ public class PowerUpProduct : IProduct
 
 public class JokerProduct : IProduct
 {
+    public string ProductName => Joker.Id;
     public int Price { get; }
-    public JokerIdentifier Identifier { get; }
+    public BaseJoker Joker { get; }
 
-    public JokerProduct(int price, JokerIdentifier identifier)
+    public JokerProduct(int price, BaseJoker joker)
     {
         Price = price;
-        Identifier = identifier;
+        Joker = joker;
     }
 }

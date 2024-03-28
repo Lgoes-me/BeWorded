@@ -13,3 +13,10 @@
         return new JokerModel(Id);
     }
 }
+
+//OnPowerUpUsed
+///OnLetterSwaped
+///OnBombExploded
+///OnBoardShuffled
+//OnMatchEnded
+//OnItemBought

@@ -10,7 +10,7 @@ public class JokerFactory
         Player = player;
     }
 
-    public BaseJoker CreateJokerFromIdentifier(JokerIdentifier id)
+    public BaseJoker CreateJoker(JokerIdentifier id)
     {
         return id switch
         {

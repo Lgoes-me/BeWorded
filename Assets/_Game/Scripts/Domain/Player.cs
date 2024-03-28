@@ -6,7 +6,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 {
     public string Id { get; set; }
     public int Level { get; private set; }
-    public int Money { get; private set; }
+    public int Money { get; set; }
 
     public PowerUp Swaps { get; private set; }
     public PowerUp Bombs { get; private set; }
@@ -28,11 +28,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 
         JokerFactory = new JokerFactory(this);
         
-        Jokers = new List<BaseJoker>()
-        {
-            JokerFactory.CreateJokerFromIdentifier(JokerIdentifier.BaseA),
-            JokerFactory.CreateJokerFromIdentifier(JokerIdentifier.MultM),
-        };
+        Jokers = new List<BaseJoker>();
         QuantidadeJokers = 5;
     }
 
@@ -80,7 +76,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
             if (!Enum.TryParse(jokerModel.Identifier, out JokerIdentifier identifier)) 
                 continue;
             
-            var joker = JokerFactory.CreateJokerFromIdentifier(identifier);
+            var joker = JokerFactory.CreateJoker(identifier);
             Jokers.Add(joker);
         }
 
