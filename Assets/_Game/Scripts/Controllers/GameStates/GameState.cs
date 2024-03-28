@@ -27,4 +27,8 @@ public abstract class GameState
         
     }
 
+    public virtual void OnPowerUpClicked(PowerUp powerUp)
+    {
+        
+    }
 }

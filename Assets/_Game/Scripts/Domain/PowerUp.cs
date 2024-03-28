@@ -3,7 +3,7 @@
 [Serializable]
 public class PowerUp
 {
-    private PowerUpType Type { get; set; }
+    public PowerUpType Type { get; private set; }
     public int Uses { get; private set; }
 
     public PowerUp(PowerUpType type, int uses)
@@ -12,15 +12,16 @@ public class PowerUp
         Uses = uses;
     }
 
-    public bool TryUse()
+    public bool CanUse()
     {
-        if (Uses <= 0)
-            return false;
-
-        Uses--;
-        return true;
+        return Uses > 0;
     }
 
+    public void Use()
+    {
+        Uses--;
+    }
+    
     public void Gain(int quantity = 1)
     {
         Uses += quantity;

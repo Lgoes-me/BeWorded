@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class GameplayState : GameState
@@ -66,6 +67,22 @@ public class GameplayState : GameState
         {
             Game.ClearResponseText();
             SelectedLetterControllers.Clear();
+        }
+    }
+    
+    public override void OnPowerUpClicked(PowerUp powerUp)
+    {
+        switch (powerUp.Type)
+        {
+            case PowerUpType.Troca:
+                Game.ChangeState(new SwapDragState(Game, powerUp));
+                break;
+            case PowerUpType.Bomba:
+                Game.ChangeState(new BombState(Game, powerUp));
+                break;
+            case PowerUpType.Misturar:
+                Game.ChangeState(new ShuffleState(Game, powerUp));
+                break;
         }
     }
 }

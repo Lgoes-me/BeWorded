@@ -9,19 +9,19 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 {
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
-    
+
     [field: SerializeField] private Transform JokersContent { get; set; }
     [field: SerializeField] private JokerCardController JokerCardControllerPrefab { get; set; }
-    
+
     [field: SerializeField] private TextMeshProUGUI Tentativas { get; set; }
     [field: SerializeField] private TextMeshProUGUI Response { get; set; }
     [field: SerializeField] private TextMeshProUGUI ResponseScore { get; set; }
     [field: SerializeField] private TextMeshProUGUI ScoreToBeatText { get; set; }
     [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
 
-    [field: SerializeField] private PowerUpController SwapButton { get; set; }
-    [field: SerializeField] private PowerUpController BombButton { get; set; }
-    [field: SerializeField] private PowerUpController ShuffleButton { get; set; }
+    [field: SerializeField] public PowerUpController SwapButton { get; private set; }
+    [field: SerializeField] public PowerUpController BombButton { get; private  set; }
+    [field: SerializeField] public PowerUpController ShuffleButton { get; private set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
@@ -30,7 +30,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     private void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        
+
         var gameConfig = Application.ConfigManager.GameConfig;
         var player = SceneData.Player;
 
@@ -43,15 +43,15 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
         GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
 
-        SwapButton.Init(player.Swaps, () => { ChangeState(new SwapDragState(this)); });
-        BombButton.Init(player.Bombs, () => { ChangeState(new BombState(this)); });
-        ShuffleButton.Init(player.Shuffles, () => { ChangeState(new ShuffleState(this)); });
+        SwapButton.Init(player.Swaps, () => State.OnPowerUpClicked(player.Swaps));
+        BombButton.Init(player.Bombs, () => State.OnPowerUpClicked(player.Bombs));
+        ShuffleButton.Init(player.Shuffles, () => State.OnPowerUpClicked(player.Shuffles));
 
         foreach (var joker in player.Jokers)
         {
             Instantiate(JokerCardControllerPrefab, JokersContent).Init(joker);
         }
-        
+
         State = new GameplayState(this);
     }
 
@@ -143,20 +143,20 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     {
         var basePrize = 0;
         var baseMultiplier = letterControllers.Count;
-        
+
         foreach (var letterController in letterControllers)
         {
             basePrize += GetScore(letterController.Letter.Prize, letterController);
             SceneData.Player.OnLetterScored(ref basePrize, ref baseMultiplier, letterController.Letter);
         }
-        
+
         var word = string.Join("", letterControllers.Select(l => l.Letter));
         SceneData.Player.OnWordScored(ref basePrize, ref baseMultiplier, word);
-        
+
         SwapButton.UpdateButton();
         BombButton.UpdateButton();
         ShuffleButton.UpdateButton();
-        
+
         Level.GiveScore(basePrize * baseMultiplier);
         ScoreText.SetText(Level.CurrentScore.ToString());
     }
@@ -185,7 +185,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
         return 0;
     }
 }

@@ -16,11 +16,8 @@ public class PowerUpController : MonoBehaviour
 
         PowerUpButton.onClick.AddListener(() =>
         {
-            if (PowerUp.TryUse())
-            {
+            if (PowerUp.CanUse())
                 powerUpAction();
-                UpdateButton();
-            }
         });
 
         UpdateButton();

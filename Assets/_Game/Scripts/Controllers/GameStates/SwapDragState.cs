@@ -4,13 +4,15 @@ using UnityEngine.EventSystems;
 public class SwapDragState : GameState
 {
     private GameplayScene Game { get; set; }
+    private PowerUp Swaps { get; set; }
     
     private LetterController MainLetterController { get; set; }
     private LetterController OtherLetterController { get; set; }
     
-    public SwapDragState(GameplayScene game)
+    public SwapDragState(GameplayScene game, PowerUp swaps)
     {
         Game = game;
+        Swaps = swaps;
     }
 
     public override void OnDrag(PointerEventData pointerEventData, LetterController newSelected)
@@ -47,6 +49,9 @@ public class SwapDragState : GameState
         if(newSelected == null)
             return;
         
+        Swaps.Use();
+        Game.SwapButton.UpdateButton();
+        
         MainLetterController.Content.anchoredPosition = Vector3.zero;
 
         MainLetterController.ResetLetter();
@@ -63,6 +68,22 @@ public class SwapDragState : GameState
         if (MainLetterController != null)
         {
             MainLetterController.ResetLetter();
+        }
+    }
+    
+    public override void OnPowerUpClicked(PowerUp powerUp)
+    {
+        switch (powerUp.Type)
+        {
+            case PowerUpType.Troca:
+                Game.ChangeState(new GameplayState(Game));
+                break;
+            case PowerUpType.Bomba:
+                Game.ChangeState(new BombState(Game, powerUp));
+                break;
+            case PowerUpType.Misturar:
+                Game.ChangeState(new ShuffleState(Game, powerUp));
+                break;
         }
     }
 }
