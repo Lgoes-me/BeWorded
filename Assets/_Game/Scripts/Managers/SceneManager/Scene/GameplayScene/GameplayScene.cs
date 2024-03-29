@@ -108,6 +108,37 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         return false;
     }
 
+    public void GetPrizes(List<LetterController> letterControllers)
+    {
+        var basePrize = 0;
+        var baseMultiplier = letterControllers.Count;
+
+        foreach (var letterController in letterControllers)
+        {
+            switch (letterController.Letter.Prize)
+            {
+                case ScorePrize scorePrize:
+                    basePrize += scorePrize.Score;
+                    break;
+                case PowerUpPrize powerUpPrize:
+                    SceneData.Player.GainPowerUp(powerUpPrize.PowerUp);
+                    break;
+            }
+            
+            SceneData.Player.OnLetterScored(ref basePrize, ref baseMultiplier, letterController.Letter);
+        }
+
+        var word = string.Join("", letterControllers.Select(l => l.Letter));
+        SceneData.Player.OnWordScored(ref basePrize, ref baseMultiplier, word);
+
+        SwapButton.UpdateButton();
+        BombButton.UpdateButton();
+        ShuffleButton.UpdateButton();
+
+        Level.GiveScore(basePrize * baseMultiplier);
+        ScoreText.SetText(Level.CurrentScore.ToString());
+    }
+    
     public async Task ClearSelection(List<LetterController> letterControllers)
     {
         ChangeState(new AnimatingState());
@@ -137,55 +168,5 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         {
             ChangeState(new GameplayState(this));
         }
-    }
-
-    public void GetPrizes(List<LetterController> letterControllers)
-    {
-        var basePrize = 0;
-        var baseMultiplier = letterControllers.Count;
-
-        foreach (var letterController in letterControllers)
-        {
-            basePrize += GetScore(letterController.Letter.Prize, letterController);
-            SceneData.Player.OnLetterScored(ref basePrize, ref baseMultiplier, letterController.Letter);
-        }
-
-        var word = string.Join("", letterControllers.Select(l => l.Letter));
-        SceneData.Player.OnWordScored(ref basePrize, ref baseMultiplier, word);
-
-        SwapButton.UpdateButton();
-        BombButton.UpdateButton();
-        ShuffleButton.UpdateButton();
-
-        Level.GiveScore(basePrize * baseMultiplier);
-        ScoreText.SetText(Level.CurrentScore.ToString());
-    }
-
-    private int GetScore(IPrize prize, LetterController letterController)
-    {
-        if (prize is ScorePrize scorePrize)
-        {
-            return scorePrize.Score;
-        }
-
-        if (prize is PowerUpPrize powerUpPrize)
-        {
-            switch (powerUpPrize.PowerUp)
-            {
-                case PowerUpType.Troca:
-                    SceneData.Player.Swaps.Gain();
-                    break;
-                case PowerUpType.Bomba:
-                    SceneData.Player.Bombs.Gain();
-                    break;
-                case PowerUpType.Misturar:
-                    SceneData.Player.Shuffles.Gain();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        return 0;
     }
 }

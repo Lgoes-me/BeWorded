@@ -52,21 +52,7 @@ public class ShopScene : BaseScene<ShopSceneData>
         {
             case PowerUpProduct powerUpProduct:
             {
-                switch (powerUpProduct.PowerUp)
-                {
-                    case PowerUpType.Troca:
-                        player.Swaps.Gain();
-                        break;
-                    case PowerUpType.Bomba:
-                        player.Bombs.Gain();
-                        break;
-                    case PowerUpType.Misturar:
-                        player.Shuffles.Gain();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
+                player.GainPowerUp(powerUpProduct.PowerUp);
                 break;
             }
             case JokerProduct jokerProduct:

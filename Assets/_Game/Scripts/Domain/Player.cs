@@ -53,6 +53,24 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
             wordScoredJoker.OnWordScored(ref basePrize, ref baseMultiplier, word);
         }
     }
+    
+    public void GainPowerUp(PowerUpType powerUpType)
+    {
+        switch (powerUpType)
+        {
+            case PowerUpType.Troca:
+                Swaps.Gain();
+                break;
+            case PowerUpType.Bomba:
+                Bombs.Gain();
+                break;
+            case PowerUpType.Misturar:
+                Shuffles.Gain();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 
     public void PlayLevel()
     {
