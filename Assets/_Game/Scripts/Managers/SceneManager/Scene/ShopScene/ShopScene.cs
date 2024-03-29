@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class ShopScene : BaseScene<ShopSceneData>
 {
     [field: SerializeField] private ShopItemController ShopItemControllerPrefab { get; set; }
     [field: SerializeField] private Transform ProductsContent { get; set; }
+    [field: SerializeField] private TextMeshProUGUI PlayerMoney { get; set; }
     [field: SerializeField] private Button Continue { get; set; }
 
     private List<IProduct> GetProducts(JokerFactory jokerFactory) => new()
@@ -35,6 +37,8 @@ public class ShopScene : BaseScene<ShopSceneData>
         {
             Instantiate(ShopItemControllerPrefab, ProductsContent).Init(product, this);
         }
+        
+        PlayerMoney.SetText(SceneData.Player.Money.ToString());
     }
 
     public bool TryBuyProduct(IProduct product)
@@ -78,7 +82,8 @@ public class ShopScene : BaseScene<ShopSceneData>
         }
 
         player.Money -= product.Price;
-
+        PlayerMoney.SetText(SceneData.Player.Money.ToString());
+        
         return true;
     }
 }
