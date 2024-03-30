@@ -12,6 +12,6 @@ public class LanguageSelectionAlertController : AlertController<LanguageType>
         Portuguese.onClick.AddListener(() => Close(LanguageType.Pt));
         English.onClick.AddListener(() => Close(LanguageType.En));
         
-        return InternalShow();;
+        return InternalShow();
     }
 }

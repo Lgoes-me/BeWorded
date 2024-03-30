@@ -5,10 +5,10 @@ public abstract class AlertController<T> : MonoBehaviour
 {
     private TaskCompletionSource<T> CompletionSource { get; set; }
     
-    protected async Task<T> InternalShow()
+    protected Task<T> InternalShow()
     {
         CompletionSource = new TaskCompletionSource<T>();
-        return await CompletionSource.Task;
+        return CompletionSource.Task;
     }
 
     protected void Close(T result)
