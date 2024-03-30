@@ -134,7 +134,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         SwapButton.UpdateButton();
         BombButton.UpdateButton();
         ShuffleButton.UpdateButton();
-
+        
         Level.GiveScore(basePrize * baseMultiplier);
         ScoreText.SetText(Level.CurrentScore.ToString());
     }

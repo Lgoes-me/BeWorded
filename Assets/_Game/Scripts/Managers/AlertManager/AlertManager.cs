@@ -39,7 +39,7 @@ public class AlertManager : BaseManager
 
     public async Task ShowTooltip(
         string text, 
-        Transform pointTo = null, 
+        RectTransform pointTo = null, 
         bool needsConfirmation = false,
         float delay = 4f)
     {
