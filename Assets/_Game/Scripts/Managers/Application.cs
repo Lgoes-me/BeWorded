@@ -8,17 +8,19 @@ public class Application : MonoBehaviour
     [field: SerializeField] public ConfigManager ConfigManager { get; private set; }
     [field: SerializeField] public SaveManager SaveManager { get; private set; }
     [field: SerializeField] public TextManager TextManager { get; private set; }
+    [field: SerializeField] public OnboardManager OnboardManager { get; private set; }
 
     public void Init()
     {
         DontDestroyOnLoad(gameObject);
 
-        ContentManager.Application = this;
-        SceneManager.Application = this;
-        AlertManager.Application = this;
-        ConfigManager.Application = this;
-        SaveManager.Application = this;
-        TextManager.Application = this;
+        ContentManager.Setup(this);
+        SceneManager.Setup(this);
+        AlertManager.Setup(this);
+        ConfigManager.Setup(this);
+        SaveManager.Setup(this);
+        TextManager.Setup(this);
+        OnboardManager.Setup(this);
     }
 
 

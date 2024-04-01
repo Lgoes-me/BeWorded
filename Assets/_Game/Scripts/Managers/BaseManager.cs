@@ -2,5 +2,10 @@
 
 public class BaseManager : MonoBehaviour
 {
-    public Application Application { get; set; }
+    protected Application Application { get; private set; }
+
+    public void Setup(Application application)
+    {
+        Application = application;
+    }
 }

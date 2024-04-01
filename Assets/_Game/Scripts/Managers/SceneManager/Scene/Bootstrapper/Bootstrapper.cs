@@ -18,6 +18,7 @@ public class Bootstrapper : MonoBehaviour
         await Application.ConfigManager.GetOrSetLanguage();
 
         Application.ContentManager.Init();
+        Application.OnboardManager.Init();
         Application.SceneManager.GoToMainMenu();
     }
 }

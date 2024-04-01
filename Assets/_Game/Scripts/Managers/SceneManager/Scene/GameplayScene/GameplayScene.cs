@@ -32,10 +32,9 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         var gameConfig = Application.ConfigManager.GameConfig;
-        var player = SceneData.Player;
 
-        Application.SaveManager.SaveData(player);
-        Level = Application.ConfigManager.GetNextLevelConfig(player);
+        Application.SaveManager.SaveData(SceneData.Player);
+        Level = Application.ConfigManager.GetNextLevelConfig(SceneData.Player);
 
         ScoreToBeatText.SetText(Level.Score.ToString());
         Tentativas.SetText(Level.Tentativas.ToString());
@@ -43,11 +42,11 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
         GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
 
-        SwapButton.Init(player.Swaps, () => State.OnPowerUpClicked(player.Swaps));
-        BombButton.Init(player.Bombs, () => State.OnPowerUpClicked(player.Bombs));
-        ShuffleButton.Init(player.Shuffles, () => State.OnPowerUpClicked(player.Shuffles));
+        SwapButton.Init(SceneData.Player.Swaps, () => State.OnPowerUpClicked(SceneData.Player.Swaps));
+        BombButton.Init(SceneData.Player.Bombs, () => State.OnPowerUpClicked(SceneData.Player.Bombs));
+        ShuffleButton.Init(SceneData.Player.Shuffles, () => State.OnPowerUpClicked(SceneData.Player.Shuffles));
 
-        foreach (var joker in player.Jokers)
+        foreach (var joker in SceneData.Player.Jokers)
         {
             Instantiate(JokerCardControllerPrefab, JokersContent).Init(joker);
         }
