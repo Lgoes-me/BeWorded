@@ -7,7 +7,7 @@ public class MenuScene : BaseScene<MenuSceneData>
     [field: SerializeField] private Button Continue { get; set; }
     [field: SerializeField] private Button ChangeGameLanguage { get; set; }
 
-    private async void Start()
+    private void Start()
     {
         NewGame.onClick.AddListener(() => Application.SceneManager.OpenGameplayScene(new Player()));
         ChangeGameLanguage.onClick.AddListener(ChangeLanguage);
@@ -23,10 +23,10 @@ public class MenuScene : BaseScene<MenuSceneData>
             Continue.gameObject.SetActive(false);
         }
 
-        if(Application.OnboardManager.CanShow("Welcome"))
+        /*if(Application.OnboardManager.CanShow("Welcome"))
         {
             await Application.AlertManager.ShowTooltip("Welcome");
-        }
+        }*/
     }
 
     private async void ChangeLanguage()

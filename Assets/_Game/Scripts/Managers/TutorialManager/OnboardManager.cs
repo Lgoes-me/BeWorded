@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class OnboardManager : BaseManager
 {
     private Onboard Onboard { get; set; }

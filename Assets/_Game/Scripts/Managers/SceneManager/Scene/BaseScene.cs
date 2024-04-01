@@ -6,7 +6,7 @@ public abstract class BaseScene : MonoBehaviour
     
     protected Application Application => BaseSceneData.Application;
     
-    private void Awake()
+    protected virtual void Awake()
     {
         Application.SceneManager.SetScene(this);
     }
