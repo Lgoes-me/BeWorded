@@ -18,6 +18,7 @@ public class Bootstrapper : MonoBehaviour
         LoadingController.Show(0.5f);
         Application.ContentManager.Init();
         Application.OnboardManager.Init();
+        Application.TextManager.Init();
         
         LoadingController.Show(1f);
         LoadingController.Hide();

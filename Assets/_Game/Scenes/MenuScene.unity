@@ -236,10 +236,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <SceneData>k__BackingField: {fileID: 11400000, guid: 607237d1c61233c48bad25399c438fe0, type: 2}
+  <NewGameTextController>k__BackingField: {fileID: 1681980583}
   <NewGame>k__BackingField: {fileID: 1213611997}
+  <ContinueTextController>k__BackingField: {fileID: 932802100}
   <Continue>k__BackingField: {fileID: 1563144810}
   <ChangeGameLanguage>k__BackingField: {fileID: 2070799133}
-  <GameplaySceneData>k__BackingField: {fileID: 11400000, guid: 472321421489872448cb662cebc7930e, type: 2}
 --- !u!1 &484939923
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +358,7 @@ GameObject:
   - component: {fileID: 932802097}
   - component: {fileID: 932802099}
   - component: {fileID: 932802098}
+  - component: {fileID: 932802100}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -404,9 +406,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Continue
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -483,6 +483,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932802096}
   m_CullTransparentMesh: 1
+--- !u!114 &932802100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932802096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f99a22dbb5a4414ea2d0883e2a50592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Text>k__BackingField: {fileID: 932802098}
 --- !u!1 &1213611995
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,6 +886,7 @@ GameObject:
   - component: {fileID: 1681980580}
   - component: {fileID: 1681980582}
   - component: {fileID: 1681980581}
+  - component: {fileID: 1681980583}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -920,7 +934,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Game
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -997,6 +1011,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681980579}
   m_CullTransparentMesh: 1
+--- !u!114 &1681980583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681980579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f99a22dbb5a4414ea2d0883e2a50592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Text>k__BackingField: {fileID: 1681980581}
 --- !u!1 &1941894337
 GameObject:
   m_ObjectHideFlags: 0

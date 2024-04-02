@@ -7,6 +7,6 @@ public class TextController : MonoBehaviour
 
     public void Init(string textKey, TextManager textManager)
     {
-        
+        Text.SetText(textManager.GetString(textKey));
     }
 }

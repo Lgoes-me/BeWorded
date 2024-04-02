@@ -1,0 +1,2 @@
+textKey	pt	en
+new_game	Novo Jogo	New Game

@@ -3,7 +3,9 @@ using UnityEngine.UI;
 
 public class MenuScene : BaseScene<MenuSceneData>
 {
+    [field: SerializeField] private TextController NewGameTextController { get; set; }
     [field: SerializeField] private Button NewGame { get; set; }
+    [field: SerializeField] private TextController ContinueTextController { get; set; }
     [field: SerializeField] private Button Continue { get; set; }
     [field: SerializeField] private Button ChangeGameLanguage { get; set; }
 
@@ -22,6 +24,9 @@ public class MenuScene : BaseScene<MenuSceneData>
         {
             Continue.gameObject.SetActive(false);
         }
+        
+        NewGameTextController.Init("new_game", Application.TextManager);
+        ContinueTextController.Init("continue", Application.TextManager);
 
         /*if(Application.OnboardManager.CanShow("Welcome"))
         {

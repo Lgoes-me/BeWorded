@@ -321,6 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f54ec8ba6848fb81f1deb3a4d5e3cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <LanguagesFile>k__BackingField: {fileID: 4900000, guid: 3682e6a04e5a6ed4091510bcea1df54c, type: 3}
 --- !u!1 &1168443044
 GameObject:
   m_ObjectHideFlags: 0
