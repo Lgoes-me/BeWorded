@@ -7,18 +7,18 @@ using UnityEngine;
 public class ContentManager : BaseManager
 {
     [field: SerializeField] private List<TextAssetByLanguage> Texts { get; set; }
-    
+
     private List<string> Words { get; set; }
     private GameConfig GameConfig { get; set; }
 
     public void Init()
     {
         GameConfig = Application.ConfigManager.GameConfig;
-        
+
         //https://github.com/pythonprobr/palavras
         //https://github.com/dwyl/english-words
         var words = Texts.First(x => x.Language == GameConfig.Language).WordsAsset.text.Split("\n");
-        
+
         Words = new List<string>(words)
             .AsParallel()
             .Select(s => RemoveAccents(s).ToUpper().Replace("\r", ""))
@@ -27,9 +27,9 @@ public class ContentManager : BaseManager
             .ToList();
     }
 
-    public Letter GetRandomLetter()
+    public Letter GetRandomLetter(bool tutorial)
     {
-        var character = GameConfig.WeightedLetters.RandomWeightedElement();
+        var character = !tutorial ? GameConfig.GetRandomLetter() : GameConfig.GetTutorialLetter();
         var prize = GameConfig.WeightedPrizes.RandomWeightedElement();
 
         return new Letter(character, prize);

@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
 {
     public string Id { get; set; }
     public int Height { get; }
-    public int Width { get; } 
-    public int MinimumWordSize { get; } 
+    public int Width { get; }
+    public int MinimumWordSize { get; }
     public LanguageType Language { get; private set; }
-    
-    public List<(char, int)> WeightedLetters => new()
+
+    private List<(char, int)> WeightedLetters => new()
     {
         ('A', 8), ('B', 3), ('C', 3), ('D', 3), ('E', 7), ('F', 3), ('G', 3), ('H', 1), ('I', 6), ('J', 2), ('K', 0),
         ('L', 3), ('M', 3), ('N', 2), ('O', 8), ('P', 3), ('Q', 1), ('R', 3), ('S', 3), ('T', 3), ('U', 5), ('V', 2),
         ('W', 0), ('X', 1), ('Y', 0), ('Z', 1)
     };
+
+    private Queue<char> TutorialLetters { get; set; }
 
     public List<(IPrize, int)> WeightedPrizes => new()
     {
@@ -26,7 +29,7 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
         (new PowerUpPrize(PowerUpType.Bomba), 4),
         (new PowerUpPrize(PowerUpType.Misturar), 2)
     };
-    
+
     public List<Level> Levels => new()
     {
         new Level(300, 3, false),
@@ -57,8 +60,34 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
         Width = 5;
         MinimumWordSize = 3;
         Language = LanguageType.Unknown;
+
+        TutorialLetters = new Queue<char>
+        (
+            new[]
+            {
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', 'N', 'O', 'V', 'O',
+                ' ', 'J', 'O', 'G', 'O',
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', ' ', ' ', ' ',
+            }
+        );
     }
 
+    public char GetTutorialLetter()
+    {
+        if (TutorialLetters.Count == 0)
+            return GetRandomLetter();
+        
+        return TutorialLetters.Dequeue();
+    }
+
+    public char GetRandomLetter()
+    {
+        return WeightedLetters.RandomWeightedElement();
+    }
+    
     public void SetLanguage(LanguageType language)
     {
         Language = language;
@@ -68,7 +97,7 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
     {
         Language = data.Language;
     }
-    
+
     public GameConfigModel SaveData()
     {
         return new GameConfigModel(Language);

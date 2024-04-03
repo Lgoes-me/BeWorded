@@ -25,13 +25,16 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
     private Level Level { get; set; }
-
+    private bool Tutorial { get; set; }
+    
     private void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         var gameConfig = Application.ConfigManager.GameConfig;
 
+        Tutorial = Application.OnboardManager.CanShow("FirstMatch");
+        
         Application.SaveManager.SaveData(SceneData.Player);
         Level = Application.ConfigManager.GetNextLevelConfig(SceneData.Player);
 
@@ -51,12 +54,15 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         }
 
         State = new GameplayState(this);
+
+        if(Tutorial)
+            Application.AlertManager.ShowTooltip("aaaaa");
     }
 
     private LetterController CreateLetterController()
     {
         return Instantiate(LetterControllerPrefab, GameAreaController.transform)
-            .Init(Application.ContentManager.GetRandomLetter);
+            .Init(() => Application.ContentManager.GetRandomLetter(Tutorial));
     }
 
     public void ChangeState(GameState state)
