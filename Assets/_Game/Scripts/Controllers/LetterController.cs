@@ -122,9 +122,28 @@ public class LetterController : MonoBehaviour, ICellData
         transform.SetSiblingIndex(index);
     }
 
-    public void AnimateFall(Action onComplete)
+    public Task<bool> AnimateFall()
     {
+        var tcs = new TaskCompletionSource<bool>();
+        
         Content.anchoredPosition = new Vector3(0, 45);
-        Content.DOMove(transform.position, 0.2f).onComplete = () => onComplete();
+        Content.DOMove(transform.position, 0.15f).onComplete = () =>
+        {
+            tcs.SetResult(true);
+        };
+
+        return tcs.Task;
+    }
+    
+    public Task<bool> AnimateFromFall()
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        Content.DOMove(transform.position - new Vector3(0, 45), 0.15f).onComplete = () =>
+        {
+            tcs.SetResult(true);
+            Content.position = transform.position;
+        };
+
+        return tcs.Task;
     }
 }

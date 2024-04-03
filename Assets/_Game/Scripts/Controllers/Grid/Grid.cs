@@ -99,15 +99,15 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
     public async Task SortEmpty()
     {
         for (var i = Height - 1; i >= 0; i--)
-        for (var j = Width - 1; j >= 0; j--)
+        for (var j = 0; j < Width - 1; j++)
         {
             var cell = Cells[i, j];
             var cellAbove = GetCellAbove(cell);
 
             if (cell.Empty)
             {
+                await cellAbove.Data.AnimateFromFall();
                 SwapCells(cell, cellAbove);
-                await Task.Delay(100);
             }
         }
     }
@@ -120,10 +120,10 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
         SwapCells(cell, otherCell);
     }
 
-    public void FillNewData()
+    public async void FillNewData()
     {
         for (var i = Height - 1; i >= 0; i--)
-        for (var j = Width - 1; j >= 0; j--)
+        for (var j = 0; j < Width - 1; j++)
         {
             var cell = Cells[i, j];
 
@@ -131,7 +131,7 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
             {
                 cell.Data.ResetData();
                 cell.EmptyCell(false);
-                cell.Data.AnimateFall(() => { });
+                await cell.Data.AnimateFall();
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 public class Cell<T> where T : ICellData
 {
@@ -33,5 +34,6 @@ public interface ICellData
 
     int GetSiblingIndex();
     void SetSiblingIndex(int index);
-    void AnimateFall(Action onComplete);
+    Task<bool> AnimateFall();
+    Task<bool> AnimateFromFall();
 }
