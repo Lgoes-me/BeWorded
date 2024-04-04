@@ -99,7 +99,7 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
     public async Task SortEmpty()
     {
         for (var i = Height - 1; i >= 0; i--)
-        for (var j = 0; j < Width - 1; j++)
+        for (var j = 0; j < Width; j++)
         {
             var cell = Cells[i, j];
             var cellAbove = GetCellAbove(cell);
@@ -120,10 +120,10 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
         SwapCells(cell, otherCell);
     }
 
-    public async void FillNewData()
+    public async Task FillNewData()
     {
         for (var i = Height - 1; i >= 0; i--)
-        for (var j = 0; j < Width - 1; j++)
+        for (var j = 0; j < Width; j++)
         {
             var cell = Cells[i, j];
 

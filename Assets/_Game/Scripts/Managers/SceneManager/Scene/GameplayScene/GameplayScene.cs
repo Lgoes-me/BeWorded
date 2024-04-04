@@ -148,7 +148,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         ChangeState(new AnimatingState());
         LettersGrid.ClearCells(letterControllers);
         await LettersGrid.SortEmpty();
-        LettersGrid.FillNewData();
+        await LettersGrid.FillNewData();
     }
 
     public void CheckIfGameEnded()
