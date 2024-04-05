@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
@@ -11,16 +12,14 @@ public class TooltipController : MonoBehaviour, IDeselectHandler
     [field: SerializeField] private RectTransform Content { get; set; }
     [field: SerializeField] private TextMeshProUGUI Text { get; set; }
     [field: SerializeField] private Button ConfirmButton { get; set; }
-    [field: SerializeField] private RectTransform UpArrow { get; set; }
-    [field: SerializeField] private RectTransform DownArrow { get; set; }
 
-    private Canvas PointTo { get; set; }
+    private List<HighlightController> Highlights { get; set; }
     private TaskCompletionSource<bool> CompletionSource { get; set; }
 
     private Coroutine Coroutine { get; set; }
     private WaitForSeconds WaitForSeconds { get; set; }
 
-    public Task Show(string text, RectTransform pointTo, bool needsConfirmation, float duration)
+    public Task Show(string text, List<RectTransform> highlights, bool needsConfirmation, float duration)
     {
         Text.SetText(text);
 
@@ -37,28 +36,39 @@ public class TooltipController : MonoBehaviour, IDeselectHandler
             Coroutine = StartCoroutine(CloseCoroutine());
         }
 
-        if (pointTo != null)
-        {
-            PointTo = pointTo.AddComponent<Canvas>();
-            PointTo.overrideSorting = true;
-            PointTo.sortingOrder = 9;
-
-            if (!(pointTo.position.y <= Content.sizeDelta.y))
-            {
-                UpArrow.gameObject.SetActive(true);
-                UpArrow.position = new Vector2(pointTo.position.x, DownArrow.position.y);
-                Content.position = new Vector2(Content.position.x, pointTo.position.y + Content.sizeDelta.y / 2 - 50);
-            }
-            else
-            {
-                DownArrow.gameObject.SetActive(true);
-                DownArrow.position = new Vector2(pointTo.position.x, DownArrow.position.y);
-                Content.position = new Vector2(Content.position.x, pointTo.position.y + Content.sizeDelta.y / 2 + 50);
-            }
-        }
+        DoHighlight(highlights);
 
         CompletionSource = new TaskCompletionSource<bool>();
         return CompletionSource.Task;
+    }
+
+    private void DoHighlight(List<RectTransform> highlights)
+    {
+        Highlights = new List<HighlightController>();
+
+        foreach (var highlight in highlights)
+        {
+            var newHighlight = highlight.AddComponent<HighlightController>();
+            Highlights.Add(newHighlight);
+
+            newHighlight.Highlight();
+        }
+
+        if (highlights.Count == 0)
+            return;
+
+        var verticalPosition = highlights[0].position.y + Content.sizeDelta.y;
+
+        if (!(highlights[0].position.y >= Content.sizeDelta.y))
+        {
+            verticalPosition += highlights[0].sizeDelta.y;
+        }
+        else
+        {
+            verticalPosition -= highlights[0].sizeDelta.y;
+        }
+        
+        Content.position = new Vector2(Content.position.x, verticalPosition);
     }
 
 
@@ -70,9 +80,9 @@ public class TooltipController : MonoBehaviour, IDeselectHandler
 
     private void Close()
     {
-        if (PointTo != null)
+        foreach (var highlight in Highlights)
         {
-            Destroy(PointTo);
+            highlight.UnHighlight();
         }
 
         if (Coroutine != null)
@@ -91,8 +101,11 @@ public class TooltipController : MonoBehaviour, IDeselectHandler
 
     public void OnDeselect(BaseEventData eventData)
     {
-        var selectedGameObject = ((PointerEventData) eventData).pointerCurrentRaycast.gameObject;
-        
+        if (eventData is not PointerEventData pointerEventData)
+            return;
+
+        var selectedGameObject = pointerEventData.pointerCurrentRaycast.gameObject;
+
         if (selectedGameObject.transform.IsChildOf(transform))
             return;
 

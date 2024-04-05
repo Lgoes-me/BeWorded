@@ -27,7 +27,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     private Level Level { get; set; }
     private bool Tutorial { get; set; }
     
-    private void Start()
+    private async void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
@@ -55,8 +55,30 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
         State = new GameplayState(this);
 
-        if(Tutorial)
-            Application.AlertManager.ShowTooltip("aaaaa");
+        await Task.Delay(1000);
+        
+        //if(!Tutorial)
+            //return;
+
+        var toHighlight = new List<RectTransform>()
+        {
+            LettersGrid.Get(2,1).transform as RectTransform,
+            LettersGrid.Get(2,2).transform as RectTransform,
+            LettersGrid.Get(2,3).transform as RectTransform,
+            LettersGrid.Get(2,4).transform as RectTransform,
+        };
+        
+        await Application.AlertManager.ShowTooltip("aaaaa", toHighlight);
+        
+        foreach (var letter in LettersGrid)
+        { 
+            var test = new List<RectTransform>()
+            {
+                letter.transform as RectTransform
+            };
+            
+            await Application.AlertManager.ShowTooltip("aaaaa", test, false, 1);
+        }
     }
 
     private LetterController CreateLetterController()

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class AlertManager : BaseManager
@@ -39,12 +40,12 @@ public class AlertManager : BaseManager
 
     public async Task ShowTooltip(
         string text, 
-        RectTransform pointTo = null, 
+        List<RectTransform> highlights, 
         bool needsConfirmation = false,
         float delay = 4f)
     {
         InputBlocker.gameObject.SetActive(true);
-        await Instantiate(TooltipController).Show(text, pointTo, needsConfirmation, delay);
+        await Instantiate(TooltipController).Show(text, highlights, needsConfirmation, delay);
         InputBlocker.gameObject.SetActive(false);
     }
 }
