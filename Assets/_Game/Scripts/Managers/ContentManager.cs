@@ -30,7 +30,7 @@ public class ContentManager : BaseManager
     public Letter GetRandomLetter(bool tutorial)
     {
         var character = !tutorial ? GameConfig.GetRandomLetter() : GameConfig.GetTutorialLetter();
-        var prize = GameConfig.WeightedPrizes.RandomWeightedElement();
+        var prize = GameConfig.WeightedPrizes.RandomWeightedElement(GameConfig.GetNextSeed());
 
         return new Letter(character, prize);
     }

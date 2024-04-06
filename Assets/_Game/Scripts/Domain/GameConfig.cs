@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using Random = System.Random;
 
 public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
 {
@@ -7,6 +10,7 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
     public int Height { get; }
     public int Width { get; }
     public int MinimumWordSize { get; }
+    public int Seed { get; set; }
     public LanguageType Language { get; private set; }
 
     private List<(char, int)> WeightedLetters => new()
@@ -73,6 +77,12 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
                 ' ', ' ', ' ', ' ', ' ',
             }
         );
+
+        var seed = Extensions.RandomString(10);
+        Seed = seed.GetHashCode();
+        
+        Debug.Log(seed);
+        Debug.Log(Seed);
     }
 
     public char GetTutorialLetter()
@@ -83,9 +93,16 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
         return TutorialLetters.Dequeue();
     }
 
+    public int GetNextSeed()
+    {
+        Seed++;
+
+        return Seed;
+    }
+    
     public char GetRandomLetter()
     {
-        return WeightedLetters.RandomWeightedElement();
+        return WeightedLetters.RandomWeightedElement(GetNextSeed());
     }
     
     public void SetLanguage(LanguageType language)

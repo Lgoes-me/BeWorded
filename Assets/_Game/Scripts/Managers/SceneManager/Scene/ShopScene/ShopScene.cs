@@ -31,7 +31,7 @@ public class ShopScene : BaseScene<ShopSceneData>
         Continue.onClick.AddListener(() => Application.SceneManager.OpenGameplayScene(SceneData.Player));
 
         var jokerFactory = new JokerFactory(SceneData.Player);
-        var randomProducts = GetProducts(jokerFactory).RandomElementList(3);
+        var randomProducts = GetProducts(jokerFactory).RandomElementList(3, 123456);
 
         foreach (var product in randomProducts)
         {

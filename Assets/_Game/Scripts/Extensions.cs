@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public static class Extensions
 {
-    public static List<T> RandomElementList<T>(this List<T> list, int quantity, bool allowRepeats = false)
+    public static List<T> RandomElementList<T>(this List<T> list, int quantity, int seed, bool allowRepeats = false)
     {
         var newList = new List<T>();
         newList.AddRange(list);
@@ -12,7 +13,7 @@ public static class Extensions
         
         for (int i = 0; i < quantity; i++)
         {
-            var randomElement = newList.RandomElement();
+            var randomElement = newList.RandomElement(seed);
             
             if(!allowRepeats)
                 newList.Remove(randomElement);
@@ -23,12 +24,13 @@ public static class Extensions
         return responseList;
     }
     
-    public static T RandomElement<T>(this List<T> list)
+    public static T RandomElement<T>(this List<T> list, int seed)
     {
-        return list[Random.Range(0, list.Count)];
+        var random = new Random(seed);
+        return list[random.Next(list.Count)];
     }
     
-    public static T RandomWeightedElement<T>(this List<(T, int)> list)
+    public static T RandomWeightedElement<T>(this List<(T, int)> list, int seed)
     {
         var weightedList = new List<T>();
         
@@ -42,6 +44,14 @@ public static class Extensions
             }
         }
 
-        return weightedList.RandomElement();
+        return weightedList.RandomElement(seed);
+    }
+    
+    public static string RandomString(int length)
+    {
+        var random = new Random();
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }
