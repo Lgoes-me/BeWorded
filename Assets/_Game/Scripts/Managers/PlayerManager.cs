@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class PlayerManager : BaseManager
 {
     public Player Player { get; private set; }
+    public Seed Seed { get; private set; }
     public List<Player> LoadedPlayers { get; private set; }
     
     public void Init()
@@ -14,6 +15,7 @@ public class PlayerManager : BaseManager
     public void CreateNewPlayer(string seed = "")
     {
         Player = Application.ConfigManager.PlayerConfig.CreatePlayer(seed);
+        Seed = new Seed(Player.BaseSeed);
     }
     
     public bool HasLoadedPlayer()
@@ -27,5 +29,7 @@ public class PlayerManager : BaseManager
             throw new Exception("Não devia chamar essa função sem checar antes se tem player");
         
         Player =  LoadedPlayers[0];
+        //TODO FIX
+        Seed = new Seed(Player.BaseSeed);
     }
 }

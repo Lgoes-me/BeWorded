@@ -13,7 +13,7 @@ public static class Extensions
         
         for (int i = 0; i < quantity; i++)
         {
-            var randomElement = newList.RandomElement(seed);
+            var randomElement = newList.RandomElement(seed + i);
             
             if(!allowRepeats)
                 newList.Remove(randomElement);

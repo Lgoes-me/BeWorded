@@ -1,6 +1,5 @@
 ﻿public class PlayerConfig
 {
-    private int Level { get; }
     private int Money { get; }
     private int Swaps { get; }
     private int Bombs { get; }
@@ -9,7 +8,6 @@
 
     public PlayerConfig()
     {
-        Level = -1;
         Money = 4;
         Swaps = 8;
         Bombs = 4;
@@ -19,6 +17,6 @@
 
     public Player CreatePlayer(string seed = "")
     {
-        return new Player(Level, Money, Swaps, Bombs, Shuffles, QuantidadeJokers, seed);
+        return new Player(Money, Swaps, Bombs, Shuffles, QuantidadeJokers, seed);
     }
 }

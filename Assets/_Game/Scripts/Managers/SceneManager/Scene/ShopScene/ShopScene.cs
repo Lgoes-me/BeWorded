@@ -12,22 +12,22 @@ public class ShopScene : BaseScene<ShopSceneData>
     [field: SerializeField] private Button Continue { get; set; }
 
     private Player Player { get; set; }
-    
+
     private void Start()
     {
         Player = Application.PlayerManager.Player;
-        
         Continue.onClick.AddListener(Application.SceneManager.OpenGameplayScene);
-
+        
+        Player.OpenShop();
+        var seed = Application.PlayerManager.Seed.GetNextShopItemSeed(Player.Shops);
         var jokerFactory = new JokerFactory(Player);
-        var randomProducts = 
-            Application.ConfigManager.ShopConfig.GetProducts(jokerFactory).RandomElementList(3, 123456);
+        var randomProducts = Application.ConfigManager.ShopConfig.GetProducts(jokerFactory).RandomElementList(3, seed);
 
         foreach (var product in randomProducts)
         {
             Instantiate(ShopItemControllerPrefab, ProductsContent).Init(product, this);
         }
-        
+
         PlayerMoney.SetText(Player.Money.ToString());
     }
 
@@ -37,7 +37,7 @@ public class ShopScene : BaseScene<ShopSceneData>
 
         if (player.Money < product.Price)
             return false;
-        
+
         switch (product)
         {
             case PowerUpProduct powerUpProduct:
@@ -59,7 +59,7 @@ public class ShopScene : BaseScene<ShopSceneData>
 
         player.Money -= product.Price;
         PlayerMoney.SetText(Player.Money.ToString());
-        
+
         return true;
     }
 }

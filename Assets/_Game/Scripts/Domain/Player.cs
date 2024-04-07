@@ -7,11 +7,10 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 {
     public string Id { get; set; }
     public int Level { get; private set; }
+    public int Shops { get; private set; }
     public int Money { get; set; }
     public int QuantidadeJokers { get; private set; }
-
     public string BaseSeed { get; private set; }
-    public int Seed { get; private set; }
     
     public PowerUp Swaps { get; private set; }
     public PowerUp Bombs { get; private set; }
@@ -23,14 +22,16 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     
     public Player()
     {
+        Level = -1;
+        Shops = -1;
+        
         Id = "Player.json";
         JokerFactory = new JokerFactory(this);
         Jokers = new List<BaseJoker>();
     }
     
-    public Player(int level, int money, int swaps, int bombs, int shuffles, int quantidadeJokers, string seed) : this()
+    public Player(int money, int swaps, int bombs, int shuffles, int quantidadeJokers, string seed) : this()
     {
-        Level = level;
         Money = money;
 
         Swaps = new PowerUp(PowerUpType.Troca, swaps);
@@ -40,13 +41,6 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
         QuantidadeJokers = quantidadeJokers;
             
         BaseSeed = string.IsNullOrWhiteSpace(seed) ? Extensions.RandomString(10) : seed;
-        Seed = Seed.GetHashCode();
-    }
-    
-    public int GetNextSeed()
-    {
-        Seed++;
-        return Seed;
     }
 
     public void OnLetterScored(ref int basePrize, ref int baseMultiplier, Letter letter)
@@ -93,6 +87,11 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     {
         Level++;
     }
+    
+    public void OpenShop()
+    {
+        Shops++;
+    }
 
     public void GivePrize(int prize)
     {
@@ -102,6 +101,8 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     public void LoadData(PlayerModel data)
     {
         Level = data.Level;
+        Shops = data.Shops;
+        Money = data.Money;
         Swaps = data.Swaps;
         Bombs = data.Bombs;
         Shuffles = data.Shuffles;
@@ -116,11 +117,12 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
         }
 
         QuantidadeJokers = data.QuantidadeJokers;
+        BaseSeed = data.BaseSeed;
     }
 
     public PlayerModel SaveData()
     {
         var jokers = Jokers.Select(j => j.SaveData()).ToList();
-        return new PlayerModel(Level, Money, Swaps, Bombs, Shuffles, jokers, QuantidadeJokers, BaseSeed, Seed);
+        return new PlayerModel(Level, Shops, Money, Swaps, Bombs, Shuffles, jokers, QuantidadeJokers, BaseSeed);
     }
 }

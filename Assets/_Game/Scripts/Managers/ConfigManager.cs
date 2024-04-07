@@ -17,9 +17,8 @@ public class ConfigManager : BaseManager
     public Level GetNextLevelConfig(Player player)
     {
         player.PlayLevel();
-
         if (player.Level > GameConfig.Levels.Count) throw new InvalidOperationException();
-        
+        Application.PlayerManager.Seed.GetNextMatchSeed(player.Level);
         return GameConfig.Levels[player.Level];
     }
 

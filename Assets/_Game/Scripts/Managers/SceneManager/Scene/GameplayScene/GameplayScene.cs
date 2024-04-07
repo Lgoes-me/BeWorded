@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
@@ -85,7 +86,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     private LetterController CreateLetterController()
     {
         return Instantiate(LetterControllerPrefab, GameAreaController.transform)
-            .Init(() => Application.ContentManager.GetRandomLetter(Tutorial, Application.PlayerManager.Player));
+            .Init(() => Application.ContentManager.GetRandomLetter(Tutorial));
     }
 
     public void ChangeState(GameState state)
@@ -201,6 +202,15 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         else
         {
             ChangeState(new GameplayState(this));
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            var player = Application.PlayerManager.Player;
+            ChangeState(new CompletedLevelState(player, Level, Application));
         }
     }
 }
