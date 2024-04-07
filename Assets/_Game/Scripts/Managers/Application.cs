@@ -9,7 +9,8 @@ public class Application : MonoBehaviour
     [field: SerializeField] public SaveManager SaveManager { get; private set; }
     [field: SerializeField] public TextManager TextManager { get; private set; }
     [field: SerializeField] public OnboardManager OnboardManager { get; private set; }
-
+    [field: SerializeField] public PlayerManager PlayerManager { get; private set; }
+    
     public void Init()
     {
         DontDestroyOnLoad(gameObject);
@@ -21,6 +22,7 @@ public class Application : MonoBehaviour
         SaveManager.Setup(this);
         TextManager.Setup(this);
         OnboardManager.Setup(this);
+        PlayerManager.Setup(this);
     }
 
 

@@ -10,9 +10,8 @@ public class SceneManager : BaseManager
     
     private BaseScene MainScene { get; set; }
     
-    public void GoToShop(Player player)
+    public void GoToShop()
     {
-        ShopSceneData.Init(player);
         ChangeMainScene(ShopSceneData);
     }
 
@@ -21,9 +20,8 @@ public class SceneManager : BaseManager
         ChangeMainScene(MenuSceneData);
     }
 
-    public void OpenGameplayScene(Player player)
+    public void OpenGameplayScene()
     {
-        GameplaySceneData.Init(player);
         ChangeMainScene(GameplaySceneData);
     }
 

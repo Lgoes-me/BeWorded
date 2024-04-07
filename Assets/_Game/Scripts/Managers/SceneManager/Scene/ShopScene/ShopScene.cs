@@ -11,11 +11,15 @@ public class ShopScene : BaseScene<ShopSceneData>
     [field: SerializeField] private TextMeshProUGUI PlayerMoney { get; set; }
     [field: SerializeField] private Button Continue { get; set; }
 
+    private Player Player { get; set; }
+    
     private void Start()
     {
-        Continue.onClick.AddListener(() => Application.SceneManager.OpenGameplayScene(SceneData.Player));
+        Player = Application.PlayerManager.Player;
+        
+        Continue.onClick.AddListener(Application.SceneManager.OpenGameplayScene);
 
-        var jokerFactory = new JokerFactory(SceneData.Player);
+        var jokerFactory = new JokerFactory(Player);
         var randomProducts = 
             Application.ConfigManager.ShopConfig.GetProducts(jokerFactory).RandomElementList(3, 123456);
 
@@ -24,12 +28,12 @@ public class ShopScene : BaseScene<ShopSceneData>
             Instantiate(ShopItemControllerPrefab, ProductsContent).Init(product, this);
         }
         
-        PlayerMoney.SetText(SceneData.Player.Money.ToString());
+        PlayerMoney.SetText(Player.Money.ToString());
     }
 
     public bool TryBuyProduct(IProduct product)
     {
-        var player = SceneData.Player;
+        var player = Player;
 
         if (player.Money < product.Price)
             return false;
@@ -54,7 +58,7 @@ public class ShopScene : BaseScene<ShopSceneData>
         }
 
         player.Money -= product.Price;
-        PlayerMoney.SetText(SceneData.Player.Money.ToString());
+        PlayerMoney.SetText(Player.Money.ToString());
         
         return true;
     }

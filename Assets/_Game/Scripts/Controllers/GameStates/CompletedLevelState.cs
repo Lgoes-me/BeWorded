@@ -20,6 +20,6 @@
     {
         Player.GivePrize(Level.Prize);
         await AlertManager.ShowLevelVictoryAlertController();
-        SceneManager.GoToShop(Player);
+        SceneManager.GoToShop();
     }
 }

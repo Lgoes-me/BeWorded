@@ -19,6 +19,7 @@ public class Bootstrapper : MonoBehaviour
         Application.ContentManager.Init();
         Application.OnboardManager.Init();
         Application.TextManager.Init();
+        Application.PlayerManager.Init();
         
         LoadingController.Show(1f);
         LoadingController.Hide();
@@ -27,8 +28,8 @@ public class Bootstrapper : MonoBehaviour
         
         if(Application.OnboardManager.CanShow("Welcome"))
         {
-            var player = Application.ConfigManager.PlayerConfig.CreatePlayer();
-            Application.SceneManager.OpenGameplayScene(player); 
+            Application.PlayerManager.CreateNewPlayer();
+            Application.SceneManager.OpenGameplayScene(); 
         }
         else
         {

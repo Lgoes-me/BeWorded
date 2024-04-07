@@ -55,6 +55,18 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
         new Level(30000, 35, false),
         new Level(150000, 50, true)
     };
+    
+    public Dictionary<int, Score> BaseScoreForWordSize => new()
+    {
+        {3, new Score(3, 3)},
+        {4, new Score(4, 4)},
+        {5, new Score(5, 5)},
+        {6, new Score(6, 6)},
+        {7, new Score(7, 7)},
+        {8, new Score(8, 8)},
+        {9, new Score(9, 9)},
+        {10, new Score(10, 10)},
+    };
 
     public GameConfig()
     {

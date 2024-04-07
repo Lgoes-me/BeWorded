@@ -19,24 +19,25 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     [field: SerializeField] private TextMeshProUGUI ScoreText { get; set; }
 
     [field: SerializeField] public PowerUpController SwapButton { get; private set; }
-    [field: SerializeField] public PowerUpController BombButton { get; private  set; }
+    [field: SerializeField] public PowerUpController BombButton { get; private set; }
     [field: SerializeField] public PowerUpController ShuffleButton { get; private set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     public GameState State { get; private set; }
     private Level Level { get; set; }
     private bool Tutorial { get; set; }
-    
+
     private async void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         var gameConfig = Application.ConfigManager.GameConfig;
+        var player = Application.PlayerManager.Player;
 
         Tutorial = Application.OnboardManager.CanShow("FirstMatch");
-        
-        Application.SaveManager.SaveData(SceneData.Player);
-        Level = Application.ConfigManager.GetNextLevelConfig(SceneData.Player);
+
+        Application.SaveManager.SaveData(player);
+        Level = Application.ConfigManager.GetNextLevelConfig(player);
 
         ScoreToBeatText.SetText(Level.Score.ToString());
         Tentativas.SetText(Level.Tentativas.ToString());
@@ -44,11 +45,11 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
         GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
 
-        SwapButton.Init(SceneData.Player.Swaps, () => State.OnPowerUpClicked(SceneData.Player.Swaps));
-        BombButton.Init(SceneData.Player.Bombs, () => State.OnPowerUpClicked(SceneData.Player.Bombs));
-        ShuffleButton.Init(SceneData.Player.Shuffles, () => State.OnPowerUpClicked(SceneData.Player.Shuffles));
+        SwapButton.Init(player.Swaps, () => State.OnPowerUpClicked(Application.PlayerManager.Player.Swaps));
+        BombButton.Init(player.Bombs, () => State.OnPowerUpClicked(Application.PlayerManager.Player.Bombs));
+        ShuffleButton.Init(player.Shuffles, () => State.OnPowerUpClicked(Application.PlayerManager.Player.Shuffles));
 
-        foreach (var joker in SceneData.Player.Jokers)
+        foreach (var joker in player.Jokers)
         {
             Instantiate(JokerCardControllerPrefab, JokersContent).Init(joker);
         }
@@ -56,9 +57,9 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         State = new GameplayState(this);
 
         //await Task.Delay(1000);
-        
+
         //if(!Tutorial)
-            //return;
+        //return;
 
         /*var toHighlight = new List<RectTransform>()
         {
@@ -84,7 +85,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     private LetterController CreateLetterController()
     {
         return Instantiate(LetterControllerPrefab, GameAreaController.transform)
-            .Init(() => Application.ContentManager.GetRandomLetter(Tutorial, SceneData.Player));
+            .Init(() => Application.ContentManager.GetRandomLetter(Tutorial, Application.PlayerManager.Player));
     }
 
     public void ChangeState(GameState state)
@@ -136,8 +137,12 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
     public void GetPrizes(List<LetterController> letterControllers)
     {
-        var basePrize = 0;
-        var baseMultiplier = letterControllers.Count;
+        var player = Application.PlayerManager.Player;
+
+        var baseScore = Application.ConfigManager.GameConfig.BaseScoreForWordSize[letterControllers.Count];
+        
+        var basePrize = baseScore.BaseScore;
+        var baseMultiplier = baseScore.BaseMultiplier;
 
         foreach (var letterController in letterControllers)
         {
@@ -147,24 +152,24 @@ public class GameplayScene : BaseScene<GameplaySceneData>
                     basePrize += scorePrize.Score;
                     break;
                 case PowerUpPrize powerUpPrize:
-                    SceneData.Player.GainPowerUp(powerUpPrize.PowerUp);
+                    player.GainPowerUp(powerUpPrize.PowerUp);
                     break;
             }
-            
-            SceneData.Player.OnLetterScored(ref basePrize, ref baseMultiplier, letterController.Letter);
+
+            player.OnLetterScored(ref basePrize, ref baseMultiplier, letterController.Letter);
         }
 
         var word = string.Join("", letterControllers.Select(l => l.Letter));
-        SceneData.Player.OnWordScored(ref basePrize, ref baseMultiplier, word);
+        player.OnWordScored(ref basePrize, ref baseMultiplier, word);
 
         SwapButton.UpdateButton();
         BombButton.UpdateButton();
         ShuffleButton.UpdateButton();
-        
+
         Level.GiveScore(basePrize * baseMultiplier);
         ScoreText.SetText(Level.CurrentScore.ToString());
     }
-    
+
     public async Task ClearSelection(List<LetterController> letterControllers)
     {
         ChangeState(new AnimatingState());
@@ -175,20 +180,23 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
     public void CheckIfGameEnded()
     {
+        
+        var player = Application.PlayerManager.Player;
+        
         if (Level.CurrentScore >= Level.Score)
         {
             if (Level.IsFinalLevel)
             {
-                ChangeState(new GameOverState(true, SceneData.Player, Application));
+                ChangeState(new GameOverState(true, player, Application));
             }
             else
             {
-                ChangeState(new CompletedLevelState(SceneData.Player, Level, Application));
+                ChangeState(new CompletedLevelState(player, Level, Application));
             }
         }
         else if (Level.Tentativas == 0)
         {
-            ChangeState(new GameOverState(false, SceneData.Player, Application));
+            ChangeState(new GameOverState(false, player, Application));
         }
         else
         {

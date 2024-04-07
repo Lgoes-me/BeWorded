@@ -16,11 +16,9 @@ public class MenuScene : BaseScene<MenuSceneData>
         NewGame.onClick.AddListener(OpenNewMatch);
         ChangeGameLanguage.onClick.AddListener(ChangeLanguage);
 
-        var savedPlayers = Application.SaveManager.LoadFilesList<PlayerModel, Player>();
-        
-        if (savedPlayers.Count > 0)
+        if (Application.PlayerManager.HasLoadedPlayer())
         {
-            Continue.onClick.AddListener(() => Application.SceneManager.OpenGameplayScene(savedPlayers[0]));
+            Continue.onClick.AddListener(LoadPreviousMatch);
         }
         else
         {
@@ -46,11 +44,17 @@ public class MenuScene : BaseScene<MenuSceneData>
         Application.SaveManager.SaveData(gameConfig);
         Application.Reset();
     }
-
+    
+    private void LoadPreviousMatch()
+    {
+        Application.PlayerManager.LoadSavedPlayer();
+        Application.SceneManager.OpenGameplayScene();
+    }
+    
     private void OpenNewMatch()
     {
         var seed = NewGameSeed.text.Length == 10 ? NewGameSeed.text : ""; 
-        var player = Application.ConfigManager.PlayerConfig.CreatePlayer(seed);
-        Application.SceneManager.OpenGameplayScene(player);
+        Application.PlayerManager.CreateNewPlayer(seed);
+        Application.SceneManager.OpenGameplayScene();
     }
 }
