@@ -4,10 +4,14 @@ using System.Threading.Tasks;
 public class ConfigManager : BaseManager
 {
     public GameConfig GameConfig { get; private set; }
+    public ShopConfig ShopConfig { get; private set; }
+    public PlayerConfig PlayerConfig { get; private set; }
 
     public void Init()
     {
         GameConfig = new GameConfig();
+        PlayerConfig = new PlayerConfig();
+        ShopConfig = new ShopConfig();
     }
 
     public Level GetNextLevelConfig(Player player)

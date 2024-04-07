@@ -27,7 +27,8 @@ public class Bootstrapper : MonoBehaviour
         
         if(Application.OnboardManager.CanShow("Welcome"))
         {
-            Application.SceneManager.OpenGameplayScene(new Player()); 
+            var player = Application.ConfigManager.PlayerConfig.CreatePlayer();
+            Application.SceneManager.OpenGameplayScene(player); 
         }
         else
         {

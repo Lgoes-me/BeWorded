@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,13 +6,14 @@ public class MenuScene : BaseScene<MenuSceneData>
 {
     [field: SerializeField] private TextController NewGameTextController { get; set; }
     [field: SerializeField] private Button NewGame { get; set; }
+    [field: SerializeField] private TMP_InputField NewGameSeed { get; set; }
     [field: SerializeField] private TextController ContinueTextController { get; set; }
     [field: SerializeField] private Button Continue { get; set; }
     [field: SerializeField] private Button ChangeGameLanguage { get; set; }
 
     private void Start()
     {
-        NewGame.onClick.AddListener(() => Application.SceneManager.OpenGameplayScene(new Player()));
+        NewGame.onClick.AddListener(OpenNewMatch);
         ChangeGameLanguage.onClick.AddListener(ChangeLanguage);
 
         var savedPlayers = Application.SaveManager.LoadFilesList<PlayerModel, Player>();
@@ -43,5 +45,12 @@ public class MenuScene : BaseScene<MenuSceneData>
 
         Application.SaveManager.SaveData(gameConfig);
         Application.Reset();
+    }
+
+    private void OpenNewMatch()
+    {
+        var seed = NewGameSeed.text.Length == 10 ? NewGameSeed.text : ""; 
+        var player = Application.ConfigManager.PlayerConfig.CreatePlayer(seed);
+        Application.SceneManager.OpenGameplayScene(player);
     }
 }

@@ -27,10 +27,10 @@ public class ContentManager : BaseManager
             .ToList();
     }
 
-    public Letter GetRandomLetter(bool tutorial)
+    public Letter GetRandomLetter(bool tutorial, Player player)
     {
-        var character = !tutorial ? GameConfig.GetRandomLetter() : GameConfig.GetTutorialLetter();
-        var prize = GameConfig.WeightedPrizes.RandomWeightedElement(GameConfig.GetNextSeed());
+        var character = !tutorial ? GameConfig.GetRandomLetter(player.GetNextSeed()) : GameConfig.GetTutorialLetter();
+        var prize = GameConfig.WeightedPrizes.RandomWeightedElement(player.GetNextSeed());
 
         return new Letter(character, prize);
     }

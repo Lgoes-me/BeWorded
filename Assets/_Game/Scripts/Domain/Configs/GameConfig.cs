@@ -10,7 +10,6 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
     public int Height { get; }
     public int Width { get; }
     public int MinimumWordSize { get; }
-    public int Seed { get; set; }
     public LanguageType Language { get; private set; }
 
     private List<(char, int)> WeightedLetters => new()
@@ -77,32 +76,19 @@ public class GameConfig : ISavable<GameConfigModel>, ILoadable<GameConfigModel>
                 ' ', ' ', ' ', ' ', ' ',
             }
         );
-
-        var seed = Extensions.RandomString(10);
-        Seed = seed.GetHashCode();
-        
-        Debug.Log(seed);
-        Debug.Log(Seed);
     }
 
     public char GetTutorialLetter()
     {
         if (TutorialLetters.Count == 0)
-            return GetRandomLetter();
+            return GetRandomLetter(0);
         
         return TutorialLetters.Dequeue();
     }
-
-    public int GetNextSeed()
-    {
-        Seed++;
-
-        return Seed;
-    }
     
-    public char GetRandomLetter()
+    public char GetRandomLetter(int seed)
     {
-        return WeightedLetters.RandomWeightedElement(GetNextSeed());
+        return WeightedLetters.RandomWeightedElement(seed);
     }
     
     public void SetLanguage(LanguageType language)

@@ -11,6 +11,8 @@ public class PlayerModel
     public PowerUp Shuffles { get; private set; }
     public List<JokerModel> Jokers { get; private set; }
     public int QuantidadeJokers { get; private set; }
+    public string BaseSeed { get; private set; }
+    public int Seed { get; private set; }
 
     public PlayerModel(
         int level, 
@@ -19,7 +21,9 @@ public class PlayerModel
         PowerUp bombs, 
         PowerUp shuffles, 
         List<JokerModel> jokers,
-        int quantidadeJokers)
+        int quantidadeJokers,
+        string baseSeed,
+        int seed)
     {
         Level = level;
         Money = money;
@@ -28,5 +32,7 @@ public class PlayerModel
         Shuffles = shuffles;
         Jokers = jokers;
         QuantidadeJokers = quantidadeJokers;
+        BaseSeed = baseSeed;
+        Seed = seed;
     }
 }

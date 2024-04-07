@@ -11,27 +11,13 @@ public class ShopScene : BaseScene<ShopSceneData>
     [field: SerializeField] private TextMeshProUGUI PlayerMoney { get; set; }
     [field: SerializeField] private Button Continue { get; set; }
 
-    private List<IProduct> GetProducts(JokerFactory jokerFactory) => new()
-    {
-        new PowerUpProduct(2, PowerUpType.Troca),
-        new PowerUpProduct(2, PowerUpType.Bomba),
-        new PowerUpProduct(3, PowerUpType.Misturar),
-        new JokerProduct(3, jokerFactory.CreateJoker(JokerIdentifier.BaseA)),
-        new JokerProduct(5, jokerFactory.CreateJoker(JokerIdentifier.BaseVogal)),
-        new JokerProduct(6, jokerFactory.CreateJoker(JokerIdentifier.MultM)),
-        new JokerProduct(7, jokerFactory.CreateJoker(JokerIdentifier.MultiplyZ)),
-        new JokerProduct(3, jokerFactory.CreateJoker(JokerIdentifier.MoneyS)),
-        new JokerProduct(4, jokerFactory.CreateJoker(JokerIdentifier.PowerUpBombB)),
-        new JokerProduct(3, jokerFactory.CreateJoker(JokerIdentifier.MultSimpleWord)),
-        new JokerProduct(8, jokerFactory.CreateJoker(JokerIdentifier.MultiplySimpleWord)),
-    };
-
     private void Start()
     {
         Continue.onClick.AddListener(() => Application.SceneManager.OpenGameplayScene(SceneData.Player));
 
         var jokerFactory = new JokerFactory(SceneData.Player);
-        var randomProducts = GetProducts(jokerFactory).RandomElementList(3, 123456);
+        var randomProducts = 
+            Application.ConfigManager.ShopConfig.GetProducts(jokerFactory).RandomElementList(3, 123456);
 
         foreach (var product in randomProducts)
         {

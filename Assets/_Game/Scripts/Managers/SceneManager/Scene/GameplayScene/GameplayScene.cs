@@ -84,7 +84,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     private LetterController CreateLetterController()
     {
         return Instantiate(LetterControllerPrefab, GameAreaController.transform)
-            .Init(() => Application.ContentManager.GetRandomLetter(Tutorial));
+            .Init(() => Application.ContentManager.GetRandomLetter(Tutorial, SceneData.Player));
     }
 
     public void ChangeState(GameState state)

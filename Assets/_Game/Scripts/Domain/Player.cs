@@ -1,35 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 {
     public string Id { get; set; }
     public int Level { get; private set; }
     public int Money { get; set; }
+    public int QuantidadeJokers { get; private set; }
 
+    public string BaseSeed { get; private set; }
+    public int Seed { get; private set; }
+    
     public PowerUp Swaps { get; private set; }
     public PowerUp Bombs { get; private set; }
     public PowerUp Shuffles { get; private set; }
 
-    private JokerFactory JokerFactory { get; }
     public List<BaseJoker> Jokers { get; private set; }
-    public int QuantidadeJokers { get; private set; }
-
+    
+    private JokerFactory JokerFactory { get; }
+    
     public Player()
     {
         Id = "Player.json";
-        Level = -1;
-        Money = 4;
-
-        Swaps = new PowerUp(PowerUpType.Troca, 8);
-        Bombs = new PowerUp(PowerUpType.Bomba, 4);
-        Shuffles = new PowerUp(PowerUpType.Misturar, 1);
-
         JokerFactory = new JokerFactory(this);
-        
         Jokers = new List<BaseJoker>();
-        QuantidadeJokers = 5;
+    }
+    
+    public Player(int level, int money, int swaps, int bombs, int shuffles, int quantidadeJokers, string seed) : this()
+    {
+        Level = level;
+        Money = money;
+
+        Swaps = new PowerUp(PowerUpType.Troca, swaps);
+        Bombs = new PowerUp(PowerUpType.Bomba, bombs);
+        Shuffles = new PowerUp(PowerUpType.Misturar, shuffles);
+
+        QuantidadeJokers = quantidadeJokers;
+            
+        BaseSeed = string.IsNullOrWhiteSpace(seed) ? Extensions.RandomString(10) : seed;
+        Seed = Seed.GetHashCode();
+    }
+    
+    public int GetNextSeed()
+    {
+        Seed++;
+        return Seed;
     }
 
     public void OnLetterScored(ref int basePrize, ref int baseMultiplier, Letter letter)
@@ -104,6 +121,6 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     public PlayerModel SaveData()
     {
         var jokers = Jokers.Select(j => j.SaveData()).ToList();
-        return new PlayerModel(Level, Money, Swaps, Bombs, Shuffles, jokers, QuantidadeJokers);
+        return new PlayerModel(Level, Money, Swaps, Bombs, Shuffles, jokers, QuantidadeJokers, BaseSeed, Seed);
     }
 }
