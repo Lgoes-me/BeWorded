@@ -29,7 +29,6 @@ public class PlayerManager : BaseManager
             throw new Exception("Não devia chamar essa função sem checar antes se tem player");
         
         Player =  LoadedPlayers[0];
-        //TODO FIX
         Seed = new Seed(Player.BaseSeed);
     }
 }

@@ -18,7 +18,7 @@ public class OnWordScoredJoker : BaseJoker
 
     public void OnWordScored(ref int basePrice, ref int baseMultiplier, string word)
     {
-        if (Validators.Any(validator => validator.Validate(word)))
+        if (!Validators.Any(validator => validator.Validate(word)))
             return;
 
         foreach (var modifier in Modifiers)
@@ -78,6 +78,18 @@ public class OnWordScoredJokerBuilder
     public OnWordScoredJokerBuilder WithPowerUpModifier(Player player, PowerUpType powerUpType, int bonus)
     {
         Modifiers.Add(new PowerUpPerScoreModifier(player, powerUpType, bonus));
+        return this;
+    }
+    
+    public OnWordScoredJokerBuilder WithScoreCounterModifier(Player player, JokerIdentifier identifier)
+    {
+        Modifiers.Add(new ScoreCounterModifier(player, identifier));
+        return this;
+    }
+
+    public OnWordScoredJokerBuilder WithExtraMultiplierFromCounterModifier(Player player, JokerIdentifier identifier)
+    {
+        Modifiers.Add(new ExtraMultiplierFromCounterScoreModifier(player, identifier));
         return this;
     }
 

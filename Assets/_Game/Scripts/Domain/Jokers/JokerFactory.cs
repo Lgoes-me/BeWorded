@@ -61,7 +61,13 @@ public class JokerFactory
                     .WithNoValidator()
                     .WithMultiplyMultiplierModifier(2)
                     .Build(id),
-
+            
+            JokerIdentifier.EscalatingJoker => 
+                new OnWordScoredJokerBuilder()
+                    .WithNoValidator()
+                    .WithScoreCounterModifier(Player, id)
+                    .WithExtraMultiplierFromCounterModifier(Player, id)
+                    .Build(id),
 
             _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
         };
@@ -78,4 +84,5 @@ public enum JokerIdentifier
     PowerUpBombB,
     MultSimpleWord,
     MultiplySimpleWord,
+    EscalatingJoker
 }

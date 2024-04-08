@@ -18,7 +18,7 @@ public class OnLetterScoredJoker : BaseJoker
 
     public void OnLetterScored(ref int basePrice, ref int baseMultiplier, Letter letter)
     {
-        if (Validators.Any(validator => validator.Validate(letter)))
+        if (!Validators.Any(validator => validator.Validate(letter)))
             return;
 
         foreach (var modifier in Modifiers)

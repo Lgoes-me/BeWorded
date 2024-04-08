@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 {
@@ -11,25 +10,27 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     public int Money { get; set; }
     public int QuantidadeJokers { get; private set; }
     public string BaseSeed { get; private set; }
-    
+
     public PowerUp Swaps { get; private set; }
     public PowerUp Bombs { get; private set; }
     public PowerUp Shuffles { get; private set; }
 
     public List<BaseJoker> Jokers { get; private set; }
-    
+    public Dictionary<JokerIdentifier, int> JokersExtraParams { get; private set; }
     private JokerFactory JokerFactory { get; }
-    
+
     public Player()
     {
         Level = -1;
         Shops = -1;
-        
+
         Id = "Player.json";
-        JokerFactory = new JokerFactory(this);
+
         Jokers = new List<BaseJoker>();
+        JokersExtraParams = new Dictionary<JokerIdentifier, int>();
+        JokerFactory = new JokerFactory(this);
     }
-    
+
     public Player(int money, int swaps, int bombs, int shuffles, int quantidadeJokers, string seed) : this()
     {
         Money = money;
@@ -39,7 +40,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
         Shuffles = new PowerUp(PowerUpType.Misturar, shuffles);
 
         QuantidadeJokers = quantidadeJokers;
-            
+
         BaseSeed = string.IsNullOrWhiteSpace(seed) ? Extensions.RandomString(10) : seed;
     }
 
@@ -64,7 +65,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
             wordScoredJoker.OnWordScored(ref basePrize, ref baseMultiplier, word);
         }
     }
-    
+
     public void GainPowerUp(PowerUpType powerUpType)
     {
         switch (powerUpType)
@@ -87,7 +88,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     {
         Level++;
     }
-    
+
     public void OpenShop()
     {
         Shops++;
@@ -109,13 +110,15 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 
         foreach (var jokerModel in data.Jokers)
         {
-            if (!Enum.TryParse(jokerModel.Identifier, out JokerIdentifier identifier)) 
+            if (!Enum.TryParse(jokerModel.Identifier, out JokerIdentifier identifier))
                 continue;
-            
+
             var joker = JokerFactory.CreateJoker(identifier);
+
             Jokers.Add(joker);
         }
 
+        JokersExtraParams = data.JokersExtraParams;
         QuantidadeJokers = data.QuantidadeJokers;
         BaseSeed = data.BaseSeed;
     }
@@ -123,6 +126,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     public PlayerModel SaveData()
     {
         var jokers = Jokers.Select(j => j.SaveData()).ToList();
-        return new PlayerModel(Level, Shops, Money, Swaps, Bombs, Shuffles, jokers, QuantidadeJokers, BaseSeed);
+        return new PlayerModel(Level, Shops, Money, Swaps, Bombs, Shuffles, jokers, JokersExtraParams, QuantidadeJokers,
+            BaseSeed);
     }
 }
