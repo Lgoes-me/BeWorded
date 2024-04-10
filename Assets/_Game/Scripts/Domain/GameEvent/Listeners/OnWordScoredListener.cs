@@ -16,7 +16,7 @@ public class OnWordScoredListener : BaseGameEventListener
 
     public void OnWordScored(ref int basePrice, ref int baseMultiplier, string word)
     {
-        if (!Validators.Any(validator => validator.Validate(word)))
+        if (Validators.Any(validator => !validator.Validate(word)))
             return;
 
         foreach (var modifier in Modifiers)
