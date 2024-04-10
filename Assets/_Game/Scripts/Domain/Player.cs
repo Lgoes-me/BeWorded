@@ -15,7 +15,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
     public PowerUp Bombs { get; private set; }
     public PowerUp Shuffles { get; private set; }
 
-    public List<BaseJoker> Jokers { get; private set; }
+    public List<Joker> Jokers { get; private set; }
     public Dictionary<JokerIdentifier, int> JokersExtraParams { get; private set; }
     private JokerFactory JokerFactory { get; }
 
@@ -26,7 +26,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 
         Id = "Player.json";
 
-        Jokers = new List<BaseJoker>();
+        Jokers = new List<Joker>();
         JokersExtraParams = new Dictionary<JokerIdentifier, int>();
         JokerFactory = new JokerFactory(this);
     }
@@ -42,28 +42,6 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
         QuantidadeJokers = quantidadeJokers;
 
         BaseSeed = string.IsNullOrWhiteSpace(seed) ? Extensions.RandomString(10) : seed;
-    }
-
-    public void OnLetterScored(ref int basePrize, ref int baseMultiplier, Letter letter)
-    {
-        foreach (var joker in Jokers)
-        {
-            if (joker is not OnLetterScoredJoker letterScoredJoker)
-                continue;
-
-            letterScoredJoker.OnLetterScored(ref basePrize, ref baseMultiplier, letter);
-        }
-    }
-
-    public void OnWordScored(ref int basePrize, ref int baseMultiplier, string word)
-    {
-        foreach (var joker in Jokers)
-        {
-            if (joker is not OnWordScoredJoker wordScoredJoker)
-                continue;
-
-            wordScoredJoker.OnWordScored(ref basePrize, ref baseMultiplier, word);
-        }
     }
 
     public void GainPowerUp(PowerUpType powerUpType)

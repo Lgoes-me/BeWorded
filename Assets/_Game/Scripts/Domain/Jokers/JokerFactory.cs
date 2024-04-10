@@ -10,64 +10,83 @@ public class JokerFactory
         Player = player;
     }
 
-    public BaseJoker CreateJoker(JokerIdentifier id)
+    public Joker CreateJoker(JokerIdentifier id)
     {
         return id switch
         {
-            JokerIdentifier.BaseA =>
-                new OnLetterScoredJokerBuilder()
+            JokerIdentifier.BaseA => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
                     .WithContainsCharacterValidator(new List<char> {'A'})
                     .WithExtraPrizeModifier(10)
-                    .Build(id),
+                    .Build(),
+            },
 
-            JokerIdentifier.BaseVogal =>
-                new OnLetterScoredJokerBuilder()
+            JokerIdentifier.BaseVogal => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
                     .WithContainsCharacterValidator(new List<char> {'A', 'E', 'I', 'O', 'U'})
                     .WithExtraPrizeModifier(5)
-                    .Build(id),
+                    .Build(),
+            },
 
-            JokerIdentifier.MultM =>
-                new OnLetterScoredJokerBuilder()
+            JokerIdentifier.MultM => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
                     .WithContainsCharacterValidator(new List<char> {'M'})
                     .WithExtraMultiplierModifier(4)
-                    .Build(id),
+                    .Build(),
+            },
 
-            JokerIdentifier.MultiplyZ => 
-                new OnLetterScoredJokerBuilder()
+            JokerIdentifier.MultiplyZ => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
                     .WithContainsCharacterValidator(new List<char> {'Z'})
                     .WithMultiplyMultiplierModifier(2)
-                    .Build(id),
+                    .Build(),
+            },
 
-            JokerIdentifier.MoneyS => 
-                new OnLetterScoredJokerBuilder()
+            JokerIdentifier.MoneyS => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
                     .WithContainsCharacterValidator(new List<char> {'S'})
                     .WithMoneyModifier(Player, 1)
-                    .Build(id),
+                    .Build(),
+            },
 
-            JokerIdentifier.PowerUpBombB => 
-                new OnLetterScoredJokerBuilder()
+            JokerIdentifier.PowerUpBombB => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
                     .WithContainsCharacterValidator(new List<char> {'B'})
                     .WithPowerUpModifier(Player, PowerUpType.Bomba, 1)
-                    .Build(id),
-            
-            JokerIdentifier.MultSimpleWord => 
-                new OnWordScoredJokerBuilder()
-                    .WithNoValidator()
-                    .WithExtraMultiplierModifier(10)
-                    .Build(id),
+                    .Build(),
+            },
 
-            JokerIdentifier.MultiplySimpleWord => 
-                new OnWordScoredJokerBuilder()
-                    .WithNoValidator()
+            JokerIdentifier.MultSimpleWord => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithExtraMultiplierModifier(10)
+                    .Build(),
+            },
+
+            JokerIdentifier.MultiplySimpleWord => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
                     .WithMultiplyMultiplierModifier(2)
-                    .Build(id),
-            
-            JokerIdentifier.EscalatingJoker => 
-                new OnWordScoredJokerBuilder()
-                    .WithNoValidator()
+                    .Build(),
+            },
+
+            JokerIdentifier.EscalatingJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
                     .WithScoreCounterModifier(Player, id)
                     .WithExtraMultiplierFromCounterModifier(Player, id)
-                    .Build(id),
+                    .Build(),
+                new OnLetterScoredListenerBuilder()
+                    .WithScoreCounterModifier(Player, id)
+                    .WithExtraMultiplierFromCounterModifier(Player, id)
+                    .Build(),
+            },
 
             _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
         };

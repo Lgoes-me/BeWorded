@@ -157,11 +157,11 @@ public class GameplayScene : BaseScene<GameplaySceneData>
                     break;
             }
 
-            player.OnLetterScored(ref basePrize, ref baseMultiplier, letterController.Letter);
+            Application.GameEventsManager.OnLetterScored.Invoke(ref basePrize, ref baseMultiplier, letterController.Letter);
         }
 
         var word = string.Join("", letterControllers.Select(l => l.Letter));
-        player.OnWordScored(ref basePrize, ref baseMultiplier, word);
+        Application.GameEventsManager.OnWordScored.Invoke(ref basePrize, ref baseMultiplier, word);
 
         SwapButton.UpdateButton();
         BombButton.UpdateButton();

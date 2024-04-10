@@ -21,9 +21,9 @@ public class JokerProduct : IProduct
 {
     public string ProductName => Joker.Id;
     public int Price { get; }
-    public BaseJoker Joker { get; }
+    public Joker Joker { get; }
 
-    public JokerProduct(int price, BaseJoker joker)
+    public JokerProduct(int price, Joker joker)
     {
         Price = price;
         Joker = joker;

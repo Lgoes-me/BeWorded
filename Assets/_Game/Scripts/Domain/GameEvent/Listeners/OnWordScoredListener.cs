@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-public class OnWordScoredJoker : BaseJoker
+public class OnWordScoredListener : BaseGameEventListener
 {
     private List<WordValidator> Validators { get; set; }
     private List<ScoreModifier> Modifiers { get; set; }
 
-    internal OnWordScoredJoker(
-        JokerIdentifier id, 
+    internal OnWordScoredListener(
         List<WordValidator> validators, 
-        List<ScoreModifier> modifiers) : 
-        base(id)
+        List<ScoreModifier> modifiers)
     {
         Validators = validators;
         Modifiers = modifiers;
@@ -28,73 +26,67 @@ public class OnWordScoredJoker : BaseJoker
     }
 }
 
-public class OnWordScoredJokerBuilder
+public class OnWordScoredListenerBuilder
 {
     private List<WordValidator> Validators { get; set; }
     private List<ScoreModifier> Modifiers { get; set; }
 
-    public OnWordScoredJokerBuilder()
+    public OnWordScoredListenerBuilder()
     {
         Validators = new List<WordValidator>();
         Modifiers = new List<ScoreModifier>();
     }
 
-    public OnWordScoredJokerBuilder WithWordPatternValidator(string subString)
+    public OnWordScoredListenerBuilder WithWordPatternValidator(string subString)
     {
         Validators.Add(new WordPatternValidator(subString));
         return this;
     }
     
-    public OnWordScoredJokerBuilder WithNoValidator()
-    {
-        Validators.Add(new NoValidator());
-        return this;
-    }
-
-    public OnWordScoredJokerBuilder WithExtraPrizeModifier(int bonus)
+    public OnWordScoredListenerBuilder WithExtraPrizeModifier(int bonus)
     {
         Modifiers.Add(new ExtraPrizeScoreModifier(bonus));
         return this;
     }
 
-    public OnWordScoredJokerBuilder WithExtraMultiplierModifier(int bonus)
+    public OnWordScoredListenerBuilder WithExtraMultiplierModifier(int bonus)
     {
         Modifiers.Add(new ExtraMultiplierScoreModifier(bonus));
         return this;
     }
 
-    public OnWordScoredJokerBuilder WithMultiplyMultiplierModifier(int bonus)
+    public OnWordScoredListenerBuilder WithMultiplyMultiplierModifier(int bonus)
     {
         Modifiers.Add(new MultiplyMultiplierScoreModifier(bonus));
         return this;
     }
 
-    public OnWordScoredJokerBuilder WithMoneyModifier(Player player, int bonus)
+    public OnWordScoredListenerBuilder WithMoneyModifier(Player player, int bonus)
     {
         Modifiers.Add(new MoneyPerCharacterScoreModifier(player, bonus));
         return this;
     }
     
-    public OnWordScoredJokerBuilder WithPowerUpModifier(Player player, PowerUpType powerUpType, int bonus)
+    public OnWordScoredListenerBuilder WithPowerUpModifier(Player player, PowerUpType powerUpType, int bonus)
     {
         Modifiers.Add(new PowerUpPerScoreModifier(player, powerUpType, bonus));
         return this;
     }
     
-    public OnWordScoredJokerBuilder WithScoreCounterModifier(Player player, JokerIdentifier identifier)
+    public OnWordScoredListenerBuilder WithScoreCounterModifier(Player player, JokerIdentifier identifier)
     {
         Modifiers.Add(new ScoreCounterModifier(player, identifier));
         return this;
     }
 
-    public OnWordScoredJokerBuilder WithExtraMultiplierFromCounterModifier(Player player, JokerIdentifier identifier)
+    public OnWordScoredListenerBuilder WithExtraMultiplierFromCounterModifier(Player player, JokerIdentifier identifier)
     {
         Modifiers.Add(new ExtraMultiplierFromCounterScoreModifier(player, identifier));
         return this;
     }
 
-    public OnWordScoredJoker Build(JokerIdentifier id)
+    public OnWordScoredListener Build()
     {
-        return new OnWordScoredJoker(id, Validators, Modifiers);
+        return new OnWordScoredListener(Validators, Modifiers);
     }
 }

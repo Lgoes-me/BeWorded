@@ -10,6 +10,7 @@ public class Application : MonoBehaviour
     [field: SerializeField] public TextManager TextManager { get; private set; }
     [field: SerializeField] public OnboardManager OnboardManager { get; private set; }
     [field: SerializeField] public PlayerManager PlayerManager { get; private set; }
+    [field: SerializeField] public GameEventsManager GameEventsManager { get; private set; }
     
     public void Init()
     {
@@ -23,6 +24,7 @@ public class Application : MonoBehaviour
         TextManager.Setup(this);
         OnboardManager.Setup(this);
         PlayerManager.Setup(this);
+        GameEventsManager.Setup(this);
     }
 
 

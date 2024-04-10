@@ -50,6 +50,7 @@ public class ShopScene : BaseScene<ShopSceneData>
                 if (player.Jokers.Count >= player.QuantidadeJokers)
                     return false;
 
+                Application.GameEventsManager.SubscribeJoker(jokerProduct.Joker);
                 player.Jokers.Add(jokerProduct.Joker);
                 break;
             }

@@ -5,7 +5,7 @@ public class JokerCardController : MonoBehaviour
 {
     [field: SerializeField] private TextMeshProUGUI JokerName { get; set; }
 
-    public JokerCardController Init(BaseJoker joker)
+    public JokerCardController Init(Joker joker)
     {
         JokerName.SetText(joker.Id);
         return this;

@@ -49,11 +49,3 @@ public class EndsWithValidator : WordValidator
         return word.LastOrDefault() == Character;
     }
 }
-
-public class NoValidator : WordValidator
-{
-    public override bool Validate(string word)
-    {
-        return true;
-    }
-}
