@@ -55,7 +55,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
             Instantiate(JokerCardControllerPrefab, JokersContent).Init(joker);
         }
 
-        State = new GameplayState(this);
+        State = new GameplayState(Application.GameEventsManager, this);
 
         //await Task.Delay(1000);
 
@@ -201,7 +201,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         }
         else
         {
-            ChangeState(new GameplayState(this));
+            ChangeState(new GameplayState(Application.GameEventsManager, this));
         }
     }
 

@@ -2,5 +2,5 @@
 
 public abstract class PowerUpModifier
 {
-    public abstract void DoModification(PowerUp powerUp, List<Letter> letters);
+    public abstract void DoModification(PowerUp powerUp, List<LetterController> letters);
 }

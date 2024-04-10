@@ -2,7 +2,7 @@
 
 public class OnPowerUpUsedGameEvent : BaseGameEvent<OnPowerUpUsedListener>
 {
-    public void Invoke(PowerUp shuffle, List<Letter> letters)
+    public void Invoke(PowerUp shuffle, List<LetterController> letters)
     {
         foreach (var listener in Listeners)
         {

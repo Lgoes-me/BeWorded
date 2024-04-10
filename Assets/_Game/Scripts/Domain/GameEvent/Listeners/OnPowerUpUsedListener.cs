@@ -14,7 +14,7 @@ public class OnPowerUpUsedListener : BaseGameEventListener
         Modifiers = modifiers;
     }
 
-    public void OnBoardShuffled(PowerUp powerUp, List<Letter> letters)
+    public void OnBoardShuffled(PowerUp powerUp, List<LetterController> letters)
     {
         if (Validators.Any(validator => !validator.Validate(powerUp, letters)))
             return;

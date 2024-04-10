@@ -3,23 +3,28 @@ using UnityEngine.EventSystems;
 
 public class BombState : GameState
 {
+    private GameEventsManager GameEventsManager { get; set; }
     private GameplayScene Game { get; set; }
     private PowerUp Bombs { get; set; }
 
-    public BombState(GameplayScene game, PowerUp bombs)
+    public BombState(GameEventsManager gameEventsManager, GameplayScene game, PowerUp bombs)
     {
+        GameEventsManager = gameEventsManager;
         Game = game;
         Bombs = bombs;
     }
 
-    public override async void OnClick(PointerEventData pointerEventData, LetterController newSelected)
+    public override async void OnClick(PointerEventData pointerEventData, LetterController letterController)
     {
         Bombs.Use();
         Game.BombButton.UpdateButton();
         
-        newSelected.OnError();
-        await Game.ClearSelection(new List<LetterController> {newSelected});
-        Game.ChangeState(new GameplayState(Game));
+        letterController.OnError();
+
+        var letterControllers = new List<LetterController> {letterController};
+        GameEventsManager.OnPowerUpUsed.Invoke(Bombs, letterControllers);
+        await Game.ClearSelection(letterControllers);
+        Game.ChangeState(new GameplayState(GameEventsManager, Game));
     }
 
     public override void OnPowerUpClicked(PowerUp powerUp)
@@ -27,13 +32,13 @@ public class BombState : GameState
         switch (powerUp.Type)
         {
             case PowerUpType.Troca:
-                Game.ChangeState(new SwapDragState(Game, powerUp));
+                Game.ChangeState(new SwapDragState(GameEventsManager, Game, powerUp));
                 break;
             case PowerUpType.Bomba:
-                Game.ChangeState(new GameplayState(Game));
+                Game.ChangeState(new GameplayState(GameEventsManager, Game));
                 break;
             case PowerUpType.Misturar:
-                Game.ChangeState(new ShuffleState(Game, powerUp));
+                Game.ChangeState(new ShuffleState(GameEventsManager, Game, powerUp));
                 break;
         }
     }

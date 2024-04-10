@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class GameplayState : GameState
 {
+    private GameEventsManager GameEventsManager { get; set; }
     private GameplayScene Game { get; set; }
     private List<LetterController> SelectedLetterControllers { get; set; }
     
-    public GameplayState(GameplayScene game)
+    public GameplayState(GameEventsManager gameEventsManager, GameplayScene game)
     {
+        GameEventsManager = gameEventsManager;
         SelectedLetterControllers = new List<LetterController>();
         Game = game;
     }
@@ -75,13 +76,13 @@ public class GameplayState : GameState
         switch (powerUp.Type)
         {
             case PowerUpType.Troca:
-                Game.ChangeState(new SwapDragState(Game, powerUp));
+                Game.ChangeState(new SwapDragState(GameEventsManager, Game, powerUp));
                 break;
             case PowerUpType.Bomba:
-                Game.ChangeState(new BombState(Game, powerUp));
+                Game.ChangeState(new BombState(GameEventsManager, Game, powerUp));
                 break;
             case PowerUpType.Misturar:
-                Game.ChangeState(new ShuffleState(Game, powerUp));
+                Game.ChangeState(new ShuffleState(GameEventsManager, Game, powerUp));
                 break;
         }
     }
