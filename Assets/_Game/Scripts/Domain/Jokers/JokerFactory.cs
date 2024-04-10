@@ -17,74 +17,72 @@ public class JokerFactory
             JokerIdentifier.BaseA => new Joker(id)
             {
                 new OnLetterScoredListenerBuilder()
-                    .WithContainsCharacterValidator(new List<char> {'A'})
-                    .WithExtraPrizeModifier(10)
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'A'}))
+                    .WithModifier(new ExtraPrizeScoreModifier(10))
                     .Build(),
             },
 
             JokerIdentifier.BaseVogal => new Joker(id)
             {
                 new OnLetterScoredListenerBuilder()
-                    .WithContainsCharacterValidator(new List<char> {'A', 'E', 'I', 'O', 'U'})
-                    .WithExtraPrizeModifier(5)
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'A', 'E', 'I', 'O', 'U'}))
+                    .WithModifier(new ExtraPrizeScoreModifier(5))
                     .Build(),
             },
 
             JokerIdentifier.MultM => new Joker(id)
             {
                 new OnLetterScoredListenerBuilder()
-                    .WithContainsCharacterValidator(new List<char> {'M'})
-                    .WithExtraMultiplierModifier(4)
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'M'}))
+                    .WithModifier(new ExtraMultiplierScoreModifier(4))
                     .Build(),
             },
 
             JokerIdentifier.MultiplyZ => new Joker(id)
             {
                 new OnLetterScoredListenerBuilder()
-                    .WithContainsCharacterValidator(new List<char> {'Z'})
-                    .WithMultiplyMultiplierModifier(2)
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'Z'}))
+                    .WithModifier(new MultiplyMultiplierScoreModifier(2))
                     .Build(),
             },
 
             JokerIdentifier.MoneyS => new Joker(id)
             {
                 new OnLetterScoredListenerBuilder()
-                    .WithContainsCharacterValidator(new List<char> {'S'})
-                    .WithMoneyModifier(Player, 1)
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'S'}))
+                    .WithModifier(new MoneyPerCharacterScoreModifier(Player, 1))
                     .Build(),
             },
 
             JokerIdentifier.PowerUpBombB => new Joker(id)
             {
                 new OnLetterScoredListenerBuilder()
-                    .WithContainsCharacterValidator(new List<char> {'B'})
-                    .WithPowerUpModifier(Player, PowerUpType.Bomba, 1)
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'B'}))
+                    .WithModifier(new PowerUpPerScoreModifier(Player, PowerUpType.Bomba, 1))
                     .Build(),
             },
 
             JokerIdentifier.MultSimpleWord => new Joker(id)
             {
                 new OnWordScoredListenerBuilder()
-                    .WithExtraMultiplierModifier(10)
+                    .WithModifier(new ExtraMultiplierScoreModifier(10))
                     .Build(),
             },
 
             JokerIdentifier.MultiplySimpleWord => new Joker(id)
             {
                 new OnWordScoredListenerBuilder()
-                    .WithMultiplyMultiplierModifier(2)
+                    .WithModifier(new MultiplyMultiplierScoreModifier(2))
                     .Build(),
             },
 
             JokerIdentifier.EscalatingJoker => new Joker(id)
             {
                 new OnWordScoredListenerBuilder()
-                    .WithScoreCounterModifier(Player, id)
-                    .WithExtraMultiplierFromCounterModifier(Player, id)
+                    .WithModifier(new ScoreCounterModifier(Player, id))
                     .Build(),
                 new OnLetterScoredListenerBuilder()
-                    .WithScoreCounterModifier(Player, id)
-                    .WithExtraMultiplierFromCounterModifier(Player, id)
+                    .WithModifier(new ExtraMultiplierFromCounterScoreModifier(Player, id))
                     .Build(),
             },
 

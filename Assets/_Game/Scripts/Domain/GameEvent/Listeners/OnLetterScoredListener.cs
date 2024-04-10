@@ -37,48 +37,18 @@ public class OnLetterScoredListenerBuilder
         Modifiers = new List<ScoreModifier>();
     }
 
-    public OnLetterScoredListenerBuilder WithContainsCharacterValidator(List<char> characters)
+    public OnLetterScoredListenerBuilder WithValidator(LetterValidator validator)
     {
-        Validators.Add(new ContainsCharacterLetterValidator(characters));
+        Validators.Add(validator);
         return this;
     }
 
-    public OnLetterScoredListenerBuilder WithIsPrizeOnValidator(IPrize prize)
+    public OnLetterScoredListenerBuilder WithModifier(ScoreModifier modifier)
     {
-        Validators.Add(new IsPrizeLetterValidator(prize));
-        return this;
-    }
-
-    public OnLetterScoredListenerBuilder WithExtraPrizeModifier(int bonus)
-    {
-        Modifiers.Add(new ExtraPrizeScoreModifier(bonus));
-        return this;
-    }
-
-    public OnLetterScoredListenerBuilder WithExtraMultiplierModifier(int bonus)
-    {
-        Modifiers.Add(new ExtraMultiplierScoreModifier(bonus));
-        return this;
-    }
-
-    public OnLetterScoredListenerBuilder WithMultiplyMultiplierModifier(int bonus)
-    {
-        Modifiers.Add(new MultiplyMultiplierScoreModifier(bonus));
-        return this;
-    }
-
-    public OnLetterScoredListenerBuilder WithMoneyModifier(Player player, int bonus)
-    {
-        Modifiers.Add(new MoneyPerCharacterScoreModifier(player, bonus));
+        Modifiers.Add(modifier);
         return this;
     }
     
-    public OnLetterScoredListenerBuilder WithPowerUpModifier(Player player, PowerUpType powerUpType, int bonus)
-    {
-        Modifiers.Add(new PowerUpPerScoreModifier(player, powerUpType, bonus));
-        return this;
-    }
-
     public OnLetterScoredListener Build()
     {
         return new OnLetterScoredListener(Validators, Modifiers);
