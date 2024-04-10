@@ -33,10 +33,3 @@ public class Joker : ISavable<JokerModel>, IEnumerable<BaseGameEventListener>
         return GetEnumerator();
     }
 }
-
-//OnPowerUpUsed
-///OnLetterSwaped
-///OnBombExploded
-///OnBoardShuffled
-//OnMatchEnded
-//OnItemBought
