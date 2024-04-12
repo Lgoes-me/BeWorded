@@ -68,7 +68,7 @@ public class TooltipController : MonoBehaviour, IDeselectHandler
             verticalPosition -= highlights[0].sizeDelta.y;
         }
         
-        Content.position = new Vector2(Content.position.x, verticalPosition);
+        Content.position = new Vector2(highlights[0].position.x, verticalPosition);
     }
 
 

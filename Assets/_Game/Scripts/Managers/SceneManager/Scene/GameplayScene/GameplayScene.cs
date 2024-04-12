@@ -57,12 +57,12 @@ public class GameplayScene : BaseScene<GameplaySceneData>
 
         State = new GameplayState(Application.GameEventsManager, this);
 
-        //await Task.Delay(1000);
+        if(!Tutorial)
+            return;
 
-        //if(!Tutorial)
-        //return;
+        await Task.Delay(1000);
 
-        /*var toHighlight = new List<RectTransform>()
+        var toHighlight = new List<RectTransform>()
         {
             LettersGrid.Get(2,1).transform as RectTransform,
             LettersGrid.Get(2,2).transform as RectTransform,
@@ -80,7 +80,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
             };
             
             await Application.AlertManager.ShowTooltip("aaaaa", test, false, 1);
-        }*/
+        }
     }
 
     private LetterController CreateLetterController()

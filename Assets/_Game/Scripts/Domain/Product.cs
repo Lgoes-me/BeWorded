@@ -1,6 +1,7 @@
 ﻿public interface IProduct
 {
     string ProductName { get; }
+    string ProductInfo => $"{ProductName}_info";
     int Price { get; }
 }
 

@@ -33,6 +33,7 @@ public class HighlightController : MonoBehaviour
         
         if (MustDelete)
         {
+            Destroy(HighlightCanvas);
             Destroy(this);
         }
     }

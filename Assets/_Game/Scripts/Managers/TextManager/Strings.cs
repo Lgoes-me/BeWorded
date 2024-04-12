@@ -14,12 +14,12 @@ public class Strings
     public string GetText(string textKey, LanguageType languageType)
     {
         if (!TextKeys.TryGetValue(textKey, out var textData))
-            return string.Empty;
+            return textKey;
         
         return languageType switch
         {
-            LanguageType.Pt => textData?.Pt ?? string.Empty,
-            LanguageType.En => textData?.En ?? string.Empty,
+            LanguageType.Pt => textData?.Pt ?? textKey,
+            LanguageType.En => textData?.En ?? textKey,
             _ => throw new ArgumentOutOfRangeException(nameof(languageType), languageType, null)
         };
     }

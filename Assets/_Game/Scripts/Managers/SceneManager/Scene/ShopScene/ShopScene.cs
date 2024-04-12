@@ -25,7 +25,8 @@ public class ShopScene : BaseScene<ShopSceneData>
 
         foreach (var product in randomProducts)
         {
-            Instantiate(ShopItemControllerPrefab, ProductsContent).Init(product, this);
+            Instantiate(ShopItemControllerPrefab, ProductsContent)
+                .Init(product, this, Application.AlertManager,Application.TextManager);
         }
 
         PlayerMoney.SetText(Player.Money.ToString());
