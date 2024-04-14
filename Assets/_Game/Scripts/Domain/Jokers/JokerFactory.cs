@@ -85,7 +85,86 @@ public class JokerFactory
                     .WithModifier(new ExtraMultiplierFromCounterScoreModifier(Player, id))
                     .Build(),
             },
+            
+            //Balatro
+            JokerIdentifier.Joker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithModifier(new ExtraMultiplierScoreModifier(4))
+                    .Build(),
+            },
+            
+            JokerIdentifier.GreedyJoker => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'A'}))
+                    .WithModifier(new ExtraMultiplierScoreModifier(4))
+                    .Build()
+            },
 
+            JokerIdentifier.LustyJoker => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'E'}))
+                    .WithModifier(new ExtraMultiplierScoreModifier(4))
+                    .Build()
+            },
+            
+            JokerIdentifier.WrathfulJoker => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'I'}))
+                    .WithModifier(new ExtraMultiplierScoreModifier(4))
+                    .Build()
+            },
+            
+            JokerIdentifier.GluttonousJoker => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'O'}))
+                    .WithModifier(new ExtraMultiplierScoreModifier(4))
+                    .Build()
+            },
+            
+            JokerIdentifier.PridefulJoker => new Joker(id)
+            {
+                new OnLetterScoredListenerBuilder()
+                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'U'}))
+                    .WithModifier(new ExtraMultiplierScoreModifier(4))
+                    .Build()
+            },
+            
+            JokerIdentifier.JollyJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new MultipleLetterValidator(2))
+                    .WithModifier(new ExtraMultiplierScoreModifier(8))
+                    .Build()
+            },
+            
+            JokerIdentifier.ZanyJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new MultipleLetterValidator(3))
+                    .WithModifier(new ExtraMultiplierScoreModifier(12))
+                    .Build()
+            },
+            
+            JokerIdentifier.MadJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new MultipleLetterValidator(4))
+                    .WithModifier(new ExtraMultiplierScoreModifier(20))
+                    .Build()
+            },
+            
+            JokerIdentifier.CrazyJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new MultipleLetterValidator(5))
+                    .WithModifier(new ExtraMultiplierScoreModifier(50))
+                    .Build()
+            },
             _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
         };
     }
@@ -105,14 +184,16 @@ public enum JokerIdentifier
     
     //Balatro mechanics test
     Joker,
-    GreedyJoker,
-    LustyJoker,
-    WrathfulJoker,
-    GluttonousJoker,
-    JollyJoker,
-    ZanyJoker,
-    MadJoker,
-    CrazyJoker,
+    GreedyJoker, // A
+    LustyJoker, // E
+    WrathfulJoker, // I
+    GluttonousJoker, // O
+    PridefulJoker, // U *NOVO
+    JollyJoker, // 2 Letters
+    ZanyJoker, // 3 Letters
+    MadJoker, // 4 Letters
+    CrazyJoker, // 5 Letters
+    DrollJoker, // ???
     SlyJoker,
     WillyJoker,
     CleverJoker,
