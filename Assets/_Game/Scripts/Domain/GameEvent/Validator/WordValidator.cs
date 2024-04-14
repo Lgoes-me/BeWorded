@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 
 public abstract class WordValidator
@@ -64,5 +64,20 @@ public class MultipleLetterValidator : WordValidator
     {
         var count = word.GroupBy(x => x).Select(y=>y).Count(z => z.Count()>=Count);
         return count > 0;
+    }
+}
+
+public class WordFuncValidator : WordValidator
+{
+    private Func<string, bool> Func { get; set; }
+
+    public WordFuncValidator(Func<string, bool> func)
+    {
+        Func = func;
+    }
+
+    public override bool Validate(string word)
+    {
+        return Func(word);
     }
 }

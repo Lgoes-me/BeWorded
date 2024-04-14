@@ -165,6 +165,47 @@ public class JokerFactory
                     .WithModifier(new ExtraMultiplierScoreModifier(50))
                     .Build()
             },
+            
+            JokerIdentifier.SlyJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new MultipleLetterValidator(2))
+                    .WithModifier(new ExtraPrizeScoreModifier(50))
+                    .Build()
+            },
+            
+            JokerIdentifier.WillyJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new MultipleLetterValidator(3))
+                    .WithModifier(new ExtraPrizeScoreModifier(100))
+                    .Build()
+            },
+            
+            JokerIdentifier.CleverJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new MultipleLetterValidator(4))
+                    .WithModifier(new ExtraPrizeScoreModifier(150))
+                    .Build()
+            },
+            
+            JokerIdentifier.DeviousJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new MultipleLetterValidator(5))
+                    .WithModifier(new ExtraPrizeScoreModifier(200))
+                    .Build()
+            },
+            
+            JokerIdentifier.HalfJoker => new Joker(id)
+            {
+                new OnWordScoredListenerBuilder()
+                    .WithValidator(new WordFuncValidator(word => word.Length <= 3))
+                    .WithModifier(new ExtraMultiplierScoreModifier(20))
+                    .Build()
+            },
+            
             _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
         };
     }
@@ -192,14 +233,14 @@ public enum JokerIdentifier
     JollyJoker, // 2 Letters
     ZanyJoker, // 3 Letters
     MadJoker, // 4 Letters
-    CrazyJoker, // 5 Letters
-    DrollJoker, // ???
-    SlyJoker,
-    WillyJoker,
-    CleverJoker,
-    DeviousJoker,
-    CraftyJoker,
-    HalfJoker,
+    CrazyJoker, // 5 Letters ??? vale a pena ser outra coisa
+    DrollJoker, // ??? o que significa shuffle em uma palavra
+    SlyJoker, // 2 Letters
+    WillyJoker, // 3 Letters
+    CleverJoker, // 4 Letters
+    DeviousJoker, // 5 Letters ??? vale a pena ser outra coisa
+    CraftyJoker, // ??? o que significa shuffle em uma palavra
+    HalfJoker, // Palavras <3 lenght
     JokerStencil,
     FourFingers,
     Mime,
@@ -329,6 +370,5 @@ public enum JokerIdentifier
     Yorick,
     Chicot,
     Perkeo,
-    
 
 }
