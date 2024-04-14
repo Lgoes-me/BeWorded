@@ -1,56 +1,54 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
-public class OnWordScoredListener : BaseGameEventListener
+public class OnWordScoredListener : BaseGameEventListener, IEnumerable<Func<string, bool>>, IEnumerable<WordScoredDelegate>
 {
-    private List<WordValidator> Validators { get; set; }
-    private List<ScoreModifier> Modifiers { get; set; }
+    private List<Func<string, bool>> Validators { get; set; }
+    private List<WordScoredDelegate> Modifiers { get; set; }
 
-    internal OnWordScoredListener(
-        List<WordValidator> validators, 
-        List<ScoreModifier> modifiers)
+    public OnWordScoredListener()
     {
-        Validators = validators;
-        Modifiers = modifiers;
+        Validators = new List<Func<string, bool>>();
+        Modifiers = new List<WordScoredDelegate>();
     }
 
-    public void OnWordScored(ref int basePrice, ref int baseMultiplier, string word)
+    public void OnWordScored(ref int points, ref int multiplier, string word)
     {
-        if (Validators.Any(validator => !validator.Validate(word)))
+        if (Validators.Any(validator => !validator(word)))
             return;
 
         foreach (var modifier in Modifiers)
         {
-            modifier.DoModification(ref basePrice, ref baseMultiplier);
+            modifier(ref points, ref multiplier);
         }
     }
-}
 
-public class OnWordScoredListenerBuilder
-{
-    private List<WordValidator> Validators { get; set; }
-    private List<ScoreModifier> Modifiers { get; set; }
-
-    public OnWordScoredListenerBuilder()
-    {
-        Validators = new List<WordValidator>();
-        Modifiers = new List<ScoreModifier>();
-    }
-
-    public OnWordScoredListenerBuilder WithValidator(WordValidator validator)
+    public void Add(Func<string, bool> validator)
     {
         Validators.Add(validator);
-        return this;
-    }
-
-    public OnWordScoredListenerBuilder WithModifier(ScoreModifier modifier)
-    {
-        Modifiers.Add(modifier);
-        return this;
     }
     
-    public OnWordScoredListener Build()
+    public IEnumerator<Func<string, bool>> GetEnumerator()
     {
-        return new OnWordScoredListener(Validators, Modifiers);
+        return Validators.GetEnumerator();
+    }
+    
+    public void Add(WordScoredDelegate modifier)
+    {
+        Modifiers.Add(modifier);
+    }
+    
+    IEnumerator<WordScoredDelegate> IEnumerable<WordScoredDelegate>.GetEnumerator()
+    {
+        return Modifiers.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
+
+public delegate void WordScoredDelegate(ref int points, ref int multiplier);

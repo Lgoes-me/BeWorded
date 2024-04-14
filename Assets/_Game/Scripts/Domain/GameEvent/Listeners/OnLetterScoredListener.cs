@@ -1,56 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
-public class OnLetterScoredListener : BaseGameEventListener
+public class OnLetterScoredListener : BaseGameEventListener, IEnumerable<Func<Letter, bool>>,
+    IEnumerable<LetterScoredDelegate>
 {
-    private List<LetterValidator> Validators { get; set; }
-    private List<ScoreModifier> Modifiers { get; set; }
+    private List<Func<Letter, bool>> Validators { get; set; }
+    private List<LetterScoredDelegate> Modifiers { get; set; }
 
-    internal OnLetterScoredListener(
-        List<LetterValidator> validators, 
-        List<ScoreModifier> modifiers)
+    internal OnLetterScoredListener()
     {
-        Validators = validators;
-        Modifiers = modifiers;
+        Validators = new List<Func<Letter, bool>>();
+        Modifiers = new List<LetterScoredDelegate>();
     }
 
-    public void OnLetterScored(ref int basePrice, ref int baseMultiplier, Letter letter)
+    public void OnLetterScored(ref int points, ref int multiplier, Letter letter)
     {
-        if (Validators.Any(validator => !validator.Validate(letter)))
+        if (Validators.Any(validator => !validator(letter)))
             return;
 
         foreach (var modifier in Modifiers)
         {
-            modifier.DoModification(ref basePrice, ref baseMultiplier);
+            modifier(ref points, ref multiplier);
         }
     }
-}
 
-public class OnLetterScoredListenerBuilder
-{
-    private List<LetterValidator> Validators { get; set; }
-    private List<ScoreModifier> Modifiers { get; set; }
-
-    public OnLetterScoredListenerBuilder()
-    {
-        Validators = new List<LetterValidator>();
-        Modifiers = new List<ScoreModifier>();
-    }
-
-    public OnLetterScoredListenerBuilder WithValidator(LetterValidator validator)
+    public void Add(Func<Letter, bool> validator)
     {
         Validators.Add(validator);
-        return this;
     }
 
-    public OnLetterScoredListenerBuilder WithModifier(ScoreModifier modifier)
+    public IEnumerator<Func<Letter, bool>> GetEnumerator()
+    {
+        return Validators.GetEnumerator();
+    }
+
+    public void Add(LetterScoredDelegate modifier)
     {
         Modifiers.Add(modifier);
-        return this;
     }
-    
-    public OnLetterScoredListener Build()
+
+    IEnumerator<LetterScoredDelegate> IEnumerable<LetterScoredDelegate>.GetEnumerator()
     {
-        return new OnLetterScoredListener(Validators, Modifiers);
+        return Modifiers.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
+
+public delegate void LetterScoredDelegate(ref int points, ref int multiplier);

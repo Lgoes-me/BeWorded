@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class OnPowerUpUsedListener : BaseGameEventListener
 {
-    private List<PowerUpValidator> Validators { get; set; }
-    private List<PowerUpModifier> Modifiers { get; set; }
+    private List<Func<PowerUp, List<LetterController>, bool>> Validators { get; set; }
+    private List<PowerUpUsedDelegate> Modifiers { get; set; }
     
     internal OnPowerUpUsedListener(
-        List<PowerUpValidator> validators, 
-        List<PowerUpModifier> modifiers)
+        List<Func<PowerUp, List<LetterController>, bool>> validators, 
+        List<PowerUpUsedDelegate> modifiers)
     {
         Validators = validators;
         Modifiers = modifiers;
@@ -16,41 +17,14 @@ public class OnPowerUpUsedListener : BaseGameEventListener
 
     public void OnBoardShuffled(PowerUp powerUp, List<LetterController> letters)
     {
-        if (Validators.Any(validator => !validator.Validate(powerUp, letters)))
+        if (Validators.Any(validator => !validator(powerUp, letters)))
             return;
 
         foreach (var modifier in Modifiers)
         {
-            modifier.DoModification(powerUp, letters);
+            modifier(powerUp, letters);
         }
     }
 }
 
-public class OnPowerUpUsedListenerBuilder
-{
-    private List<PowerUpValidator> Validators { get; set; }
-    private List<PowerUpModifier> Modifiers { get; set; }
-
-    public OnPowerUpUsedListenerBuilder()
-    {
-        Validators = new List<PowerUpValidator>();
-        Modifiers = new List<PowerUpModifier>();
-    }
-
-    public OnPowerUpUsedListenerBuilder WithValidator(PowerUpValidator validator)
-    {
-        Validators.Add(validator);
-        return this;
-    }
-
-    public OnPowerUpUsedListenerBuilder WithModifier(PowerUpModifier modifier)
-    {
-        Modifiers.Add(modifier);
-        return this;
-    }
-    
-    public OnPowerUpUsedListener Build()
-    {
-        return new OnPowerUpUsedListener(Validators, Modifiers);
-    }
-}
+public delegate void PowerUpUsedDelegate(PowerUp powerUp, List<LetterController> letters);

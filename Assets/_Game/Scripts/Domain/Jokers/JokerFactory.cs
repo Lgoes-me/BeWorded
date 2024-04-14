@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class JokerFactory
 {
@@ -16,198 +17,312 @@ public class JokerFactory
         {
             JokerIdentifier.BaseA => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'A'}))
-                    .WithModifier(new ExtraPrizeScoreModifier(10))
-                    .Build(),
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'A'}),
+                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 10)
+                }
             },
 
             JokerIdentifier.BaseVogal => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'A', 'E', 'I', 'O', 'U'}))
-                    .WithModifier(new ExtraPrizeScoreModifier(5))
-                    .Build(),
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'A', 'E', 'I', 'O', 'U'}),
+                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 5)
+                }
             },
 
             JokerIdentifier.MultM => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'M'}))
-                    .WithModifier(new ExtraMultiplierScoreModifier(4))
-                    .Build(),
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'M'}),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
+                }
             },
 
             JokerIdentifier.MultiplyZ => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'Z'}))
-                    .WithModifier(new MultiplyMultiplierScoreModifier(2))
-                    .Build(),
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'Z'}),
+                }
             },
 
             JokerIdentifier.MoneyS => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'S'}))
-                    .WithModifier(new MoneyPerCharacterScoreModifier(Player, 1))
-                    .Build(),
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'S'}),
+                    (ref int points, ref int multiplier) => MoneyModifier(1)
+                }
             },
 
             JokerIdentifier.PowerUpBombB => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'B'}))
-                    .WithModifier(new PowerUpPerScoreModifier(Player, PowerUpType.Bomba, 1))
-                    .Build(),
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'B'}),
+                    (ref int points, ref int multiplier) => PowerUpModifier(PowerUpType.Bomba, 1)
+                }
             },
 
             JokerIdentifier.MultSimpleWord => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithModifier(new ExtraMultiplierScoreModifier(10))
-                    .Build(),
+                new OnWordScoredListener()
+                {
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 10)
+                }
             },
 
             JokerIdentifier.MultiplySimpleWord => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithModifier(new MultiplyMultiplierScoreModifier(2))
-                    .Build(),
+                new OnWordScoredListener()
+                {
+                    (ref int points, ref int multiplier) => MultipyMultiplierModifier(ref multiplier, 2)
+                }
             },
 
             JokerIdentifier.EscalatingJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithModifier(new ScoreCounterModifier(Player, id))
-                    .Build(),
-                new OnLetterScoredListenerBuilder()
-                    .WithModifier(new ExtraMultiplierFromCounterScoreModifier(Player, id))
-                    .Build(),
+                new OnWordScoredListener
+                {
+                    (ref int points, ref int multiplier) => AddCounterModifierValue(id)
+                },
+                new OnLetterScoredListener
+                {
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, ReadCounterModifierPlayer(id))
+                }
             },
-            
+
             //Balatro
             JokerIdentifier.Joker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithModifier(new ExtraMultiplierScoreModifier(4))
-                    .Build(),
+                new OnWordScoredListener()
+                {
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
+                }
             },
-            
+
             JokerIdentifier.GreedyJoker => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'A'}))
-                    .WithModifier(new ExtraMultiplierScoreModifier(4))
-                    .Build()
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'A'}),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
+                }
             },
 
             JokerIdentifier.LustyJoker => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'E'}))
-                    .WithModifier(new ExtraMultiplierScoreModifier(4))
-                    .Build()
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'E'}),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
+                }
             },
-            
+
             JokerIdentifier.WrathfulJoker => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'I'}))
-                    .WithModifier(new ExtraMultiplierScoreModifier(4))
-                    .Build()
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'I'}),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
+                }
             },
-            
+
             JokerIdentifier.GluttonousJoker => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'O'}))
-                    .WithModifier(new ExtraMultiplierScoreModifier(4))
-                    .Build()
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'O'}),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
+                }
             },
-            
+
             JokerIdentifier.PridefulJoker => new Joker(id)
             {
-                new OnLetterScoredListenerBuilder()
-                    .WithValidator(new ContainsCharacterLetterValidator(new List<char> {'U'}))
-                    .WithModifier(new ExtraMultiplierScoreModifier(4))
-                    .Build()
+                new OnLetterScoredListener
+                {
+                    letter => IsOneOfCharsValidator(letter, new List<char> {'U'}),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
+                }
             },
-            
+
             JokerIdentifier.JollyJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new MultipleLetterValidator(2))
-                    .WithModifier(new ExtraMultiplierScoreModifier(8))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => MultipleLetterWordValidator(word, 2),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 8)
+                }
             },
-            
+
             JokerIdentifier.ZanyJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new MultipleLetterValidator(3))
-                    .WithModifier(new ExtraMultiplierScoreModifier(12))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => MultipleLetterWordValidator(word, 3),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 12)
+                }
             },
-            
+
             JokerIdentifier.MadJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new MultipleLetterValidator(4))
-                    .WithModifier(new ExtraMultiplierScoreModifier(20))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => MultipleLetterWordValidator(word, 4),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 20)
+                }
             },
-            
+
             JokerIdentifier.CrazyJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new MultipleLetterValidator(5))
-                    .WithModifier(new ExtraMultiplierScoreModifier(50))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => MultipleLetterWordValidator(word, 5),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 50)
+                }
             },
-            
+
             JokerIdentifier.SlyJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new MultipleLetterValidator(2))
-                    .WithModifier(new ExtraPrizeScoreModifier(50))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => MultipleLetterWordValidator(word, 2),
+                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 50)
+                }
             },
-            
+
             JokerIdentifier.WillyJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new MultipleLetterValidator(3))
-                    .WithModifier(new ExtraPrizeScoreModifier(100))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => MultipleLetterWordValidator(word, 3),
+                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 100)
+                }
             },
-            
+
             JokerIdentifier.CleverJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new MultipleLetterValidator(4))
-                    .WithModifier(new ExtraPrizeScoreModifier(150))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => MultipleLetterWordValidator(word, 4),
+                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 150)
+                }
             },
-            
+
             JokerIdentifier.DeviousJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new MultipleLetterValidator(5))
-                    .WithModifier(new ExtraPrizeScoreModifier(200))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => MultipleLetterWordValidator(word, 5),
+                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 200)
+                }
             },
-            
+
             JokerIdentifier.HalfJoker => new Joker(id)
             {
-                new OnWordScoredListenerBuilder()
-                    .WithValidator(new WordFuncValidator(word => word.Length <= 3))
-                    .WithModifier(new ExtraMultiplierScoreModifier(20))
-                    .Build()
+                new OnWordScoredListener
+                {
+                    word => word.Length <= 3,
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 20)
+                }
             },
-            
+
             _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
         };
+    }
+
+    private bool IsOneOfCharsValidator(Letter letter, List<char> characters)
+    {
+        return characters.Contains(letter.Character);
+    }
+
+    private bool IsPrizeLetterValidator(Letter letter, IPrize prize)
+    {
+        return prize == letter.Prize;
+    }
+
+    private bool MultipleLetterWordValidator(string word, int count)
+    {
+        return word.GroupBy(x => x).Select(y => y).Count(z => z.Count() >= count) > 0;
+    }
+
+    private bool EndsWithLetterWordValidator(string word, char character)
+    {
+        return word.LastOrDefault() == character;
+    }
+
+    private bool StartsWithLetterWordValidator(string word, char character)
+    {
+        return word.FirstOrDefault() == character;
+    }
+
+    private bool WordWithPatternValidator(string word, string subString)
+    {
+        return word.Contains(subString);
+    }
+
+    private void ExtraPointsModifier(ref int points, int extraPoints)
+    {
+        points += extraPoints;
+    }
+
+    private void ExtraMultiplierModifier(ref int multiplier, int extraMultiplier)
+    {
+        multiplier += extraMultiplier;
+    }
+
+    private void MultipyMultiplierModifier(ref int multiplier, int extraMultiplier)
+    {
+        multiplier *= extraMultiplier;
+    }
+
+    private void MoneyModifier(int money)
+    {
+        Player.GivePrize(money);
+    }
+
+    private void PowerUpModifier(PowerUpType powerUpType, int quantity)
+    {
+        switch (powerUpType)
+        {
+            case PowerUpType.Troca:
+                Player.Swaps.Gain(quantity);
+                break;
+            case PowerUpType.Bomba:
+                Player.Bombs.Gain(quantity);
+                break;
+            case PowerUpType.Misturar:
+                Player.Shuffles.Gain(quantity);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private void AddCounterModifierValue(JokerIdentifier identifier)
+    {
+        if (Player.JokersExtraParams.TryGetValue(identifier, out var value))
+        {
+            Player.JokersExtraParams[identifier] = value + 1;
+        }
+        else
+        {
+            Player.JokersExtraParams.Add(identifier, 1);
+        }
+    }
+
+    private int ReadCounterModifierPlayer(JokerIdentifier identifier)
+    {
+        if (Player.JokersExtraParams.TryGetValue(identifier, out var value))
+        {
+            return value;
+        }
+
+        return 0;
     }
 }
 
@@ -222,7 +337,7 @@ public enum JokerIdentifier
     MultSimpleWord,
     MultiplySimpleWord,
     EscalatingJoker,
-    
+
     //Balatro mechanics test
     Joker,
     GreedyJoker, // A
@@ -370,5 +485,4 @@ public enum JokerIdentifier
     Yorick,
     Chicot,
     Perkeo,
-
 }
