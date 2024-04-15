@@ -30,5 +30,10 @@ public class PlayerManager : BaseManager
         
         Player =  LoadedPlayers[0];
         Seed = new Seed(Player.BaseSeed);
+        
+        foreach (var joker in Player.Jokers)
+        {
+            Application.GameEventsManager.SubscribeJoker(joker);
+        }
     }
 }
