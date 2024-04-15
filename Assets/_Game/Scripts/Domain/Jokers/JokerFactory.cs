@@ -80,7 +80,7 @@ public class JokerFactory
             {
                 new OnWordScoredListener()
                 {
-                    (ref int points, ref int multiplier) => MultipyMultiplierModifier(ref multiplier, 2)
+                    (ref int points, ref int multiplier) => MultiplyMultiplierModifier(ref multiplier, 2)
                 }
             },
 
@@ -88,11 +88,9 @@ public class JokerFactory
             {
                 new OnWordScoredListener
                 {
-                    (ref int points, ref int multiplier) => AddCounterModifierValue(id)
-                },
-                new OnLetterScoredListener
-                {
-                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, ReadCounterModifierPlayer(id))
+                    (ref int points, ref int multiplier) => AddCounterModifierValue(id),
+                    (ref int points, ref int multiplier) =>
+                        ExtraMultiplierModifier(ref multiplier, ReadCounterModifierPlayer(id))
                 }
             },
 
@@ -177,15 +175,6 @@ public class JokerFactory
                 }
             },
 
-            JokerIdentifier.CrazyJoker => new Joker(id)
-            {
-                new OnWordScoredListener
-                {
-                    word => MultipleLetterWordValidator(word, 5),
-                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 50)
-                }
-            },
-
             JokerIdentifier.SlyJoker => new Joker(id)
             {
                 new OnWordScoredListener
@@ -213,21 +202,21 @@ public class JokerFactory
                 }
             },
 
-            JokerIdentifier.DeviousJoker => new Joker(id)
-            {
-                new OnWordScoredListener
-                {
-                    word => MultipleLetterWordValidator(word, 5),
-                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 200)
-                }
-            },
-
             JokerIdentifier.HalfJoker => new Joker(id)
             {
                 new OnWordScoredListener
                 {
                     word => word.Length <= 3,
                     (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 20)
+                }
+            },
+
+            JokerIdentifier.JokerStencil => new Joker(id)
+            {
+                new OnWordScoredListener
+                {
+                    (ref int points, ref int multiplier) =>
+                        MultiplyMultiplierModifier(ref multiplier, 1 + Player.QuantidadeJokers - Player.Jokers.Count)
                 }
             },
 
@@ -275,7 +264,7 @@ public class JokerFactory
         multiplier += extraMultiplier;
     }
 
-    private void MultipyMultiplierModifier(ref int multiplier, int extraMultiplier)
+    private void MultiplyMultiplierModifier(ref int multiplier, int extraMultiplier)
     {
         multiplier *= extraMultiplier;
     }
@@ -348,16 +337,11 @@ public enum JokerIdentifier
     JollyJoker, // 2 Letters
     ZanyJoker, // 3 Letters
     MadJoker, // 4 Letters
-    CrazyJoker, // 5 Letters ??? vale a pena ser outra coisa
-    DrollJoker, // ??? o que significa shuffle em uma palavra
     SlyJoker, // 2 Letters
     WillyJoker, // 3 Letters
     CleverJoker, // 4 Letters
-    DeviousJoker, // 5 Letters ??? vale a pena ser outra coisa
-    CraftyJoker, // ??? o que significa shuffle em uma palavra
     HalfJoker, // Palavras <3 lenght
     JokerStencil,
-    FourFingers,
     Mime,
     CreditCard,
     CeremonialDagger,

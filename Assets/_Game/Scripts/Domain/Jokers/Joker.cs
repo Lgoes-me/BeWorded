@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class Joker : ISavable<JokerModel>, IEnumerable<BaseGameEventListener>
+public class Joker : ISavable<JokerModel>, IEnumerable
 {
     public string Id => Identifier.ToString();
     private JokerIdentifier Identifier { get; }
@@ -22,14 +22,9 @@ public class Joker : ISavable<JokerModel>, IEnumerable<BaseGameEventListener>
     {
         GameEventListeners.Add(item);
     }
-    
-    public IEnumerator<BaseGameEventListener> GetEnumerator()
-    {
-        return GameEventListeners.GetEnumerator();
-    }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return GetEnumerator();
+        return GameEventListeners.GetEnumerator();
     }
 }
