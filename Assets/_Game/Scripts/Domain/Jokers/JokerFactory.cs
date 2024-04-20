@@ -64,7 +64,7 @@ public class JokerFactory
                 new OnLetterScoredListener
                 {
                     letter => IsOneOfCharsValidator(letter, new List<char> {'B'}),
-                    (ref int points, ref int multiplier) => PowerUpModifier(PowerUpType.Bomba, 1)
+                    (ref int points, ref int multiplier) => PowerUpModifier(Player.Bombs, 1)
                 }
             },
 
@@ -90,7 +90,7 @@ public class JokerFactory
                 {
                     (ref int points, ref int multiplier) => AddCounterModifierValue(id),
                     (ref int points, ref int multiplier) =>
-                        ExtraMultiplierModifier(ref multiplier, ReadCounterModifierPlayer(id))
+                        ExtraMultiplierModifier(ref multiplier, ReadCounterModifierFromPlayer(id))
                 }
             },
 
@@ -220,6 +220,57 @@ public class JokerFactory
                 }
             },
 
+            JokerIdentifier.CeremonialDagger => new Joker(id)
+            {
+                new OnMatchStartedListener()
+                {
+                    () =>
+                    {
+                        var value = DeleteNextJoker(id);
+                        AddCounterModifierValue(id, 2 * value);
+                    }
+                },
+                new OnWordScoredListener
+                {
+                    (ref int points, ref int multiplier) =>
+                        ExtraMultiplierModifier(ref multiplier, ReadCounterModifierFromPlayer(id))
+                }
+            },
+
+            JokerIdentifier.Banner => new Joker(id)
+            {
+                new OnWordScoredListener
+                {
+                    (ref int points, ref int multiplier) =>
+                        ExtraPointsModifier(ref points,
+                            40 * (Player.Bombs.Uses + Player.Swaps.Uses + Player.Shuffles.Uses))
+                }
+            },
+
+            JokerIdentifier.MysticSummit => new Joker(id)
+            {
+                new OnWordScoredListener
+                {
+                    word => HasNoPowerUpsValidator(),
+                    (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 15)
+                }
+            },
+
+            JokerIdentifier.LoyaltyCard => new Joker(id)
+            {
+                new OnWordScoredListener
+                {
+                    (ref int points, ref int multiplier) => AddCounterModifierValue(id)
+                },
+
+                new OnWordScoredListener
+                {
+                    word => ReadCounterModifierFromPlayer(id) % 6 == 0,
+                    (ref int points, ref int multiplier) => MultiplyMultiplierModifier(ref multiplier, 4)
+                }
+            },
+
+
             _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
         };
     }
@@ -254,6 +305,14 @@ public class JokerFactory
         return word.Contains(subString);
     }
 
+    private bool HasNoPowerUpsValidator()
+    {
+        var hasShuffles = Player.Shuffles.Uses > 0;
+        var hasBombs = Player.Bombs.Uses > 0;
+        var hasSwaps = Player.Swaps.Uses > 0;
+        return !hasShuffles && !hasBombs && !hasSwaps;
+    }
+
     private void ExtraPointsModifier(ref int points, int extraPoints)
     {
         points += extraPoints;
@@ -274,37 +333,24 @@ public class JokerFactory
         Player.GivePrize(money);
     }
 
-    private void PowerUpModifier(PowerUpType powerUpType, int quantity)
+    private void PowerUpModifier(PowerUp powerUp, int quantity)
     {
-        switch (powerUpType)
-        {
-            case PowerUpType.Troca:
-                Player.Swaps.Gain(quantity);
-                break;
-            case PowerUpType.Bomba:
-                Player.Bombs.Gain(quantity);
-                break;
-            case PowerUpType.Misturar:
-                Player.Shuffles.Gain(quantity);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        powerUp.Gain(quantity);
     }
 
-    private void AddCounterModifierValue(JokerIdentifier identifier)
+    private void AddCounterModifierValue(JokerIdentifier identifier, int counter = 1)
     {
         if (Player.JokersExtraParams.TryGetValue(identifier, out var value))
         {
-            Player.JokersExtraParams[identifier] = value + 1;
+            Player.JokersExtraParams[identifier] = value + counter;
         }
         else
         {
-            Player.JokersExtraParams.Add(identifier, 1);
+            Player.JokersExtraParams.Add(identifier, counter);
         }
     }
 
-    private int ReadCounterModifierPlayer(JokerIdentifier identifier)
+    private int ReadCounterModifierFromPlayer(JokerIdentifier identifier)
     {
         if (Player.JokersExtraParams.TryGetValue(identifier, out var value))
         {
@@ -312,6 +358,25 @@ public class JokerFactory
         }
 
         return 0;
+    }
+
+    private int DeleteNextJoker(JokerIdentifier identifier)
+    {
+        var dagger = Player.Jokers.FirstOrDefault(j => j.Identifier == identifier);
+
+        if (dagger == null)
+            return 0;
+
+        var index = Player.Jokers.IndexOf(dagger);
+
+        if (Player.Jokers.Count <= index + 1)
+            return 0;
+
+        var nextJoker = Player.Jokers[index + 1];
+
+        Player.Jokers.Remove(nextJoker);
+
+        return nextJoker.SellValue;
     }
 }
 
@@ -342,12 +407,12 @@ public enum JokerIdentifier
     CleverJoker, // 4 Letters
     HalfJoker, // Palavras <3 lenght
     JokerStencil,
-    Mime,
-    CreditCard,
+    Mime, // ???
+    CreditCard, // ???
     CeremonialDagger,
-    Banner,
-    MysticSummit,
-    MarbleJoker,
+    Banner, // discards = powerups
+    MysticSummit, // discards = powerups
+    MarbleJoker, // ???
     LoyaltyCard,
     EightBall,
     Misprint,

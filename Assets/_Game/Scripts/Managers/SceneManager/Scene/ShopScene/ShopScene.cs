@@ -16,8 +16,8 @@ public class ShopScene : BaseScene<ShopSceneData>
     private void Start()
     {
         Player = Application.PlayerManager.Player;
-        Continue.onClick.AddListener(Application.SceneManager.OpenGameplayScene);
-        
+        Continue.onClick.AddListener(StartNewGameplay);
+
         Player.OpenShop();
         var seed = Application.PlayerManager.Seed.GetNextShopItemSeed(Player.Shops);
         var jokerFactory = new JokerFactory(Player);
@@ -26,10 +26,16 @@ public class ShopScene : BaseScene<ShopSceneData>
         foreach (var product in randomProducts)
         {
             Instantiate(ShopItemControllerPrefab, ProductsContent)
-                .Init(product, this, Application.AlertManager,Application.TextManager);
+                .Init(product, this, Application.AlertManager, Application.TextManager);
         }
 
         PlayerMoney.SetText(Player.Money.ToString());
+    }
+
+    private void StartNewGameplay()
+    {
+        Application.GameEventsManager.OnMatchStarted.Invoke();
+        Application.SceneManager.OpenGameplayScene();
     }
 
     public bool TryBuyProduct(IProduct product)

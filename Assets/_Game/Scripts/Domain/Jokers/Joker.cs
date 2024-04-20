@@ -4,12 +4,15 @@ using System.Collections.Generic;
 public class Joker : ISavable<JokerModel>, IEnumerable
 {
     public string Id => Identifier.ToString();
-    private JokerIdentifier Identifier { get; }
+    public JokerIdentifier Identifier { get; }
+    public int SellValue { get; }
+    
     private List<BaseGameEventListener> GameEventListeners { get; set; }
 
     public Joker(JokerIdentifier identifier)
     {
         Identifier = identifier;
+        SellValue = 3;
         GameEventListeners = new List<BaseGameEventListener>();
     }
 
