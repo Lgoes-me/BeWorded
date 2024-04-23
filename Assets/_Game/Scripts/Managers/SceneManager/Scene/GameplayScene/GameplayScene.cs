@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-public class GameplayScene : BaseScene<GameplaySceneData>
+public class GameplayScene : BaseScene<GameplaySceneData>, IGameAreaControllerListener
 {
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
@@ -24,7 +23,8 @@ public class GameplayScene : BaseScene<GameplaySceneData>
     [field: SerializeField] public PowerUpController ShuffleButton { get; private set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
-    public GameState State { get; private set; }
+    
+    private GameState State { get; set; }
     private Level Level { get; set; }
     private bool Tutorial { get; set; }
 
@@ -44,7 +44,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         Tentativas.SetText(Level.Tentativas.ToString());
 
         LettersGrid = new Grid<LetterController>(gameConfig.Height, gameConfig.Width, CreateLetterController);
-        GameAreaController.Init(this, gameConfig.Height, gameConfig.Width);
+        GameAreaController.Init(this, LettersGrid);
 
         SwapButton.Init(player.Swaps, () => State.OnPowerUpClicked(Application.PlayerManager.Player.Swaps));
         BombButton.Init(player.Bombs, () => State.OnPowerUpClicked(Application.PlayerManager.Player.Bombs));
@@ -109,7 +109,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
         Response.SetText(response);
 
         var soma = 0;
-
+    
         foreach (var prize in letters.Select(l => l.Prize))
         {
             if (prize is not ScorePrize scorePrize)
@@ -157,7 +157,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>
                     break;
             }
 
-            Application.GameEventsManager.OnLetterScored.Invoke(ref basePrize, ref baseMultiplier, letterController.Letter);
+            Application.GameEventsManager.OnLetterScored.Invoke(ref basePrize, ref baseMultiplier, Level, letterController.Letter);
         }
 
         var word = string.Join("", letterControllers.Select(l => l.Letter));
@@ -212,5 +212,20 @@ public class GameplayScene : BaseScene<GameplaySceneData>
             var player = Application.PlayerManager.Player;
             ChangeState(new CompletedLevelState(player, Level, Application));
         }
+    }
+
+    public void OnPointerClick(LetterController letterController)
+    {
+        State.OnClick(letterController);
+    }
+
+    public void OnDrag(LetterController letterController)
+    {
+        State.OnDrag(letterController);
+    }
+
+    public void OnEndDrag(LetterController letterController)
+    {
+        State.OnDragEnd(letterController);
     }
 }

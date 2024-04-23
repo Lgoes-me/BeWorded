@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class Grid<T> : IEnumerable<T> where T : ICellData
 {
-    private int Height { get; }
-    private int Width { get; }
+    public int Height { get; }
+    public int Width { get; }
 
     private Func<T> CellDataCreator { get; }
 

@@ -18,14 +18,14 @@ public class SwapDragState : GameState
         Swaps = swaps;
     }
 
-    public override void OnDrag(PointerEventData pointerEventData, LetterController newSelected)
+    public override void OnDrag(LetterController newSelected)
     {
         if (newSelected == null)
             return;
 
         if (MainLetterController != null)
         {
-            MainLetterController.Content.position = pointerEventData.position;
+            MainLetterController.Content.position = Input.mousePosition;
 
             if (OtherLetterController != null)
             {
@@ -48,7 +48,7 @@ public class SwapDragState : GameState
         MainLetterController = newSelected;
     }
 
-    public override void OnDragEnd(PointerEventData pointerEventData, LetterController newSelected)
+    public override void OnDragEnd(LetterController newSelected)
     {
         if (newSelected == null)
             return;

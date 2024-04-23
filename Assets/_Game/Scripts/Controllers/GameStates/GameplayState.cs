@@ -14,7 +14,7 @@ public class GameplayState : GameState
         Game = game;
     }
 
-    public override void OnDrag(PointerEventData pointerEventData, LetterController newSelected)
+    public override void OnDrag(LetterController newSelected)
     {
         if (SelectedLetterControllers.Count == 0)
         {
@@ -36,7 +36,7 @@ public class GameplayState : GameState
             Game.SetResponse(SelectedLetterControllers);
         }
     }
-    public override void OnDragEnd(PointerEventData pointerEventData, LetterController letterController)
+    public override void OnDragEnd(LetterController letterController)
     {
         CheckResponse();
     }

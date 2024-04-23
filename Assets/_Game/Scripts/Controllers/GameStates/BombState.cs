@@ -14,7 +14,7 @@ public class BombState : GameState
         Bombs = bombs;
     }
 
-    public override async void OnClick(PointerEventData pointerEventData, LetterController letterController)
+    public override async void OnClick(LetterController letterController)
     {
         Bombs.Use();
         Game.BombButton.UpdateButton();

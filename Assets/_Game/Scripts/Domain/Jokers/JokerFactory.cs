@@ -19,8 +19,8 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'A'}),
-                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 10)
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'A'}),
+                    (ref int points, ref int _) => ExtraPointsModifier(ref points, 10)
                 }
             },
 
@@ -28,8 +28,8 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'A', 'E', 'I', 'O', 'U'}),
-                    (ref int points, ref int multiplier) => ExtraPointsModifier(ref points, 5)
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'A', 'E', 'I', 'O', 'U'}),
+                    (ref int points, ref int _) => ExtraPointsModifier(ref points, 5)
                 }
             },
 
@@ -37,7 +37,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'M'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'M'}),
                     (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
                 }
             },
@@ -46,7 +46,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'Z'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'Z'}),
                 }
             },
 
@@ -54,7 +54,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'S'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'S'}),
                     (ref int points, ref int multiplier) => MoneyModifier(1)
                 }
             },
@@ -63,7 +63,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'B'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'B'}),
                     (ref int points, ref int multiplier) => PowerUpModifier(Player.Bombs, 1)
                 }
             },
@@ -107,7 +107,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'A'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'A'}),
                     (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
                 }
             },
@@ -116,7 +116,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'E'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'E'}),
                     (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
                 }
             },
@@ -125,7 +125,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'I'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'I'}),
                     (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
                 }
             },
@@ -134,7 +134,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'O'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'O'}),
                     (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
                 }
             },
@@ -143,7 +143,7 @@ public class JokerFactory
             {
                 new OnLetterScoredListener
                 {
-                    letter => IsOneOfCharsValidator(letter, new List<char> {'U'}),
+                    (_, letter) => IsOneOfCharsValidator(letter, new List<char> {'U'}),
                     (ref int points, ref int multiplier) => ExtraMultiplierModifier(ref multiplier, 4)
                 }
             },
@@ -270,6 +270,23 @@ public class JokerFactory
                 }
             },
 
+            JokerIdentifier.Misprint => new Joker(id)
+            {
+                new OnWordScoredListener
+                {
+                    (ref int points, ref int multiplier) =>
+                        ExtraMultiplierModifier(ref multiplier, UnityEngine.Random.Range(0, 24))
+                }
+            },
+
+            JokerIdentifier.Dusk => new Joker(id)
+            {
+                new OnLetterScoredListener()
+                {
+                    (level, _) => level.Tentativas == 0,
+                    //(ref int points, ref int multiplier) =>
+                }
+            },
 
             _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
         };
@@ -414,7 +431,7 @@ public enum JokerIdentifier
     MysticSummit, // discards = powerups
     MarbleJoker, // ???
     LoyaltyCard,
-    EightBall,
+    EightBall, // ??? what is a planet
     Misprint,
     Dusk,
     ChaosTheClown,

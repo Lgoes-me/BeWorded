@@ -3,35 +3,33 @@ using UnityEngine.EventSystems;
 
 public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler
 {
-    private int Height { get; set; }
-    private int Width { get; set; }
-    private GameplayScene Game { get; set; }
+    private IGameAreaControllerListener Listener { get; set; }
     private RectTransform RectTransform { get; set; }
+    private Grid<LetterController> LettersGrid { get; set; }
     
-    public void Init(GameplayScene game, int height, int width)
+    public void Init(IGameAreaControllerListener listener,Grid<LetterController> lettersGrid)
     {
-        Game = game;
-        Height = height;
-        Width = width;
+        Listener = listener;
+        LettersGrid = lettersGrid;
         RectTransform = GetComponent<RectTransform>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.State.OnClick(eventData, selected);
+        Listener.OnPointerClick(selected);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.State.OnDrag(eventData, selected);
+        Listener.OnDrag(selected);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         var selected = GetPointerCell(eventData);
-        Game.State.OnDragEnd(eventData, selected);
+        Listener.OnEndDrag(selected);
     }
 
     private LetterController GetPointerCell(PointerEventData eventData)
@@ -52,12 +50,22 @@ public class GameAreaController : MonoBehaviour, IPointerClickHandler, IDragHand
         
         click -= localCorners[0];
 
-        var xPosition = Mathf.FloorToInt(Width * -1 * click.x / (localCorners[1].x + localCorners[0].x));
-        var yPosition = Mathf.FloorToInt(Height * -1 * clickPosition.y / (localCorners[2].y - localCorners[0].y) + (float) Height / 2);
+        var width = LettersGrid.Width;
+        var height = LettersGrid.Height;
+        
+        var xPosition = Mathf.FloorToInt(width * -1 * click.x / (localCorners[1].x + localCorners[0].x));
+        var yPosition = Mathf.FloorToInt(height * -1 * clickPosition.y / (localCorners[2].y - localCorners[0].y) + (float) height / 2);
 
-        if (xPosition < 0 || xPosition >= Width || yPosition < 0 || yPosition >= Height)
+        if (xPosition < 0 || xPosition >= width || yPosition < 0 || yPosition >= height)
             return null;
 
-        return Game.LettersGrid.Get(yPosition, xPosition);
+        return LettersGrid.Get(yPosition, xPosition);
     }
+}
+
+public interface IGameAreaControllerListener
+{
+    void OnPointerClick(LetterController letterController);
+    void OnDrag(LetterController letterController);
+    void OnEndDrag(LetterController letterController);
 }
