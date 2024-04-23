@@ -228,4 +228,9 @@ public class GameplayScene : BaseScene<GameplaySceneData>, IGameAreaControllerLi
     {
         State.OnDragEnd(letterController);
     }
+    
+    public void ReportWord()
+    {
+        
+    }
 }
