@@ -3,7 +3,12 @@ using System.Collections.Generic;
 
 public abstract class BaseGameEventListener
 {
-    
+    public int Index { get; private set; }
+
+    public void SetIndex(int index)
+    {
+        Index = index;
+    }
 }
 
 public abstract class BaseGameEventListener<T, T1>: BaseGameEventListener, IEnumerable

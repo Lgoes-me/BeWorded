@@ -9,9 +9,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>, IGameAreaControllerLi
     [field: SerializeField] private GameAreaController GameAreaController { get; set; }
     [field: SerializeField] private LetterController LetterControllerPrefab { get; set; }
 
-    [field: SerializeField] private Transform JokersContent { get; set; }
-    [field: SerializeField] private JokerCardController JokerCardControllerPrefab { get; set; }
-
+    [field: SerializeField] private JokerAreaController JokerArea { get; set; }
     [field: SerializeField] private TextMeshProUGUI Tentativas { get; set; }
     [field: SerializeField] private TextMeshProUGUI Response { get; set; }
     [field: SerializeField] private TextMeshProUGUI ResponseScore { get; set; }
@@ -50,10 +48,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>, IGameAreaControllerLi
         BombButton.Init(player.Bombs, () => State.OnPowerUpClicked(Application.PlayerManager.Player.Bombs));
         ShuffleButton.Init(player.Shuffles, () => State.OnPowerUpClicked(Application.PlayerManager.Player.Shuffles));
 
-        foreach (var joker in player.Jokers)
-        {
-            Instantiate(JokerCardControllerPrefab, JokersContent).Init(joker);
-        }
+        JokerArea.Init(player);
 
         State = new GameplayState(Application.GameEventsManager, this);
 

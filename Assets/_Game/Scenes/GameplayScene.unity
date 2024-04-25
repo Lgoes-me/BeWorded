@@ -1537,8 +1537,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1573126037}
   - component: {fileID: 1573126038}
+  - component: {fileID: 1573126039}
   m_Layer: 5
-  m_Name: Bonus
+  m_Name: JokerArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1590,6 +1591,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1573126039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573126036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a20c192e3c84caca3fba699ded06f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <JokersContent>k__BackingField: {fileID: 1573126037}
+  <JokerCardControllerPrefab>k__BackingField: {fileID: 1906304036983706352, guid: 3e48fa450d4d22e40a9654177603e951, type: 3}
 --- !u!1 &1659520734
 GameObject:
   m_ObjectHideFlags: 0
@@ -1712,8 +1727,7 @@ MonoBehaviour:
   <SceneData>k__BackingField: {fileID: 11400000, guid: 472321421489872448cb662cebc7930e, type: 2}
   <GameAreaController>k__BackingField: {fileID: 1659520738}
   <LetterControllerPrefab>k__BackingField: {fileID: 1512483143877194891, guid: 68a64359a50a8c6438244ed65f3409f5, type: 3}
-  <JokersContent>k__BackingField: {fileID: 1573126037}
-  <JokerCardControllerPrefab>k__BackingField: {fileID: 1906304036983706352, guid: 3e48fa450d4d22e40a9654177603e951, type: 3}
+  <JokerArea>k__BackingField: {fileID: 1573126039}
   <Tentativas>k__BackingField: {fileID: 95706083}
   <Response>k__BackingField: {fileID: 827711579}
   <ResponseScore>k__BackingField: {fileID: 1150427157}

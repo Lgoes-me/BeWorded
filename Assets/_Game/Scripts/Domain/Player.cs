@@ -92,7 +92,8 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
                 continue;
 
             var joker = JokerFactory.CreateJoker(identifier);
-
+            joker.SetIndex(jokerModel.Index);
+            
             Jokers.Add(joker);
         }
 
@@ -103,7 +104,7 @@ public class Player : ISavable<PlayerModel>, ILoadable<PlayerModel>
 
     public PlayerModel SaveData()
     {
-        var jokers = Jokers.Select(j => j.SaveData()).ToList();
+        var jokers = Jokers.OrderBy(j => j.Index).Select(j => j.SaveData()).ToList();
         return new PlayerModel(Level, Shops, Money, Swaps, Bombs, Shuffles, jokers, JokersExtraParams, QuantidadeJokers,
             BaseSeed);
     }

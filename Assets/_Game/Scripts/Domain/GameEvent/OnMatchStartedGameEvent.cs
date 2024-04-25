@@ -2,7 +2,7 @@
 {
     public void Invoke()
     {
-        foreach (var listener in Listeners)
+        foreach (var listener in OrderedListeners)
         {
             listener.OnMatchStarted();
         }
