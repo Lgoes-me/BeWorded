@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameplayScene : BaseScene<GameplaySceneData>, IGameAreaControllerListener
 {
@@ -19,6 +20,8 @@ public class GameplayScene : BaseScene<GameplaySceneData>, IGameAreaControllerLi
     [field: SerializeField] public PowerUpController SwapButton { get; private set; }
     [field: SerializeField] public PowerUpController BombButton { get; private set; }
     [field: SerializeField] public PowerUpController ShuffleButton { get; private set; }
+    
+    [field: SerializeField] private Button ExtraWordsButton { get; set; }
 
     public Grid<LetterController> LettersGrid { get; private set; }
     
@@ -223,9 +226,9 @@ public class GameplayScene : BaseScene<GameplaySceneData>, IGameAreaControllerLi
     {
         State.OnDragEnd(letterController);
     }
-    
-    public void ReportWord()
+
+    public void ActivateExtraWordsButton()
     {
-        
+        ExtraWordsButton.gameObject.SetActive(true);
     }
 }

@@ -9,6 +9,7 @@ public class ContentManager : BaseManager
     [field: SerializeField] private List<TextAssetByLanguage> Texts { get; set; }
 
     private List<string> Words { get; set; }
+    private ExtraWords ExtraWords { get; set; }
     private GameConfig GameConfig { get; set; }
 
     public void Init()
@@ -25,6 +26,9 @@ public class ContentManager : BaseManager
             .Where(s => s.Length >= 3)
             .OrderBy(s => s.Length)
             .ToList();
+
+        ExtraWords = new ExtraWords();
+        Application.SaveManager.LoadData(ExtraWords);
     }
 
     public Letter GetRandomLetter(bool tutorial)
@@ -38,9 +42,15 @@ public class ContentManager : BaseManager
 
     public bool IsValidWord(string word)
     {
-        return word.Length >= GameConfig.MinimumWordSize && Words.Contains(word);
+        return word.Length >= GameConfig.MinimumWordSize && (ExtraWords.Contains(word) || Words.Contains(word));
     }
 
+    public void AddExtraWord(string word)
+    {
+        ExtraWords.Add(word);
+        Application.SaveManager.SaveData(ExtraWords);
+    }
+    
     private string RemoveAccents(string text)
     {
         StringBuilder sbReturn = new StringBuilder();

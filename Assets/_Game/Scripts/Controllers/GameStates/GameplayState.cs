@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.EventSystems;
 
 public class GameplayState : GameState
 {
@@ -66,6 +65,7 @@ public class GameplayState : GameState
         }
         else
         {
+            //Game.ActivateExtraWordsButton();
             Game.ClearResponseText();
             SelectedLetterControllers.Clear();
         }
