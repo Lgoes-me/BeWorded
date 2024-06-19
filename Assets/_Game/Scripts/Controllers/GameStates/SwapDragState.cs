@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class SwapDragState : GameState
 {
@@ -61,7 +60,7 @@ public class SwapDragState : GameState
         MainLetterController.ResetLetter();
         newSelected.ResetLetter();
 
-        GameEventsManager.OnPowerUpUsed.Invoke(Swaps, new List<LetterController>() {MainLetterController, newSelected});
+        GameEventsManager.OnPowerUpUsed.Invoke(Swaps, MainLetterController, newSelected);
 
         Game.LettersGrid.SwapCells(MainLetterController, newSelected);
         MainLetterController = null;

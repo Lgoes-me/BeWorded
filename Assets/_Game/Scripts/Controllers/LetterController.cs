@@ -64,7 +64,12 @@ public class LetterController : MonoBehaviour, ICellData
         Content.DOShakePosition(0.1f, 2);
         Invoke(nameof(ResetLetter), 0.15f);
     }
-
+    
+    public void OnBomb()
+    {
+        OnError();
+    }
+    
     public void OnCorrect()
     {
         State = LetterState.Correct;

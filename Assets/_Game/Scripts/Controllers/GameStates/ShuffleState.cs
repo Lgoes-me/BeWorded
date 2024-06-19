@@ -19,7 +19,7 @@ public class ShuffleState : GameState
         Shuffle.Use();
         Game.ShuffleButton.UpdateButton();
 
-        var letterControllers = Game.LettersGrid.ToList();
+        var letterControllers = Game.LettersGrid.ToArray();
         GameEventsManager.OnPowerUpUsed.Invoke(Shuffle, letterControllers);
         foreach (var letterController in letterControllers)
         {

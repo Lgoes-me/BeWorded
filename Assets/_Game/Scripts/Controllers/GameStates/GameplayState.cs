@@ -60,7 +60,7 @@ public class GameplayState : GameState
         if (rightResponse)
         {
             Game.GetPrizes(SelectedLetterControllers);
-            await Game.ClearSelection(SelectedLetterControllers);
+            await Game.ClearSelection(SelectedLetterControllers.ToArray());
             Game.CheckIfGameEnded();
         }
         else

@@ -169,7 +169,7 @@ public class GameplayScene : BaseScene<GameplaySceneData>, IGameAreaControllerLi
         ScoreText.SetText(Level.CurrentScore.ToString());
     }
 
-    public async Task ClearSelection(List<LetterController> letterControllers)
+    public async Task ClearSelection(params LetterController[] letterControllers)
     {
         ChangeState(new AnimatingState());
         LettersGrid.ClearCells(letterControllers);

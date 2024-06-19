@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine.EventSystems;
-
-public class BombState : GameState
+﻿public class BombState : GameState
 {
     private GameEventsManager GameEventsManager { get; set; }
     private GameplayScene Game { get; set; }
@@ -18,12 +15,11 @@ public class BombState : GameState
     {
         Bombs.Use();
         Game.BombButton.UpdateButton();
+        GameEventsManager.OnPowerUpUsed.Invoke(Bombs, letterController);
         
-        letterController.OnError();
+        letterController.OnBomb();
 
-        var letterControllers = new List<LetterController> {letterController};
-        GameEventsManager.OnPowerUpUsed.Invoke(Bombs, letterControllers);
-        await Game.ClearSelection(letterControllers);
+        await Game.ClearSelection(letterController);
         Game.ChangeState(new GameplayState(GameEventsManager, Game));
     }
 

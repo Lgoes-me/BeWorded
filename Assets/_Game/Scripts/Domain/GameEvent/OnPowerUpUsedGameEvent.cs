@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-
-public class OnPowerUpUsedGameEvent : BaseGameEvent<OnPowerUpUsedListener>
+﻿public class OnPowerUpUsedGameEvent : BaseGameEvent<OnPowerUpUsedListener>
 {
-    public void Invoke(PowerUp shuffle, List<LetterController> letters)
+    public void Invoke(PowerUp shuffle, params LetterController[] letters)
     {
         foreach (var listener in OrderedListeners)
         {
-            listener.OnBoardShuffled(shuffle, letters);
+            listener.OnPowerUpUsed(shuffle, letters);
         }
     }
 }

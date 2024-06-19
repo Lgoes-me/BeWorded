@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 739ff253fc461e54e864a537417ad354, type: 3}
+  m_Sprite: {fileID: 1741720340, guid: b2b0406ae9f460e44ad0e149864d3b54, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -111,10 +111,10 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1512483143877194891
 MonoBehaviour:
@@ -133,7 +133,7 @@ MonoBehaviour:
   <Background>k__BackingField: {fileID: 2588749387903863581}
   <Text>k__BackingField: {fileID: 6602296024524903791}
   <PrizeText>k__BackingField: {fileID: 3481022399300524577}
-  <DefaultColor>k__BackingField: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+  <DefaultColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
   <HighlightedColor>k__BackingField: {r: 0.8773585, g: 0.56697226, b: 0.7094446, a: 0.56078434}
   <SelectedColor>k__BackingField: {r: 0.9150943, g: 0.7892257, b: 0.64315593, a: 0.6666667}
   <ErrorColor>k__BackingField: {r: 0.9245283, g: 0.5974546, b: 0.5974546, a: 0.62352943}
@@ -271,7 +271,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 22.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -349,8 +349,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -50, y: -10}
-  m_SizeDelta: {x: -70, y: 50}
+  m_AnchoredPosition: {x: 10.5, y: 9.5625}
+  m_SizeDelta: {x: -4.1365, y: 19.125}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &3027781436691615019
 CanvasRenderer:
@@ -407,7 +407,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class OnPowerUpUsedListener : BaseGameEventListener<Func<PowerUp, List<LetterController>, bool>, PowerUpUsedDelegate>
+public class OnPowerUpUsedListener : BaseGameEventListener<Func<PowerUp, LetterController[], bool>, PowerUpUsedDelegate>
 {
-    public void OnBoardShuffled(PowerUp powerUp, List<LetterController> letters)
+    public void OnPowerUpUsed(PowerUp powerUp, params LetterController[] letters)
     {
         if (Validators.Any(validator => !validator(powerUp, letters)))
             return;
@@ -16,4 +16,4 @@ public class OnPowerUpUsedListener : BaseGameEventListener<Func<PowerUp, List<Le
     }
 }
 
-public delegate void PowerUpUsedDelegate(PowerUp powerUp, List<LetterController> letters);
+public delegate void PowerUpUsedDelegate(PowerUp powerUp,params LetterController[] letters);

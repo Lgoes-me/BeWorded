@@ -85,9 +85,9 @@ public class Grid<T> : IEnumerable<T> where T : ICellData
         return cell;
     }
 
-    public void ClearCells(List<T> selectedData)
+    public void ClearCells(params T[] selectedData)
     {
-        var cells = selectedData.Select(d => DataToCell[d]).ToList();
+        var cells = selectedData.Select(d => DataToCell[d]);
 
         foreach (var cell in cells)
         {
